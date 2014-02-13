@@ -21,7 +21,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
     
     // craete manager instance
     self.beaconManager = [[ESTBeaconManager alloc] init];
@@ -67,29 +66,18 @@
     if([beacons count] > 0)
     {
         
-        //self.selectedBeacon = [beacons objectAtIndex:0];
-        
-       // NSMutableString *allBeaconsData = [[NSMutableString alloc]init];
         NSString* labelText;
             for (ESTBeacon* cBeacon in beacons)
             {
-//                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"" message:@"didEnterRegion" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
-//                [alert show];
-
-                // update beacon it same as selected initially
-                if(1)//&&[self.selectedBeacon.ibeacon.major unsignedShortValue]==36452 &&[self.selectedBeacon.ibeacon.minor unsignedShortValue]==36010
-                {
+                
                     self.selectedBeacon = cBeacon;
-                    
-                    
-                    
                     labelText = [NSString stringWithFormat:
                                            @"UUID: %@, Major: %i, Minor: %i\nRegion: ",
                                            [self.selectedBeacon.ibeacon.proximityUUID UUIDString],
                                            [self.selectedBeacon.ibeacon.major unsignedShortValue],
                                            [self.selectedBeacon.ibeacon.minor unsignedShortValue]];
                     
-                    // calculate and set new y position
+                    // check proximity
                     switch (self.selectedBeacon.ibeacon.proximity)
                     {
                         case CLProximityUnknown:
@@ -109,20 +97,13 @@
                             break;
                     }
                     
-                }
+    
 
                 labelText = [labelText stringByAppendingString: [self tellBeaconNamefor:self.selectedBeacon.ibeacon]];
                 self.lblBeacon.text = labelText;
-                //[self localNotificationWithAlertBody:@"didEnterRegion"];
+
             }
-       // }
-        
-        
-                // beacon array is sorted based on distance
-        // closest beacon is the first one
-        
-        
-    }
+        }
 }
 
 
@@ -188,7 +169,5 @@
         [alert show];
     }
 }
-
-- (void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral {}
 
 @end
