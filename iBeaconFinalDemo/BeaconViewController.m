@@ -28,10 +28,15 @@
     self.beaconManager.delegate = self;
     self.beaconManager.avoidUnknownStateBeacons = YES;
     
-
-    // create sample region with major value defined
+    
+//    create sample region with major value defined for one perticular beacon
+//    ESTBeaconRegion* region = [[ESTBeaconRegion alloc] initWithProximityUUID:ESTIMOTE_PROXIMITY_UUID
+//                                                                       major:36452 minor:36010
+//                                                                  identifier: @"EstimoteSampleRegion"];
+    
+    
+//  create sample region for all perticular beacons   
     ESTBeaconRegion* region = [[ESTBeaconRegion alloc] initWithProximityUUID:ESTIMOTE_PROXIMITY_UUID
-                                                                       major:36452 minor:36010
                                                                   identifier: @"EstimoteSampleRegion"];
     
     region.notifyEntryStateOnDisplay = YES;
@@ -75,6 +80,9 @@
                 if(1)//&&[self.selectedBeacon.ibeacon.major unsignedShortValue]==36452 &&[self.selectedBeacon.ibeacon.minor unsignedShortValue]==36010
                 {
                     self.selectedBeacon = cBeacon;
+                    
+                    
+                    
                     labelText = [NSString stringWithFormat:
                                            @"UUID: %@, Major: %i, Minor: %i\nRegion: ",
                                            [self.selectedBeacon.ibeacon.proximityUUID UUIDString],
@@ -85,16 +93,16 @@
                     switch (self.selectedBeacon.ibeacon.proximity)
                     {
                         case CLProximityUnknown:
-                            labelText = [labelText stringByAppendingString: @"Unknown"];
+                            labelText = [labelText stringByAppendingString: @"Unknown, "];
                             break;
                         case CLProximityImmediate:
-                            labelText = [labelText stringByAppendingString: @"Immediate"];
+                            labelText = [labelText stringByAppendingString: @"Immediate, "];
                             break;
                         case CLProximityNear:
-                            labelText = [labelText stringByAppendingString: @"Near"];
+                            labelText = [labelText stringByAppendingString: @"Near, "];
                             break;
                         case CLProximityFar:
-                            labelText = [labelText stringByAppendingString: @"Far"];
+                            labelText = [labelText stringByAppendingString: @"Far, "];
                             break;
                             
                         default:
@@ -102,7 +110,8 @@
                     }
                     
                 }
-                //[allBeaconsData stringByAppendingString:[NSString stringWithFormat:@"\n%@",labelText]];
+
+                labelText = [labelText stringByAppendingString: [self tellBeaconNamefor:self.selectedBeacon.ibeacon]];
                 self.lblBeacon.text = labelText;
                 //[self localNotificationWithAlertBody:@"didEnterRegion"];
             }
@@ -114,6 +123,19 @@
         
         
     }
+}
+
+
+-(NSString*)tellBeaconNamefor:(CLBeacon*)beacon{
+    NSString *beaconName;
+    if([beacon.major unsignedShortValue]==36452 && [beacon.minor unsignedShortValue]== 36010){
+        beaconName = @"Mint Cocktail";
+    }else if ([beacon.major unsignedShortValue]==36015 && [beacon.minor unsignedShortValue]== 56457){
+        beaconName = @"Icy Marshmallow";
+    }else if ([beacon.major unsignedShortValue]==12830 && [beacon.minor unsignedShortValue]== 49469){
+        beaconName = @"Blueberry Pie";
+    }
+    return beaconName;
 }
 
 -(void)beaconManager:(ESTBeaconManager *)manager
