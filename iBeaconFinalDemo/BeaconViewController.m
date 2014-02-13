@@ -104,7 +104,7 @@
                 }
                 //[allBeaconsData stringByAppendingString:[NSString stringWithFormat:@"\n%@",labelText]];
                 self.lblBeacon.text = labelText;
-                [self localNotificationWithAlertBody:@"didEnterRegion"];
+                //[self localNotificationWithAlertBody:@"didEnterRegion"];
             }
        // }
         
