@@ -432,7 +432,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: CHECK-IN FOR GOOD LLC  (L39GZ66UBJ)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Webonise Lab (EQ9S5KJP48)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iBeaconFinalDemo/iBeaconFinalDemo-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -446,7 +446,7 @@
 					/Users/adminroom/Desktop/experiments/iBeaconFinalDemo/EstimoteSDK,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9E1975A8-4273-4BB1-8A9B-A2D43BBE3592";
+				PROVISIONING_PROFILE = "F246FDB6-A9BE-451C-8160-80640D2B50F2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -456,7 +456,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: CHECK-IN FOR GOOD LLC  (L39GZ66UBJ)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Webonise Lab (EQ9S5KJP48)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iBeaconFinalDemo/iBeaconFinalDemo-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -470,7 +470,7 @@
 					/Users/adminroom/Desktop/experiments/iBeaconFinalDemo/EstimoteSDK,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9E1975A8-4273-4BB1-8A9B-A2D43BBE3592";
+				PROVISIONING_PROFILE = "F246FDB6-A9BE-451C-8160-80640D2B50F2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

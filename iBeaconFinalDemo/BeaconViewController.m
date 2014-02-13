@@ -72,24 +72,11 @@
     if([beacons count] > 0)
     {
         
-        //self.selectedBeacon = [beacons objectAtIndex:0];
-        
-       // NSMutableString *allBeaconsData = [[NSMutableString alloc]init];
-        NSString* labelText;
+            NSString* labelText;
             for (ESTBeacon* cBeacon in beacons)
             {
-//                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"" message:@"didEnterRegion" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
-//                [alert show];
-
-                // update beacon it same as selected initially
-                if(1)//&&[self.selectedBeacon.ibeacon.major unsignedShortValue]==36452 &&[self.selectedBeacon.ibeacon.minor unsignedShortValue]==36010
-                {
                     self.selectedBeacon = cBeacon;
-                    
-                    
-                    
-                    labelText = [NSString stringWithFormat:
-                                           @"UUID: %@, Major: %i, Minor: %i\nRegion: ",
+                    labelText = [NSString stringWithFormat:@"UUID: %@, Major: %i, Minor: %i\nRegion: ",
                                            [self.selectedBeacon.proximityUUID UUIDString],
                                            [self.selectedBeacon.major unsignedShortValue],
                                            [self.selectedBeacon.minor unsignedShortValue]];
@@ -118,16 +105,10 @@
 
                 labelText = [labelText stringByAppendingString: [self tellBeaconNamefor:self.selectedBeacon]];
                 self.lblBeacon.text = labelText;
+        [self sendDataForBeacon:self.selectedBeacon];
                 [self localNotificationWithAlertBody:@"didEnterRegion"];
-            }
-       // }
         
-        
-                // beacon array is sorted based on distance
-        // closest beacon is the first one
-        
-        
-    }
+        }
 }
 
 
@@ -178,6 +159,18 @@
 }
 
 
+-(void)sendDataForBeacon:(ESTBeacon *)beacon{
+    
+    NSMutableDictionary *dataDictionary =[NSMutableDictionary dictionary];
+    [dataDictionary setObject:beacon.proximityUUID forKey:@"proximityUUID"];
+    [dataDictionary setObject:beacon.major forKey:@"major"];
+    [dataDictionary setObject:beacon.minor forKey:@"minor"];
+    NSError *err;
+    
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:dataDictionary options:0 error:&err];
+    [self postToServer:postData];
+}
+
 -(void)localNotificationWithAlertBody:(NSString*)body{
     UIApplicationState state = [[UIApplication sharedApplication] applicationState];
     if(state==UIApplicationStateBackground||state==UIApplicationStateInactive){
@@ -192,6 +185,33 @@
         UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:body delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [alert show];
     }
+}
+
+-(void)postToServer:(NSData*)postData{
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://192.168.0.6:8888"]];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:[NSString stringWithFormat:@"%d", postData.length] forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setTimeoutInterval:15];
+    [request setHTTPBody:postData];
+    //NSLog(@"Post data : %@",[[NSString alloc] initWithData:postData encoding:NSUTF8StringEncoding]);
+    //NSLog(@"post data new  :%@",postData);
+    
+    [NSURLConnection sendAsynchronousRequest:request
+                                       queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
+                               
+                               //NSLog(@"Data:--> %@ ",data);
+                               if(!error){
+                                   NSDictionary *result=[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                                   NSLog(@"result: %@",result);
+                                   if([[result valueForKey:@"status"] boolValue]){  // use filter here , if responce' success key is true
+                                       
+                                   }
+                               }
+                           }];
+    
+    
 }
 
 - (void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral {}
