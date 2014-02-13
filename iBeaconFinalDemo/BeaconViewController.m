@@ -45,9 +45,9 @@
     // start looking for estimote beacons in region
     // when beacon ranged beaconManager:didEnterRegion:
     // and beaconManager:didExitRegion: invoked
-    [self.beaconManager startMonitoringForRegion:region];
-     [self.beaconManager requestStateForRegion:region];
-    //[self.beaconManager requestStateForRegion:region];
+    // [self.beaconManager startMonitoringForRegion:region];
+    // [self.beaconManager requestStateForRegion:region];
+
     // start looking for estimote beacons in region
     // when beacon ranged beaconManager:didRangeBeacons:inRegion: invoked
     [self.beaconManager startRangingBeaconsInRegion:region];
