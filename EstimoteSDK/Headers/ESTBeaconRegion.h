@@ -1,8 +1,8 @@
 //
 //  ESTBeaconRegion.h
-//  EstimotePrivSDK7
+//  EstimoteSDK
 //
-//  Version : 1.0.0
+//  Version : 1.3.0
 //  Created by Marcin Klimek on 9/21/13.
 //  Copyright (c) 2013 Estimote. All rights reserved.
 //
@@ -10,23 +10,6 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 
-/*
- *  CLBeaconMajorValue
- *
- *  Discussion:
- *    Type represents the most significant value in a beacon.
- *
- */
-typedef uint16_t ESTBeaconMajorValue;
-
-/*
- *  CLBeaconMinorValue
- *
- *  Discussion:
- *    Type represents the least significant value in a beacon.
- *
- */
-typedef uint16_t ESTBeaconMinorValue;
 
 
 /**
@@ -40,31 +23,5 @@ typedef uint16_t ESTBeaconMinorValue;
  */
 @interface ESTBeaconRegion : CLBeaconRegion
 
-/**
- *    Initialize a Estimote beacon region. Major and minor values will be wildcarded.
- *
- * @param identifier Region identifier
- * @return Initialized ESTBeaconRegion object
- **/
-- (id)initRegionWithIdentifier:(NSString *)identifier;
-
-/**
- *    Initialize a Estimote beacon region with major value. Minor value will be wildcarded.
- *
- * @param major minor location value
- * @param identifier Region identifier
- * @return Initialized ESTBeaconRegion object
- **/
-- (id)initRegionWithMajor:(ESTBeaconMajorValue)major identifier:(NSString *)identifier;
-
-/**
- *    Initialize a Estimote beacon region identified by a major and minor values.
- *
- * @param major minor location value
- * @param minor minor location value
- * @param identifier Region identifier
- * @return Initialized ESTBeaconRegion object
- **/
-- (id)initRegionWithMajor:(ESTBeaconMajorValue)major minor:(ESTBeaconMinorValue)minor identifier:(NSString *)identifier;
 
 @end

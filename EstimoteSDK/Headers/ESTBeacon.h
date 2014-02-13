@@ -1,8 +1,8 @@
 //
 //  ESTBeacon.h
-//  EstimotePrivSDK7
+//  EstimoteSDK
 //
-//  Version : 1.0.0
+//  Version : 1.3.0
 //  Created by Marcin Klimek on 9/19/13.
 //  Copyright (c) 2013 Estimote. All rights reserved.
 //
@@ -11,6 +11,8 @@
 #import <CoreLocation/CoreLocation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
 #import "ESTBeaconDefinitions.h"
+
+@class ESTBeacon;
 
 ////////////////////////////////////////////////////////////////////
 // Estimote beacon delegate protocol
@@ -29,27 +31,31 @@
 /**
  * Delegate method that indicates error in beacon connection.
  *
+ * @param beacon reference to beacon object
  * @param error information about reason of error
  *
  * @return void
  */
-- (void)beaconConnectionDidFail:(NSError*)error;
+- (void)beaconConnectionDidFail:(ESTBeacon*)beacon withError:(NSError*)error;
 
 /**
  * Delegate method that indicates success in beacon connection.
  *
+ * @param beacon reference to beacon object
+ *
  * @return void
  */
-- (void)beaconConnectionDidSucceeded;
+- (void)beaconConnectionDidSucceeded:(ESTBeacon*)beacon;
 
 /**
  * Delegate method that beacon did disconnect with device.
  *
-  * @param error information about reason of error
+ * @param beacon reference to beacon object
+ * @param error information about reason of error
  *
  * @return void
  */
-- (void)beaconDidDisconnectWithError:(NSError*)error;
+- (void)beaconDidDisconnect:(ESTBeacon*)beacon withError:(NSError*)error;
 
 @end
 
@@ -69,40 +75,152 @@ ESTBeacon class contains basic Apple CLBeacon object reference as well as some a
 @interface ESTBeacon : NSObject
 
 @property (nonatomic)           ESTBeaconFirmwareState  firmwareState;
-@property (nonatomic)           id <ESTBeaconDelegate>  delegate;
+@property (nonatomic, weak)     id <ESTBeaconDelegate>  delegate;
 
 /////////////////////////////////////////////////////
 // bluetooth beacon available when used with
 // startEstimoteBeaconsDiscoveryForRegion:
 
-@property (nonatomic, strong)   CBPeripheral*           peripheral;
+
+/// @name Publicly available properties
+
+/**
+ *  macAddress
+ *
+ *  Discussion:
+ *    Hardware MAC address of the beacon.
+ */
 @property (nonatomic, strong)   NSString*               macAddress;
-@property (nonatomic, strong)   NSNumber*               measuredPower;
+
+/**
+ *  proximityUUID
+ *
+ *    Proximity identifier associated with the beacon.
+ *
+ */
+@property (nonatomic, strong)   NSUUID*                 proximityUUID;
+
+/**
+ *  major
+ *
+ *    Most significant value associated with the region. If a major value wasn't specified, this will be nil.
+ *
+ */
 @property (nonatomic, strong)   NSNumber*               major;
+
+/**
+ *  minor
+ *
+ *    Least significant value associated with the region. If a minor value wasn't specified, this will be nil.
+ *
+ */
 @property (nonatomic, strong)   NSNumber*               minor;
-@property (nonatomic, strong)   NSNumber*               rssi;
+
+
+
+/**
+ *  rssi
+ *
+ *    Received signal strength in decibels of the specified beacon.
+ *    This value is an average of the RSSI samples collected since this beacon was last reported.
+ *
+ */
+@property (nonatomic)           NSInteger               rssi;
+
+/**
+ *  distance
+ *
+ *    Distance between phone and beacon calculated based on rssi and measured power.
+ *
+ */
+@property (nonatomic, strong)   NSNumber*               distance;
+
+/**
+ *  proximity
+ *
+ *    The value in this property gives a general sense of the relative distance to the beacon. Use it to quickly identify beacons that are nearer to the user rather than farther away.
+ */
+@property (nonatomic)           CLProximity             proximity;
+
+/**
+ *  measuredPower
+ *
+ *    rssi value measured from 1m. This value is used for device calibration.
+ */
+@property (nonatomic, strong)   NSNumber*               measuredPower;
+
+/**
+ *  hardwareVersion
+ *
+ *    Reference of the device peripheral object.
+ */
+@property (nonatomic, strong)   CBPeripheral*           peripheral;
 
 /////////////////////////////////////////////////////
 // properties filled when read characteristic
 
-@property (nonatomic, strong)   NSNumber*               power;
-@property (nonatomic, strong)   NSNumber*               frequency;
-@property (nonatomic, strong)   NSNumber*               baterryLevel;
-
-@property (nonatomic, strong)   NSString*               hardwareVersion;
-@property (nonatomic, strong)   NSString*               firmwareVersion;
-
-/////////////////////////////////////////////////////
-// core location properties
-
-@property (nonatomic, strong)   CLBeacon*               ibeacon;
-
-
-@property (nonatomic, readonly)   BOOL                  isConnected;
+/// @name Properties available after connection
 
 
 /**
- * Connect device to particular beacon
+ *  firmwareUpdateInfo
+ *
+ *    Flag indicating connection status.
+ */
+@property (nonatomic, readonly)   BOOL                  isConnected;
+
+/**
+ *  power
+ *
+ *    Power of signal in dBm. Value available after connection with the beacon. It takes one of the values represented by ESTBeaconPower .
+ */
+@property (nonatomic, strong)   NSNumber*               power;
+
+/**
+ *  advInterval
+ *
+ *    Advertising interval of the beacon. Value change from 50ms to 2000ms. Value available after connection with the beacon
+ */
+@property (nonatomic, strong)   NSNumber*               advInterval;
+
+/**
+ *  batteryLevel
+ *
+ *    Battery strength in %. Battery level change from 100% - 0%. Value available after connection with the beacon
+ */
+@property (nonatomic, strong)   NSNumber*               batteryLevel;
+
+
+/**
+ *  hardwareVersion
+ *
+ *    Version of device hardware. Value available after connection with the beacon
+ */
+@property (nonatomic, strong)   NSString*               hardwareVersion;
+
+/**
+ *  firmwareVersion
+ *
+ *    Version of device firmware. Value available after connection with the beacon
+ */
+@property (nonatomic, strong)   NSString*               firmwareVersion;
+
+
+/**
+ *  firmwareUpdateInfo
+ *
+ *    Firmware update availability status. Value available after connection with the beacon and firmware version check.
+ */
+@property (readonly, nonatomic) ESTBeaconFirmwareUpdate firmwareUpdateInfo;
+
+
+/// @name Connection handling methods
+
+
+/**
+ * Connect to particular beacon using bluetooth.
+ * Connection is required to change values like
+ * Major, Minor, Power and Advertising interval.
  *
  * @return void
  */
@@ -115,121 +233,168 @@ ESTBeacon class contains basic Apple CLBeacon object reference as well as some a
  */
 -(void)disconnectBeacon;
 
-/**
- * Read major of connected beacon
- *
- * @param completition Block handling operation completition
- *
- * @return Point Major and Minor points
- */
-- (void)readBeaconMajorWithCompletition:(ESTUnsignedCompletitionBlock)completition;
+
+/// @name Methods for reading beacon configuration
 
 /**
- * Read minor of connected beacon
+ * Read Proximity UUID of connected beacon (Previous connection
+ * required)
  *
- * @param completition block handling operation completition
- *
- * @return Point Major and Minor points
- */
-- (void)readBeaconMinorWithCompletition:(ESTUnsignedCompletitionBlock)completition;
-
-/**
- * Read frequency and minor of connected beacon
- *
- * @param completition block handling operation completition
+ * @param completion block with major value as param
  *
  * @return void
  */
-- (void)readBeaconFrequencyWithCompletition:(ESTUnsignedCompletitionBlock)completition;
+- (void)readBeaconProximityUUIDWithCompletion:(ESTStringCompletionBlock)completion;
+
+/**
+ * Read major of connected beacon (Previous connection
+ * required)
+ *
+ * @param completion block with major value as param
+ *
+ * @return void
+ */
+- (void)readBeaconMajorWithCompletion:(ESTUnsignedShortCompletionBlock)completion;
+
+/**
+ * Read minor of connected beacon (Previous connection
+ * required)
+ *
+ * @param completion block with minor value as param
+ *
+ * @return void
+ */
+- (void)readBeaconMinorWithCompletion:(ESTUnsignedShortCompletionBlock)completion;
+
+/**
+ * Read advertising interval of connected beacon (Previous connection
+ * required)
+ *
+ * @param completion block with advertising interval value as param
+ *
+ * @return void
+ */
+- (void)readBeaconAdvIntervalWithCompletion:(ESTUnsignedShortCompletionBlock)completion;
 
 
 /**
- * Read power of connected beacon
+ * Read power of connected beacon (Previous connection
+ * required)
  *
- * @param completition block handling operation completition
+ * @param completion block with power value as param
  *
  * @return float value of beacon power
  */
-- (void)readBeaconPowerWithCompletition:(ESTUnsignedCompletitionBlock)completition;
+- (void)readBeaconPowerWithCompletion:(ESTPowerCompletionBlock)completion;
 
 /**
- * Read battery level of connected beacon
+ * Read battery level of connected beacon (Previous connection
+ * required)
  *
- * @param completition block handling operation completition
+ * @param completion block with battery level value as param
  *
  * @return void
  */
-- (void)readBeaconBatteryWithCompletition:(ESTUnsignedCompletitionBlock)completition;
+- (void)readBeaconBatteryWithCompletion:(ESTUnsignedShortCompletionBlock)completion;
 
 /**
- * Read firmware version of connected beacon
+ * Read firmware version of connected beacon (Previous connection
+ * required)
  *
- * @param completition Block handling operation completition
+ * @param completion block with firmware version value as param
  *
  * @return void
  */
-- (void)readBeaconFirmwareVersionWithCompletition:(ESTStringCompletitionBlock)completition;
+- (void)readBeaconFirmwareVersionWithCompletion:(ESTStringCompletionBlock)completion;
 
 /**
- * Read hardware version of connected beacon
+ * Read hardware version of connected beacon (Previous connection
+ * required)
  *
- * @param completition block handling operation completition
+ * @param completion block with hardware version value as param
  *
  * @return void
  */
-- (void)readBeaconHardwareVersionWithCompletition:(ESTStringCompletitionBlock)completition;
+- (void)readBeaconHardwareVersionWithCompletion:(ESTStringCompletionBlock)completion;
 
+
+/// @name Methods for writing beacon configuration
 
 /**
- * Write major param of connected beacon.
+ * Writes Proximity UUID param to bluetooth connected beacon. Please  remember that If you change the UUID to your very own value anyone can read it, copy it and spoof your beacons. So if you are working on a mission critical application where security is an issue - be sure to implement it on your end. We are also working on a secure mode for our beacons and it will be included in one of the next firmware updates.
+ *
+ * @param pUUID new Proximity UUID value
+ * @param completion block handling operation completion
+ *
+ * @return void
+ */
+- (void)writeBeaconProximityUUID:(NSString*)pUUID withCompletion:(ESTStringCompletionBlock)completion;
+
+/**
+ * Writes major param to bluetooth connected beacon.
  *
  * @param major major beacon value
- * @param completition block handling operation completition
+ * @param completion block handling operation completion
  *
  * @return void
  */
-- (void)writeBeaconMajor:(short)major withCompletition:(ESTUnsignedCompletitionBlock)completition;
+- (void)writeBeaconMajor:(unsigned short)major withCompletion:(ESTUnsignedShortCompletionBlock)completion;
 
 /**
- * Write minor param of connected beacon.
+ * Writes minor param to bluetooth connected beacon.
  *
  * @param minor minor beacon value
- * @param completition block handling operation completition
+ * @param completion block handling operation completion
  *
  * @return void
  */
-- (void)writeBeaconMinor:(short)minor withCompletition:(ESTUnsignedCompletitionBlock)completition;
+- (void)writeBeaconMinor:(unsigned short)minor withCompletion:(ESTUnsignedShortCompletionBlock)completion;
 
 /**
- * Write frequency of connected beacon.
+ * Writes advertising interval (in milisec) of connected beacon.
  *
- * @param frequency advertising beacon frequency
- * @param completition block handling operation completition
- *
- * @return void
- */
-- (void)writeBeaconFrequency:(short)frequency withCompletition:(ESTUnsignedCompletitionBlock)completition;
-
-
-/**
- * Write power of connected beacon.
- *
- * @param power advertising beacon power
- * @param completition block handling operation completition
+ * @param advertising interval of beacon (50 - 2000 ms)
+ * @param completion block handling operation completion
  *
  * @return void
  */
-- (void)writeBeaconPower:(ESTBeaconPower)power withCompletition:(ESTUnsignedCompletitionBlock)completition;
+- (void)writeBeaconAdvInterval:(unsigned short)interval withCompletion:(ESTUnsignedShortCompletionBlock)completion;
 
 
 /**
- * Update firmware of connected beacon.
+ * Writes power of bluetooth connected beacon.
  *
- * @param completition Block handling operation completition
+ * @param power advertising beacon power (can take value from ESTBeaconPowerLevel1 / waak to ESTBeaconPowerLevel8 / strong)
+ * @param completion block handling operation completion
  *
  * @return void
  */
--(void)updateBeaconFirmwareWithProgress:(ESTStringCompletitionBlock)progress
-                        andCompletition:(ESTCompletitionBlock)completition;
+- (void)writeBeaconPower:(ESTBeaconPower)power withCompletion:(ESTPowerCompletionBlock)completion;
+
+/// @name Firmware update handling methods
+
+/**
+ * Verifies if new firmware version is available for download
+ * without any additional action. Internet connection
+ * is required to pass this process.
+ *
+ * @param completion Block handling operation completion
+ *
+ * @return void
+ */
+-(void)checkFirmwareUpdateWithCompletion:(ESTFirmwareUpdateCompletionBlock)completion;
+
+/**
+ * Verifies if new firmware version is available for download
+ * and updates firmware of connected beacon. Internet connection 
+ * is required to pass this process.
+ *
+ * @param progress Block handling operation progress
+ * @param completion Block handling operation completion
+ *
+ * @return void
+ */
+-(void)updateBeaconFirmwareWithProgress:(ESTStringCompletionBlock)progress
+                          andCompletion:(ESTCompletionBlock)completion;
 
 @end

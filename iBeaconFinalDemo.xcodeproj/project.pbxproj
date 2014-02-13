@@ -21,11 +21,11 @@
 		59097B1518AA31C100CB39E1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59097AF718AA31C100CB39E1 /* UIKit.framework */; };
 		59097B1D18AA31C100CB39E1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 59097B1B18AA31C100CB39E1 /* InfoPlist.strings */; };
 		59097B1F18AA31C100CB39E1 /* iBeaconFinalDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59097B1E18AA31C100CB39E1 /* iBeaconFinalDemoTests.m */; };
-		59097B2F18AA330800CB39E1 /* libEstimoteSDK7.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59097B2E18AA330800CB39E1 /* libEstimoteSDK7.a */; };
 		59097B3118AA338000CB39E1 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59097B3018AA338000CB39E1 /* CoreBluetooth.framework */; };
 		59097B3318AA338C00CB39E1 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59097B3218AA338C00CB39E1 /* CoreLocation.framework */; };
 		59097B3518AA339900CB39E1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59097B3418AA339900CB39E1 /* SystemConfiguration.framework */; };
 		59097B3B18AA357B00CB39E1 /* iToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 59097B3A18AA357B00CB39E1 /* iToast.m */; };
+		59B9F16618ACC026002F9E71 /* libEstimoteSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B9F16518ACC026002F9E71 /* libEstimoteSDK.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,12 +62,12 @@
 		59097B2B18AA330800CB39E1 /* ESTBeaconDefinitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESTBeaconDefinitions.h; sourceTree = "<group>"; };
 		59097B2C18AA330800CB39E1 /* ESTBeaconManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESTBeaconManager.h; sourceTree = "<group>"; };
 		59097B2D18AA330800CB39E1 /* ESTBeaconRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESTBeaconRegion.h; sourceTree = "<group>"; };
-		59097B2E18AA330800CB39E1 /* libEstimoteSDK7.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libEstimoteSDK7.a; sourceTree = "<group>"; };
 		59097B3018AA338000CB39E1 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		59097B3218AA338C00CB39E1 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		59097B3418AA339900CB39E1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		59097B3918AA357B00CB39E1 /* iToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iToast.h; sourceTree = "<group>"; };
 		59097B3A18AA357B00CB39E1 /* iToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iToast.m; sourceTree = "<group>"; };
+		59B9F16518ACC026002F9E71 /* libEstimoteSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEstimoteSDK.a; path = EstimoteSDK/libEstimoteSDK.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,12 +75,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				59B9F16618ACC026002F9E71 /* libEstimoteSDK.a in Frameworks */,
 				59097B3518AA339900CB39E1 /* SystemConfiguration.framework in Frameworks */,
 				59097B3318AA338C00CB39E1 /* CoreLocation.framework in Frameworks */,
 				59097B3118AA338000CB39E1 /* CoreBluetooth.framework in Frameworks */,
 				59097AF618AA31C100CB39E1 /* CoreGraphics.framework in Frameworks */,
 				59097AF818AA31C100CB39E1 /* UIKit.framework in Frameworks */,
-				59097B2F18AA330800CB39E1 /* libEstimoteSDK7.a in Frameworks */,
 				59097AF418AA31C100CB39E1 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -121,6 +121,7 @@
 		59097AF218AA31C100CB39E1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				59B9F16518ACC026002F9E71 /* libEstimoteSDK.a */,
 				59097B3418AA339900CB39E1 /* SystemConfiguration.framework */,
 				59097B3218AA338C00CB39E1 /* CoreLocation.framework */,
 				59097B3018AA338000CB39E1 /* CoreBluetooth.framework */,
@@ -180,7 +181,6 @@
 			isa = PBXGroup;
 			children = (
 				59097B2918AA330800CB39E1 /* Headers */,
-				59097B2E18AA330800CB39E1 /* libEstimoteSDK7.a */,
 			);
 			path = EstimoteSDK;
 			sourceTree = "<group>";
@@ -536,6 +536,7 @@
 				59097B2418AA31C100CB39E1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		59097B2518AA31C100CB39E1 /* Build configuration list for PBXNativeTarget "iBeaconFinalDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -544,6 +545,7 @@
 				59097B2718AA31C100CB39E1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

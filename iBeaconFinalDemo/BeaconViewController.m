@@ -8,6 +8,7 @@
 
 #import "BeaconViewController.h"
 #import <ESTBeaconManager.h>
+
 #define ESTIMOTE_PROXIMITY_UUID [[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"]
 
 @interface BeaconViewController () <ESTBeaconManagerDelegate>
@@ -39,14 +40,17 @@
     ESTBeaconRegion* region = [[ESTBeaconRegion alloc] initWithProximityUUID:ESTIMOTE_PROXIMITY_UUID
                                                                   identifier: @"EstimoteSampleRegion"];
     
-    region.notifyEntryStateOnDisplay = YES;
-    region.notifyOnEntry = YES;
-    region.notifyOnExit = YES;
+//    region.notifyEntryStateOnDisplay = YES;
+//    region.notifyOnEntry = YES;
+//    region.notifyOnExit = YES;
     
     // start looking for estimote beacons in region
     // when beacon ranged beaconManager:didEnterRegion:
     // and beaconManager:didExitRegion: invoked
     [self.beaconManager startMonitoringForRegion:region];
+    
+    
+    //if user is inside or outside of the region requestStateForRegion: method invocation
      [self.beaconManager requestStateForRegion:region];
 
     
@@ -86,12 +90,12 @@
                     
                     labelText = [NSString stringWithFormat:
                                            @"UUID: %@, Major: %i, Minor: %i\nRegion: ",
-                                           [self.selectedBeacon.ibeacon.proximityUUID UUIDString],
-                                           [self.selectedBeacon.ibeacon.major unsignedShortValue],
-                                           [self.selectedBeacon.ibeacon.minor unsignedShortValue]];
+                                           [self.selectedBeacon.proximityUUID UUIDString],
+                                           [self.selectedBeacon.major unsignedShortValue],
+                                           [self.selectedBeacon.minor unsignedShortValue]];
                     
                     // calculate and set new y position
-                    switch (self.selectedBeacon.ibeacon.proximity)
+                    switch (self.selectedBeacon.proximity)
                     {
                         case CLProximityUnknown:
                             labelText = [labelText stringByAppendingString: @"Unknown, "];
@@ -112,7 +116,7 @@
                     
                 }
 
-                labelText = [labelText stringByAppendingString: [self tellBeaconNamefor:self.selectedBeacon.ibeacon]];
+                labelText = [labelText stringByAppendingString: [self tellBeaconNamefor:self.selectedBeacon]];
                 self.lblBeacon.text = labelText;
                 [self localNotificationWithAlertBody:@"didEnterRegion"];
             }
@@ -127,7 +131,7 @@
 }
 
 
--(NSString*)tellBeaconNamefor:(CLBeacon*)beacon{
+-(NSString*)tellBeaconNamefor:(ESTBeacon*)beacon{
     NSString *beaconName;
     if([beacon.major unsignedShortValue]==36452 && [beacon.minor unsignedShortValue]== 36010){
         beaconName = @"Mint Cocktail";
@@ -145,11 +149,11 @@
 {
     if(state == CLRegionStateInside)
     {
-        [manager startMonitoringForRegion:region];
+        [self localNotificationWithAlertBody:@"didEnterRegion"];
     }
     else
     {
-        [manager stopMonitoringForRegion:region];
+        [self localNotificationWithAlertBody:@"didExitRegion"];
     }
 }
 
