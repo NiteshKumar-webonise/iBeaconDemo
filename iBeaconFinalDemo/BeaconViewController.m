@@ -35,7 +35,7 @@
 //                                                                  identifier: @"EstimoteSampleRegion"];
     
     
-//  create sample region for all perticular beacons   
+//  create sample region for all perticular beacons
     ESTBeaconRegion* region = [[ESTBeaconRegion alloc] initWithProximityUUID:ESTIMOTE_PROXIMITY_UUID
                                                                   identifier: @"EstimoteSampleRegion"];
     
@@ -48,7 +48,8 @@
     // and beaconManager:didExitRegion: invoked
     [self.beaconManager startMonitoringForRegion:region];
      [self.beaconManager requestStateForRegion:region];
-    //[self.beaconManager requestStateForRegion:region];
+
+    
     // start looking for estimote beacons in region
     // when beacon ranged beaconManager:didRangeBeacons:inRegion: invoked
     [self.beaconManager startRangingBeaconsInRegion:region];
@@ -113,7 +114,7 @@
 
                 labelText = [labelText stringByAppendingString: [self tellBeaconNamefor:self.selectedBeacon.ibeacon]];
                 self.lblBeacon.text = labelText;
-                //[self localNotificationWithAlertBody:@"didEnterRegion"];
+                [self localNotificationWithAlertBody:@"didEnterRegion"];
             }
        // }
         
