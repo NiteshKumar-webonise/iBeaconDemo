@@ -25,6 +25,7 @@
 		59097B3318AA338C00CB39E1 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59097B3218AA338C00CB39E1 /* CoreLocation.framework */; };
 		59097B3518AA339900CB39E1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59097B3418AA339900CB39E1 /* SystemConfiguration.framework */; };
 		59097B3B18AA357B00CB39E1 /* iToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 59097B3A18AA357B00CB39E1 /* iToast.m */; };
+		59AACF7418AE1EC8009D6475 /* BeaconRegion.m in Sources */ = {isa = PBXBuildFile; fileRef = 59AACF7318AE1EC8009D6475 /* BeaconRegion.m */; };
 		59B9F16618ACC026002F9E71 /* libEstimoteSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B9F16518ACC026002F9E71 /* libEstimoteSDK.a */; };
 /* End PBXBuildFile section */
 
@@ -67,6 +68,8 @@
 		59097B3418AA339900CB39E1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		59097B3918AA357B00CB39E1 /* iToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iToast.h; sourceTree = "<group>"; };
 		59097B3A18AA357B00CB39E1 /* iToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iToast.m; sourceTree = "<group>"; };
+		59AACF7218AE1EC8009D6475 /* BeaconRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeaconRegion.h; sourceTree = "<group>"; };
+		59AACF7318AE1EC8009D6475 /* BeaconRegion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeaconRegion.m; sourceTree = "<group>"; };
 		59B9F16518ACC026002F9E71 /* libEstimoteSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEstimoteSDK.a; path = EstimoteSDK/libEstimoteSDK.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -142,6 +145,8 @@
 				59097B0518AA31C100CB39E1 /* Main.storyboard */,
 				59097B0818AA31C100CB39E1 /* BeaconViewController.h */,
 				59097B0918AA31C100CB39E1 /* BeaconViewController.m */,
+				59AACF7218AE1EC8009D6475 /* BeaconRegion.h */,
+				59AACF7318AE1EC8009D6475 /* BeaconRegion.m */,
 				59097B0B18AA31C100CB39E1 /* Images.xcassets */,
 				59097AFA18AA31C100CB39E1 /* Supporting Files */,
 			);
@@ -303,6 +308,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				59097B0A18AA31C100CB39E1 /* BeaconViewController.m in Sources */,
+				59AACF7418AE1EC8009D6475 /* BeaconRegion.m in Sources */,
 				59097B0418AA31C100CB39E1 /* AppDelegate.m in Sources */,
 				59097B0018AA31C100CB39E1 /* main.m in Sources */,
 				59097B3B18AA357B00CB39E1 /* iToast.m in Sources */,

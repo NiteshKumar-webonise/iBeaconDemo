@@ -9,13 +9,17 @@
 #import "BeaconViewController.h"
 #import <ESTBeaconManager.h>
 #import "AppDelegate.h"
-#import <CoreLocation/CoreLocation.h>
+
+#import "BeaconRegion.h"
 
 #define ESTIMOTE_PROXIMITY_UUID [[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"]
+static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 
-@interface BeaconViewController () <ESTBeaconManagerDelegate, CLLocationManagerDelegate>
-@property (nonatomic, strong) ESTBeaconManager* beaconManager;
-@property (nonatomic, strong) ESTBeacon* selectedBeacon;
+@interface BeaconViewController () 
+@property (nonatomic, strong) ESTBeaconManager *beaconManager;
+@property (nonatomic, strong) CLBeaconRegion *beaconRegion;
+@property (nonatomic, strong) CLLocationManager *locationManager;
+@property (nonatomic, strong) CLBeacon* selectedBeacon;
 @property (nonatomic, assign) BOOL notificationShown;
 @end
 
@@ -24,38 +28,45 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-    // craete manager instance
-    self.beaconManager = [[ESTBeaconManager alloc] init];
-    self.beaconManager.delegate = self;
-    self.beaconManager.avoidUnknownStateBeacons = YES;
-    
     
 //    create sample region with major value defined for one perticular beacon
-    ESTBeaconRegion* region = [[ESTBeaconRegion alloc] initWithProximityUUID:ESTIMOTE_PROXIMITY_UUID
-                                                                       major:36452 minor:36010
-                                                                  identifier: @"EstimoteSampleRegion"];
+//    ESTBeaconRegion* region = [[ESTBeaconRegion alloc] initWithProximityUUID:ESTIMOTE_PROXIMITY_UUID
+//                                                                       major:36452 minor:36010
+//                                                                  identifier: @"EstimoteSampleRegion"];
     
     
 //  create sample region for all perticular beacons
    // ESTBeaconRegion* region = [[ESTBeaconRegion alloc] initWithProximityUUID:ESTIMOTE_PROXIMITY_UUID
     //                                                              identifier: @"EstimoteSampleRegion"];
     
-    region.notifyEntryStateOnDisplay = YES;
-    
-    // start looking for estimote beacons in region
-    // when beacon ranged beaconManager:didEnterRegion:
-    // and beaconManager:didExitRegion: invoked
-    [self.beaconManager startMonitoringForRegion:region];
-    
-    
-    //if user is inside or outside of the region requestStateForRegion: method invocation
-     [self.beaconManager requestStateForRegion:region];
+    //region.notifyEntryStateOnDisplay = YES;
 
     
-    // start looking for estimote beacons in region
-    // when beacon ranged beaconManager:didRangeBeacons:inRegion: invoked
-    //[self.beaconManager startRangingBeaconsInRegion:region];
+    [self initializeRegionMonitoring];
+}
+
+- (void)initializeRegionMonitoring {
+    // initialize new location manager
+    if (!self.locationManager) {
+        self.locationManager = [[CLLocationManager alloc] init];
+        self.locationManager.delegate = self;
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        
+    }
+    [self createBeaconRegion];
+    [self.locationManager startMonitoringForRegion:self.beaconRegion];
+    [self.locationManager startRangingBeaconsInRegion:self.beaconRegion];
+    //[self.locationManager requestStateForRegion:[BeaconRegion targetRegion]];
+}
+
+- (void)createBeaconRegion
+{
+    if (self.beaconRegion)
+        return;
+    
+    NSUUID *proximityUUID = [[NSUUID alloc] initWithUUIDString:kUUID];
+    self.beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:proximityUUID identifier:@"EstimoteSampleRegion"];
+    self.beaconRegion.notifyEntryStateOnDisplay = YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -65,15 +76,15 @@
 }
 
 #pragma mark - delegate for startRangingBeaconsInRegion
--(void)beaconManager:(ESTBeaconManager *)manager
-     didRangeBeacons:(NSArray *)beacons
-            inRegion:(ESTBeaconRegion *)region
+-(void)locationManager:(CLLocationManager *)manager
+       didRangeBeacons:(NSArray *)beacons
+              inRegion:(CLBeaconRegion *)region
 {
     if([beacons count] > 0)
     {
         
             NSString* labelText;
-            for (ESTBeacon* cBeacon in beacons)
+            for (CLBeacon * cBeacon in beacons)
             {
                     self.selectedBeacon = cBeacon;
                 
@@ -102,6 +113,8 @@
                             break;
                     }
                 labelText = [labelText stringByAppendingString: [self tellBeaconNamefor:self.selectedBeacon]];
+                NSString *distance = [NSString stringWithFormat:@", Distance:%f", self.selectedBeacon.accuracy];
+                labelText = [labelText stringByAppendingString:distance];
                 self.lblBeacon.text = labelText;
                 //[self sendDataForBeacon:self.selectedBeacon];
                 [self localNotificationWithAlertBody:@"didEnterRegion"];
@@ -120,11 +133,22 @@
                 }
 
         
+    }else{
+        self.lblBeacon.text = @"currently there is no beacons nearby";
+        UIApplicationState state = [[UIApplication sharedApplication] applicationState];
+        if(state==UIApplicationStateBackground||state==UIApplicationStateInactive){
+            if(state==UIApplicationStateBackground){
+                NSLog(@"didRangeBeacons is in background mode");
+                [self localNotificationWithAlertBody:@"currently there is no beacons nearby"];
+            }else if(state==UIApplicationStateInactive){
+                NSLog(@"didRangeBeacons is in Inactive mode");
+            }
         }
+    }
 }
 
 
--(NSString*)tellBeaconNamefor:(ESTBeacon*)beacon{
+-(NSString*)tellBeaconNamefor:(CLBeacon*)beacon{
     NSString *beaconName;
     if([beacon.major unsignedShortValue]==36452 && [beacon.minor unsignedShortValue]== 36010){
         beaconName = @"Mint Cocktail";
@@ -137,15 +161,15 @@
 }
 
 #pragma mark - delegate when startMonitoringForRegion
--(void)beaconManager:(ESTBeaconManager *)manager
-   didDetermineState:(CLRegionState)state
-           forRegion:(ESTBeaconRegion *)region
+-(void)locationManager:(CLLocationManager *)manager
+     didDetermineState:(CLRegionState)state
+             forRegion:(CLRegion *)region
 {
     if(state == CLRegionStateInside)
     {
         NSLog(@"in didDetermineState: CLRegionStateInside");
         [self localNotificationWithAlertBody:@"didEnterRegion"];
-        [self.beaconManager startRangingBeaconsInRegion:region];
+        [self.locationManager startRangingBeaconsInRegion:self.beaconRegion];
     }
     else
     {   NSLog(@"in didDetermineState: CLRegionStateOutside or CLRegionStateUnknown");
@@ -153,38 +177,36 @@
     }
 }
 
--(void)beaconManager:(ESTBeaconManager *)manager
-      didEnterRegion:(ESTBeaconRegion *)region
+-(void)locationManager:(CLLocationManager *)manager
+        didEnterRegion:(CLRegion *)region
 {
     // present local notification
     [self localNotificationWithAlertBody:@"didEnterRegion"];
-    // iPhone/iPad entered beacon zone
-    [self.beaconManager startRangingBeaconsInRegion:region];
+    [self.locationManager startRangingBeaconsInRegion:self.beaconRegion];
     
 }
 
--(void)beaconManager:(ESTBeaconManager *)manager
-       didExitRegion:(ESTBeaconRegion *)region
+-(void)locationManager:(CLLocationManager *)manager
+         didExitRegion:(CLRegion *)region
 {
     // present local notification
     [self localNotificationWithAlertBody:@"didExitRegion"];
     // iPhone/iPad left beacon zone
-    [manager stopRangingBeaconsInRegion:region];
+    [manager stopRangingBeaconsInRegion:self.beaconRegion];
     
 }
 
 #pragma mark - Any failure event
--(void)beaconManager:(ESTBeaconManager *)manager rangingBeaconsDidFailForRegion:(ESTBeaconRegion *)region withError:(NSError *)error{
+-(void)locationManager:(CLLocationManager *)manager rangingBeaconsDidFailForRegion:(CLBeaconRegion *)region withError:(NSError *)error{
     [self localNotificationWithAlertBody:[NSString stringWithFormat:@"Beacon rangingBeaconsDidFailForRegion with error: %@",error]];
 }
 
--(void)beaconManager:(ESTBeaconManager *)manager monitoringDidFailForRegion:(ESTBeaconRegion *)region withError:(NSError *)error{
+-(void)locationManager:(CLLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error{
     [self localNotificationWithAlertBody:[NSString stringWithFormat:@"Beacon monitoringDidFailForRegion with error: %@",error]];
 }
 
 
-
-
+#pragma mark - webservice methods
 -(void)sendDataForBeacon:(ESTBeacon *)beacon{
     
     NSMutableDictionary *dataDictionary =[NSMutableDictionary dictionary];
@@ -195,29 +217,6 @@
     
     NSData *postData = [NSJSONSerialization dataWithJSONObject:dataDictionary options:0 error:&err];
     [self postToServer:postData];
-}
-
--(void)localNotificationWithAlertBody:(NSString*)body{
-    UIApplicationState state = [[UIApplication sharedApplication] applicationState];
-    if(state==UIApplicationStateBackground||state==UIApplicationStateInactive){
-        if(state==UIApplicationStateBackground){
-            NSLog(@"App is in background mode");
-        }else if(state==UIApplicationStateInactive){
-            NSLog(@"App is in Inactive mode");
-        }
-        
-        UILocalNotification *notification = [[UILocalNotification alloc] init];
-        notification.alertBody = body;
-        notification.alertAction = @"Show me the item";
-        notification.soundName = UILocalNotificationDefaultSoundName;
-        notification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber] + 1;
-        [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
-        NSLog(@"in notification badge number is %ld",(long)notification.applicationIconBadgeNumber);
-    }else{
-//        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:body delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-//        [alert show];
-        NSLog(@"app is in forground mode");
-    }
 }
 
 -(void)postToServer:(NSData*)postData{
@@ -247,14 +246,35 @@
     
 }
 
+#pragma mark - Local Notification
+
+-(void)localNotificationWithAlertBody:(NSString*)body{
+    UIApplicationState state = [[UIApplication sharedApplication] applicationState];
+    if(state==UIApplicationStateBackground||state==UIApplicationStateInactive){
+        if(state==UIApplicationStateBackground){
+            NSLog(@"App is in background mode");
+        }else if(state==UIApplicationStateInactive){
+            NSLog(@"App is in Inactive mode");
+        }
+        
+        UILocalNotification *notification = [[UILocalNotification alloc] init];
+        notification.alertBody = body;
+        notification.alertAction = @"Show me the item";
+        notification.soundName = UILocalNotificationDefaultSoundName;
+        notification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber] + 1;
+        [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+        NSLog(@"in notification badge number is %ld",(long)notification.applicationIconBadgeNumber);
+    }else{
+//        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:body delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+//        [alert show];
+        NSLog(@"app is in forground mode");
+    }
+}
+
+
 - (IBAction)startMonitoring:(id)sender{
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber: 0];
-    ESTBeaconRegion* region = [[ESTBeaconRegion alloc] initWithProximityUUID:ESTIMOTE_PROXIMITY_UUID
-                                                                  identifier: @"EstimoteSampleRegion"];
-    region.notifyEntryStateOnDisplay = YES;
-    region.notifyOnEntry = YES;
-    region.notifyOnExit = YES;
-    [self.beaconManager startRangingBeaconsInRegion:region];
+    [self initializeRegionMonitoring];
 }
 
 

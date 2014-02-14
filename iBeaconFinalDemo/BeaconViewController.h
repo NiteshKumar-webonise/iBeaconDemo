@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface BeaconViewController : UIViewController
+#import <CoreLocation/CoreLocation.h>
+@interface BeaconViewController : UIViewController <CLLocationManagerDelegate>
 @property (nonatomic, retain) IBOutlet UILabel *lblBeacon;
 @property (nonatomic, retain) IBOutlet UIButton *btnMonitor;
 
