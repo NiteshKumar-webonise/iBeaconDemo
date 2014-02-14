@@ -220,28 +220,28 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 }
 
 -(void)postToServer:(NSData*)postData{
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://192.168.0.6:8888"]];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:[NSString stringWithFormat:@"%d", postData.length] forHTTPHeaderField:@"Content-Length"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request setTimeoutInterval:15];
-    [request setHTTPBody:postData];
-    //NSLog(@"Post data : %@",[[NSString alloc] initWithData:postData encoding:NSUTF8StringEncoding]);
-    //NSLog(@"post data new  :%@",postData);
-    
-    [NSURLConnection sendAsynchronousRequest:request
-                                       queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
-                               
-                               //NSLog(@"Data:--> %@ ",data);
-                               if(!error){
-                                   NSDictionary *result=[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-                                   NSLog(@"result: %@",result);
-                                   if([[result valueForKey:@"status"] boolValue]){  // use filter here , if responce' success key is true
-                                       
-                                   }
-                               }
-                           }];
+//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://192.168.0.6:8888"]];
+//    [request setHTTPMethod:@"POST"];
+//    [request setValue:[NSString stringWithFormat:@"%d", postData.length] forHTTPHeaderField:@"Content-Length"];
+//    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+//    [request setTimeoutInterval:15];
+//    [request setHTTPBody:postData];
+//    //NSLog(@"Post data : %@",[[NSString alloc] initWithData:postData encoding:NSUTF8StringEncoding]);
+//    //NSLog(@"post data new  :%@",postData);
+//    
+//    [NSURLConnection sendAsynchronousRequest:request
+//                                       queue:[NSOperationQueue mainQueue]
+//                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
+//                               
+//                               //NSLog(@"Data:--> %@ ",data);
+//                               if(!error){
+//                                   NSDictionary *result=[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+//                                   NSLog(@"result: %@",result);
+//                                   if([[result valueForKey:@"status"] boolValue]){  // use filter here , if responce' success key is true
+//                                       
+//                                   }
+//                               }
+//                           }];
     
     
 }
