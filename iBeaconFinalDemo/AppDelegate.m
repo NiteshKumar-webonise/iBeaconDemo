@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 
 @implementation AppDelegate
+@synthesize body;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -19,7 +20,7 @@
 //    notification.soundName = UILocalNotificationDefaultSoundName;
 //    notification.applicationIconBadgeNumber=1;
 //    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
-    
+    body= @"default";
     return YES;
 }
 							
@@ -33,6 +34,31 @@
 {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    //[self localNotificationWithAlertBody:body];
+}
+
+-(void)localNotificationWithAlertBody:(NSString*)msg{
+    UIApplicationState state = [[UIApplication sharedApplication] applicationState];
+    if(state==UIApplicationStateBackground||state==UIApplicationStateInactive){
+        
+        if(state==UIApplicationStateBackground){
+             NSLog(@"App is in background mode");
+        }else if(state==UIApplicationStateInactive){
+             NSLog(@"App is in Inactive mode");
+        }
+        NSLog(@"App is in background mode");
+        UILocalNotification *notification = [[UILocalNotification alloc] init];
+        notification.alertBody = msg;
+        notification.alertAction = @"Show me the item";
+        notification.soundName = UILocalNotificationDefaultSoundName;
+        notification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber] + 1;
+        [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+        NSLog(@"in notification badge number is %ld",(long)notification.applicationIconBadgeNumber);
+    }else{
+        //        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:body delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        //        [alert show];
+        NSLog(@"app is in forground mode");
+    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -41,7 +67,7 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application{
-    application.applicationIconBadgeNumber=0;
+    //application.applicationIconBadgeNumber=0;
 }
 
 

@@ -446,7 +446,7 @@
 					/Users/adminroom/Desktop/experiments/iBeaconFinalDemo/EstimoteSDK,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "F246FDB6-A9BE-451C-8160-80640D2B50F2";
+				PROVISIONING_PROFILE = "4667F44B-9F2E-495F-B263-8B54A77817BD";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -470,7 +470,7 @@
 					/Users/adminroom/Desktop/experiments/iBeaconFinalDemo/EstimoteSDK,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "F246FDB6-A9BE-451C-8160-80640D2B50F2";
+				PROVISIONING_PROFILE = "4667F44B-9F2E-495F-B263-8B54A77817BD";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

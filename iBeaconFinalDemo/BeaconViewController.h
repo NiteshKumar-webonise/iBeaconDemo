@@ -10,4 +10,7 @@
 
 @interface BeaconViewController : UIViewController
 @property (nonatomic, retain) IBOutlet UILabel *lblBeacon;
+@property (nonatomic, retain) IBOutlet UIButton *btnMonitor;
+
+-(IBAction)startMonitoring:(id)sender;
 @end
