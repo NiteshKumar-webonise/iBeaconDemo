@@ -55,7 +55,7 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     }
     [self createBeaconRegion];
     [self.locationManager startMonitoringForRegion:self.beaconRegion];
-    [self.locationManager startRangingBeaconsInRegion:self.beaconRegion];
+    //[self.locationManager startRangingBeaconsInRegion:self.beaconRegion];
     //[self.locationManager requestStateForRegion:[BeaconRegion targetRegion]];
 }
 
@@ -67,6 +67,8 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     NSUUID *proximityUUID = [[NSUUID alloc] initWithUUIDString:kUUID];
     self.beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:proximityUUID identifier:@"EstimoteSampleRegion"];
     self.beaconRegion.notifyEntryStateOnDisplay = YES;
+    self.beaconRegion.notifyOnEntry=YES;
+    self.beaconRegion.notifyOnExit=YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -194,6 +196,14 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     // iPhone/iPad left beacon zone
     [manager stopRangingBeaconsInRegion:self.beaconRegion];
     
+}
+
+-(void)locationManager:(CLLocationManager *)manager didStartMonitoringForRegion:(CLRegion *)region{
+    [self.locationManager requestStateForRegion:self.beaconRegion];
+}
+
+-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
+    [self localNotificationWithAlertBody:@"location Update"];
 }
 
 #pragma mark - Any failure event
