@@ -184,6 +184,8 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 {
     // present local notification
     [self localNotificationWithAlertBody:@"didEnterRegion"];
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"didEnterRegion" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alert show];
     [self.locationManager startRangingBeaconsInRegion:self.beaconRegion];
     
 }
