@@ -119,10 +119,10 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
                 labelText = [labelText stringByAppendingString:distance];
                 self.lblBeacon.text = labelText;
                 //[self sendDataForBeacon:self.selectedBeacon];
-                [self localNotificationWithAlertBody:@"didEnterRegion"];
+                [self localNotificationWithAlertBody:@"didRangeBeacons:"];
                 UIApplicationState state = [[UIApplication sharedApplication] applicationState];
-                AppDelegate *app = [[UIApplication sharedApplication]delegate];
-                app.body = @"didEnterRegion";
+//                AppDelegate *app = [[UIApplication sharedApplication]delegate];
+//                app.body = @"didEnterRegion";  //testing purpose for bg task
                 if(state==UIApplicationStateBackground||state==UIApplicationStateInactive){
                     if(state==UIApplicationStateBackground){
                         NSLog(@"didRangeBeacons is in background mode");
@@ -195,6 +195,8 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 {
     // present local notification
     [self localNotificationWithAlertBody:@"didExitRegion"];
+    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"didExitRegion" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [alert show];
     // iPhone/iPad left beacon zone
     [manager stopRangingBeaconsInRegion:self.beaconRegion];
     
