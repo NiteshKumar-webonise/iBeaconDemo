@@ -21,10 +21,12 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) CLBeacon* selectedBeacon;
 @property (nonatomic, assign) BOOL notificationShown;
+@property (nonatomic, strong) NSDictionary *userBeaconInfo;
+@property (nonatomic, retain) WebserviceHelperClass *webserviceHelper;
 @end
 
 @implementation BeaconViewController
-@synthesize lblBeacon;
+@synthesize lblBeacon, webserviceHelper;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -43,6 +45,9 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 
     
     [self initializeRegionMonitoring];
+    webserviceHelper = [[WebserviceHelperClass alloc] init];
+    webserviceHelper.delegate = self;
+    
 }
 
 - (void)initializeRegionMonitoring {
@@ -88,9 +93,7 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
             NSString* labelText;
             for (CLBeacon * cBeacon in beacons)
             {
-                    self.selectedBeacon = cBeacon;
-                
-                
+                    self.selectedBeacon = cBeacon;                
                     labelText = [NSString stringWithFormat:@"UUID: %@, Major: %i, Minor: %i\nRegion: ",
                                            [self.selectedBeacon.proximityUUID UUIDString],
                                            [self.selectedBeacon.major unsignedShortValue],
@@ -227,10 +230,13 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     [dataDictionary setObject:beacon.proximityUUID forKey:@"proximityUUID"];
     [dataDictionary setObject:beacon.major forKey:@"major"];
     [dataDictionary setObject:beacon.minor forKey:@"minor"];
-    NSError *err;
+
+    webserviceHelper.showLoadingView = NO;
+    [webserviceHelper callWebServiceForPOSTRequest:@"" withParameters:dataDictionary withServiceTag:0];
+    //NSData *postData = [NSJSONSerialization dataWithJSONObject:dataDictionary options:0 error:&err];
     
-    NSData *postData = [NSJSONSerialization dataWithJSONObject:dataDictionary options:0 error:&err];
-    [self postToServer:postData];
+    
+    //[self postToServer:postData];
 }
 
 -(void)postToServer:(NSData*)postData{
@@ -314,5 +320,16 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     // exit application if user declined Current Location permissions
     exit(0);
 }
+
+#pragma mark - Webservice delegate method
+/*Api Call Response*/
+-(void)apiCallResponse:(id)response andServiceTag:(int)tag {
+
+}
+/*Api Call Error*/
+-(void)apiCallError:(NSError *)error andServiceTag:(int)tag {
+  
+}
+
 
 @end

@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
-@interface BeaconViewController : UIViewController <CLLocationManagerDelegate>
+#import "WebserviceHelperClass.h"
+@interface BeaconViewController : UIViewController <CLLocationManagerDelegate, WebserviceDelegate>
 @property (nonatomic, retain) IBOutlet UILabel *lblBeacon;
 @property (nonatomic, retain) IBOutlet UIButton *btnMonitor;
 
