@@ -119,7 +119,7 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
                 labelText = [labelText stringByAppendingString:distance];
                 self.lblBeacon.text = labelText;
                 //[self sendDataForBeacon:self.selectedBeacon];
-                [self localNotificationWithAlertBody:@"didRangeBeacons:"];
+                //[self localNotificationWithAlertBody:@"didRangeBeacons:"];
                 UIApplicationState state = [[UIApplication sharedApplication] applicationState];
 //                AppDelegate *app = [[UIApplication sharedApplication]delegate];
 //                app.body = @"didEnterRegion";  //testing purpose for bg task
@@ -170,12 +170,12 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     if(state == CLRegionStateInside)
     {
         NSLog(@"in didDetermineState: CLRegionStateInside");
-        [self localNotificationWithAlertBody:@"didEnterRegion"];
+        [self localNotificationWithAlertBody:@"didDetermineState:inside"];
         [self.locationManager startRangingBeaconsInRegion:self.beaconRegion];
     }
     else
     {   NSLog(@"in didDetermineState: CLRegionStateOutside or CLRegionStateUnknown");
-        [self localNotificationWithAlertBody:@"didExitRegion"];
+        [self localNotificationWithAlertBody:@"didDetermineState:outside"];
     }
 }
 
