@@ -12,14 +12,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
-    // present local notification
-//    UILocalNotification *notification = [[UILocalNotification alloc] init];
-//    notification.alertBody = @"Enter";
-//    notification.soundName = UILocalNotificationDefaultSoundName;
-//    notification.applicationIconBadgeNumber=1;
-//    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
-    
+   
     return YES;
 }
 							
@@ -41,7 +34,7 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application{
-    application.applicationIconBadgeNumber=0;
+    //application.applicationIconBadgeNumber=0;
 }
 
 
