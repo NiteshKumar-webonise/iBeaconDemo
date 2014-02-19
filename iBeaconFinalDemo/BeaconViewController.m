@@ -11,10 +11,22 @@
 
 #define ESTIMOTE_PROXIMITY_UUID [[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"]
 
-@interface BeaconViewController () <ESTBeaconManagerDelegate>
+static NSString * const kBeaconCellIdentifier = @"BeaconCell";
+static NSString * const kBeaconsHeaderViewIdentifier = @"BeaconsHeader";
+static NSString * const kBeaconSectionTitle = @"Looking for beacons...";
+static CGPoint const kActivityIndicatorPosition = (CGPoint){205, 3};
+
+
+@interface BeaconViewController () <ESTBeaconManagerDelegate,CBPeripheralManagerDelegate,
+UITableViewDataSource, UITableViewDelegate>
+
+
+
 @property (nonatomic, strong) ESTBeaconManager* beaconManager;
 @property (nonatomic, strong) ESTBeacon* selectedBeacon;
 @property (nonatomic, strong) ESTBeaconRegion* beaconRegion;
+@property (nonatomic, strong) CBPeripheralManager *peripheralManager;
+@property (nonatomic, strong) NSArray *detectedBeacons;
 @property (nonatomic, assign) BOOL notificationShown;
 @end
 
@@ -68,45 +80,147 @@
      didRangeBeacons:(NSArray *)beacons
             inRegion:(ESTBeaconRegion *)region
 {
+    [self statusLabelForBeacons:beacons];
+    [self detectedBeaconUpdateAtRunTimeforBeacons:beacons];
+    
+}
+
+-(void)detectedBeaconUpdateAtRunTimeforBeacons:(NSArray*)beacons{
+    NSArray *filteredBeacons = [self filteredBeacons:beacons];
+    
+    if (filteredBeacons.count == 0) {
+        NSLog(@"No beacons found nearby.");
+    } else {
+        NSLog(@"Found %lu %@.", (unsigned long)[filteredBeacons count],
+              [filteredBeacons count] > 1 ? @"beacons" : @"beacon");
+        
+    }
+    
+    NSIndexSet *insertedSections = 0;
+    NSIndexSet *deletedSections = 0;
+    NSArray *deletedRows = [self indexPathsOfRemovedBeacons:filteredBeacons];
+    NSArray *insertedRows = [self indexPathsOfInsertedBeacons:filteredBeacons];
+    NSArray *reloadedRows = nil;
+    if (!deletedRows && !insertedRows)
+        reloadedRows = [self indexPathsForBeacons:filteredBeacons];
+    
+    self.detectedBeacons = filteredBeacons;
+    
+    [self.beaconTableView beginUpdates];
+    if (insertedSections)
+        [self.beaconTableView insertSections:insertedSections withRowAnimation:UITableViewRowAnimationFade];
+    if (deletedSections)
+        [self.beaconTableView deleteSections:deletedSections withRowAnimation:UITableViewRowAnimationFade];
+    if (insertedRows)
+        [self.beaconTableView insertRowsAtIndexPaths:insertedRows withRowAnimation:UITableViewRowAnimationFade];
+    if (deletedRows)
+        [self.beaconTableView deleteRowsAtIndexPaths:deletedRows withRowAnimation:UITableViewRowAnimationFade];
+    if (reloadedRows)
+        [self.beaconTableView reloadRowsAtIndexPaths:reloadedRows withRowAnimation:UITableViewRowAnimationNone];
+    [self.beaconTableView endUpdates];
+}
+
+- (NSArray *)indexPathsOfRemovedBeacons:(NSArray *)beacons
+{
+    NSMutableArray *indexPaths = nil;
+    
+    NSUInteger row = 0;
+    for (CLBeacon *existingBeacon in self.detectedBeacons) {
+        BOOL stillExists = NO;
+        for (CLBeacon *beacon in beacons) {
+            if ((existingBeacon.major.integerValue == beacon.major.integerValue) &&
+                (existingBeacon.minor.integerValue == beacon.minor.integerValue)) {
+                stillExists = YES;
+                break;
+            }
+        }
+        if (!stillExists) {
+            if (!indexPaths)
+                indexPaths = [NSMutableArray new];
+            [indexPaths addObject:[NSIndexPath indexPathForRow:row inSection:0]];
+        }
+        row++;
+    }
+    
+    return indexPaths;
+}
+
+- (NSArray *)indexPathsOfInsertedBeacons:(NSArray *)beacons
+{
+    NSMutableArray *indexPaths = nil;
+    
+    NSUInteger row = 0;
+    for (CLBeacon *beacon in beacons) {
+        BOOL isNewBeacon = YES;
+        for (CLBeacon *existingBeacon in self.detectedBeacons) {
+            if ((existingBeacon.major.integerValue == beacon.major.integerValue) &&
+                (existingBeacon.minor.integerValue == beacon.minor.integerValue)) {
+                isNewBeacon = NO;
+                break;
+            }
+        }
+        if (isNewBeacon) {
+            if (!indexPaths)
+                indexPaths = [NSMutableArray new];
+            [indexPaths addObject:[NSIndexPath indexPathForRow:row inSection:0]];
+        }
+        row++;
+    }
+    
+    return indexPaths;
+}
+
+- (NSArray *)indexPathsForBeacons:(NSArray *)beacons
+{
+    NSMutableArray *indexPaths = [NSMutableArray new];
+    for (NSUInteger row = 0; row < beacons.count; row++) {
+        [indexPaths addObject:[NSIndexPath indexPathForRow:row inSection:0]];
+    }
+    
+    return indexPaths;
+}
+
+
+-(void)statusLabelForBeacons:(NSArray*)beacons{
     if([beacons count] > 0)
     {
         
         NSString* labelText;
-            for (ESTBeacon* cBeacon in beacons)
+        for (ESTBeacon* cBeacon in beacons)
+        {
+            self.selectedBeacon = cBeacon;
+            labelText = [NSString stringWithFormat:@"UUID: %@, Major: %i, Minor: %i\nRegion: ",
+                         [self.selectedBeacon.proximityUUID UUIDString],
+                         [self.selectedBeacon.major unsignedShortValue],
+                         [self.selectedBeacon.minor unsignedShortValue]];
+            
+            
+            switch (self.selectedBeacon.proximity)
             {
-                self.selectedBeacon = cBeacon;
-                labelText = [NSString stringWithFormat:@"UUID: %@, Major: %i, Minor: %i\nRegion: ",
-                                           [self.selectedBeacon.proximityUUID UUIDString],
-                                           [self.selectedBeacon.major unsignedShortValue],
-                                           [self.selectedBeacon.minor unsignedShortValue]];
+                case CLProximityUnknown:
+                    labelText = [labelText stringByAppendingString: @"Unknown, "];
+                    break;
+                case CLProximityImmediate:
+                    labelText = [labelText stringByAppendingString: @"Immediate, "];
+                    break;
+                case CLProximityNear:
+                    labelText = [labelText stringByAppendingString: @"Near, "];
+                    break;
+                case CLProximityFar:
+                    labelText = [labelText stringByAppendingString: @"Far, "];
+                    break;
                     
-
-                    switch (self.selectedBeacon.proximity)
-                    {
-                        case CLProximityUnknown:
-                            labelText = [labelText stringByAppendingString: @"Unknown, "];
-                            break;
-                        case CLProximityImmediate:
-                            labelText = [labelText stringByAppendingString: @"Immediate, "];
-                            break;
-                        case CLProximityNear:
-                            labelText = [labelText stringByAppendingString: @"Near, "];
-                            break;
-                        case CLProximityFar:
-                            labelText = [labelText stringByAppendingString: @"Far, "];
-                            break;
-                            
-                        default:
-                            break;
-                    }
-                    
-               
-
-                labelText = [labelText stringByAppendingString: [self tellBeaconNamefor:self.selectedBeacon]];
-                labelText = [labelText stringByAppendingString:[NSString stringWithFormat:@", Distance:%@",self.selectedBeacon.distance]];
-                self.lblBeacon.text = labelText;
-                
+                default:
+                    break;
             }
+            
+            
+            
+            labelText = [labelText stringByAppendingString: [self tellBeaconNamefor:self.selectedBeacon]];
+            labelText = [labelText stringByAppendingString:[NSString stringWithFormat:@", Distance:%@",self.selectedBeacon.distance]];
+            self.lblBeacon.text = labelText;
+            
+        }
         UIApplicationState state = [[UIApplication sharedApplication] applicationState];
         if(state==UIApplicationStateBackground||state==UIApplicationStateInactive){
             NSLog(@"in background : in didRangeBeacons");
@@ -120,7 +234,6 @@
     }
 }
 
-
 -(NSString*)tellBeaconNamefor:(ESTBeacon*)beacon{
     NSString *beaconName;
     if([beacon.major unsignedShortValue]==36452 && [beacon.minor unsignedShortValue]== 36010){
@@ -131,6 +244,27 @@
         beaconName = @"Blueberry Pie";
     }
     return beaconName;
+}
+
+- (NSArray *)filteredBeacons:(NSArray *)beacons
+{
+    // Filters duplicate beacons out; this may happen temporarily if the originating device changes its Bluetooth id
+    NSMutableArray *mutableBeacons = [beacons mutableCopy];
+    
+    NSMutableSet *lookup = [[NSMutableSet alloc] init];
+    for (int index = 0; index < [beacons count]; index++) {
+        CLBeacon *curr = [beacons objectAtIndex:index];
+        NSString *identifier = [NSString stringWithFormat:@"%@/%@", curr.major, curr.minor];
+        
+        // this is very fast constant time lookup in a hash table
+        if ([lookup containsObject:identifier]) {
+            [mutableBeacons removeObjectAtIndex:index];
+        } else {
+            [lookup addObject:identifier];
+        }
+    }
+    
+    return [mutableBeacons copy];
 }
 
 -(void)beaconManager:(ESTBeaconManager *)manager
@@ -191,6 +325,84 @@
 -(IBAction)refreshMonitoring:(id)sender{
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     [self.beaconManager startMonitoringForRegion:self.beaconRegion];
+}
+
+#pragma mark - table methods
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.detectedBeacons.count;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return @"Looking for beacons..";
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 52;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UITableViewHeaderFooterView *headerView =
+    [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:kBeaconsHeaderViewIdentifier];
+    
+    // Adds an activity indicator view to the section header
+    UIActivityIndicatorView *indicatorView =
+    [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [headerView addSubview:indicatorView];
+    
+    indicatorView.frame = (CGRect){kActivityIndicatorPosition, indicatorView.frame.size};
+    
+    [indicatorView startAnimating];
+    
+    return headerView;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = nil;
+    ESTBeacon *beacon = self.detectedBeacons[indexPath.row];
+    
+    cell = [tableView dequeueReusableCellWithIdentifier:kBeaconCellIdentifier];
+    
+    if (!cell)
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                                      reuseIdentifier:kBeaconCellIdentifier];
+    
+    cell.textLabel.text = beacon.proximityUUID.UUIDString;
+    cell.detailTextLabel.text = [self detailsStringForBeacon:beacon];
+    cell.detailTextLabel.textColor = [UIColor grayColor];
+    return cell;
+}
+
+- (NSString *)detailsStringForBeacon:(ESTBeacon *)beacon
+{
+    NSString *proximity;
+    switch (beacon.proximity) {
+        case CLProximityNear:
+            proximity = @"Near";
+            break;
+        case CLProximityImmediate:
+            proximity = @"Immediate";
+            break;
+        case CLProximityFar:
+            proximity = @"Far";
+            break;
+        case CLProximityUnknown:
+        default:
+            proximity = @"Unknown";
+            break;
+    }
+    
+    NSString *format = @"%@, %@ • %@ • %.3f • %li";
+    return [NSString stringWithFormat:format, beacon.major, beacon.minor, proximity, beacon.distance.doubleValue, beacon.rssi];
 }
 
 - (void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral {}

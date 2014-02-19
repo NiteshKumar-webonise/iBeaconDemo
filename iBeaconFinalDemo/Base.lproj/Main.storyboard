@@ -17,14 +17,14 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Data" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="7" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="226" translatesAutoresizingMaskIntoConstraints="NO" id="Vd7-td-JRj">
-                                <rect key="frame" x="47" y="191" width="226" height="244"/>
+                                <rect key="frame" x="47" y="41" width="226" height="231"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yPM-sN-MgX">
-                                <rect key="frame" x="66" y="500" width="189" height="30"/>
+                                <rect key="frame" x="66" y="518" width="189" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Refresh Monitoring">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -33,10 +33,21 @@
                                     <action selector="refreshMonitoring:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="A6O-nr-HS9"/>
                                 </connections>
                             </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="FRH-17-HWu">
+                                <rect key="frame" x="0.0" y="285" width="320" height="220"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="sectionIndexTrackingBackgroundColor" red="0.60068055326044645" green="0.86985609617608872" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="vXZ-lx-hvc" id="h8c-1D-0Vd"/>
+                                    <outlet property="delegate" destination="vXZ-lx-hvc" id="EMA-cW-MVA"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="beaconTableView" destination="FRH-17-HWu" id="0ex-v9-R84"/>
                         <outlet property="btnRefreshMonitoring" destination="yPM-sN-MgX" id="SgQ-2Y-exH"/>
                         <outlet property="lblBeacon" destination="Vd7-td-JRj" id="Yqq-PR-mLL"/>
                     </connections>
