@@ -26,6 +26,7 @@
 		59097B3518AA339900CB39E1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59097B3418AA339900CB39E1 /* SystemConfiguration.framework */; };
 		59097B3B18AA357B00CB39E1 /* iToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 59097B3A18AA357B00CB39E1 /* iToast.m */; };
 		59AACF7418AE1EC8009D6475 /* BeaconRegion.m in Sources */ = {isa = PBXBuildFile; fileRef = 59AACF7318AE1EC8009D6475 /* BeaconRegion.m */; };
+		59AD2D0418B4B51A003E80EC /* UIDevice+Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 59AD2D0318B4B51A003E80EC /* UIDevice+Hardware.m */; };
 		59B9F16618ACC026002F9E71 /* libEstimoteSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B9F16518ACC026002F9E71 /* libEstimoteSDK.a */; };
 		59BB91B118B375680044B8E7 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BB91B018B375680044B8E7 /* MBProgressHUD.m */; };
 		59BB91B518B376A00044B8E7 /* WebserviceHelperClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BB91B418B376A00044B8E7 /* WebserviceHelperClass.m */; };
@@ -81,6 +82,8 @@
 		59097B3A18AA357B00CB39E1 /* iToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iToast.m; sourceTree = "<group>"; };
 		59AACF7218AE1EC8009D6475 /* BeaconRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeaconRegion.h; sourceTree = "<group>"; };
 		59AACF7318AE1EC8009D6475 /* BeaconRegion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeaconRegion.m; sourceTree = "<group>"; };
+		59AD2D0218B4B51A003E80EC /* UIDevice+Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Hardware.h"; sourceTree = "<group>"; };
+		59AD2D0318B4B51A003E80EC /* UIDevice+Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Hardware.m"; sourceTree = "<group>"; };
 		59B9F16518ACC026002F9E71 /* libEstimoteSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEstimoteSDK.a; path = EstimoteSDK/libEstimoteSDK.a; sourceTree = "<group>"; };
 		59BB91AF18B375680044B8E7 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		59BB91B018B375680044B8E7 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
@@ -138,6 +141,7 @@
 		59097AE718AA31C000CB39E1 = {
 			isa = PBXGroup;
 			children = (
+				59AD2D0118B4B4F4003E80EC /* DeviceHardware */,
 				59BB91B218B375940044B8E7 /* WebserviceHelper */,
 				59BB91AE18B375500044B8E7 /* ActivityIndicator */,
 				59BB918F18B374790044B8E7 /* AFNetworking */,
@@ -245,6 +249,15 @@
 				59097B3A18AA357B00CB39E1 /* iToast.m */,
 			);
 			name = iToast;
+			sourceTree = "<group>";
+		};
+		59AD2D0118B4B4F4003E80EC /* DeviceHardware */ = {
+			isa = PBXGroup;
+			children = (
+				59AD2D0218B4B51A003E80EC /* UIDevice+Hardware.h */,
+				59AD2D0318B4B51A003E80EC /* UIDevice+Hardware.m */,
+			);
+			name = DeviceHardware;
 			sourceTree = "<group>";
 		};
 		59BB918F18B374790044B8E7 /* AFNetworking */ = {
@@ -397,6 +410,7 @@
 				59BB91B118B375680044B8E7 /* MBProgressHUD.m in Sources */,
 				59AACF7418AE1EC8009D6475 /* BeaconRegion.m in Sources */,
 				59097B0418AA31C100CB39E1 /* AppDelegate.m in Sources */,
+				59AD2D0418B4B51A003E80EC /* UIDevice+Hardware.m in Sources */,
 				59BB923B18B37AFC0044B8E7 /* AFImageRequestOperation.m in Sources */,
 				59BB923D18B37AFC0044B8E7 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				59BB924118B37AFC0044B8E7 /* UIImageView+AFNetworking.m in Sources */,

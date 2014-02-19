@@ -11,6 +11,7 @@
 #import "AppDelegate.h"
 
 #import "BeaconRegion.h"
+#import "UIDevice+Hardware.h"
 
 #define ESTIMOTE_PROXIMITY_UUID [[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"]
 static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
@@ -32,7 +33,8 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    UIDevice *deviceInfo = [[UIDevice alloc]init];
+    NSLog(@"HardwareDescription :%@ hardwareString %@  hardware: %d",[deviceInfo hardwareDescription],[deviceInfo hardwareString],[deviceInfo hardware]);
 //    create sample region with major value defined for one perticular beacon
 //    ESTBeaconRegion* region = [[ESTBeaconRegion alloc] initWithProximityUUID:ESTIMOTE_PROXIMITY_UUID
 //                                                                       major:36452 minor:36010
@@ -94,6 +96,7 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     {
         
             NSString* labelText;
+            NSString *proximity;
             for (CLBeacon * cBeacon in beacons)
             {
                     self.selectedBeacon = cBeacon;                
@@ -102,24 +105,8 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
                                            [self.selectedBeacon.major unsignedShortValue],
                                            [self.selectedBeacon.minor unsignedShortValue]];
                 
-                    switch (self.selectedBeacon.proximity)
-                    {
-                        case CLProximityUnknown:
-                            labelText = [labelText stringByAppendingString: @"Unknown, "];
-                            break;
-                        case CLProximityImmediate:
-                            labelText = [labelText stringByAppendingString: @"Immediate, "];
-                            break;
-                        case CLProximityNear:
-                            labelText = [labelText stringByAppendingString: @"Near, "];
-                            break;
-                        case CLProximityFar:
-                            labelText = [labelText stringByAppendingString: @"Far, "];
-                            break;
-                            
-                        default:
-                            break;
-                    }
+                proximity= [self returnProximityRangefor:self.selectedBeacon.proximity]; //recieve proximty range in string
+                labelText = [[labelText stringByAppendingString:proximity] stringByAppendingString:@", "];
                 labelText = [labelText stringByAppendingString: [self tellBeaconNamefor:self.selectedBeacon]];
                 NSString *distance = [NSString stringWithFormat:@", Distance:%f", self.selectedBeacon.accuracy];
                 labelText = [labelText stringByAppendingString:distance];
@@ -157,6 +144,28 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     }
 }
 
+
+-(NSString*)returnProximityRangefor:(NSInteger)proximityValue{
+    NSString *proximity;
+    switch (proximityValue)
+    {
+        case CLProximityUnknown:
+            proximity = @"Unknown";
+            break;
+        case CLProximityImmediate:
+            proximity = @"Immediate";
+            break;
+        case CLProximityNear:
+            proximity = @"Near";
+            break;
+        case CLProximityFar:
+            proximity = @"Far";
+            break;
+        default:
+            break;
+    }
+    return proximity;
+}
 
 -(NSString*)tellBeaconNamefor:(CLBeacon*)beacon{
     NSString *beaconName;
@@ -252,30 +261,7 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 }
 
 -(void)postToServer:(NSData*)postData{
-//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://192.168.0.6:8888"]];
-//    [request setHTTPMethod:@"POST"];
-//    [request setValue:[NSString stringWithFormat:@"%d", postData.length] forHTTPHeaderField:@"Content-Length"];
-//    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-//    [request setTimeoutInterval:15];
-//    [request setHTTPBody:postData];
-//    //NSLog(@"Post data : %@",[[NSString alloc] initWithData:postData encoding:NSUTF8StringEncoding]);
-//    //NSLog(@"post data new  :%@",postData);
-//    
-//    [NSURLConnection sendAsynchronousRequest:request
-//                                       queue:[NSOperationQueue mainQueue]
-//                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
-//                               
-//                               //NSLog(@"Data:--> %@ ",data);
-//                               if(!error){
-//                                   NSDictionary *result=[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-//                                   NSLog(@"result: %@",result);
-//                                   if([[result valueForKey:@"status"] boolValue]){  // use filter here , if responce' success key is true
-//                                       
-//                                   }
-//                               }
-//                           }];
-    
-    
+
 }
 
 #pragma mark - Local Notification
