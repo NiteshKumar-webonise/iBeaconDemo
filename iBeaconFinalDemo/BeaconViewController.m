@@ -23,6 +23,8 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 @property (nonatomic, assign) BOOL notificationShown;
 @property (nonatomic, strong) NSDictionary *userBeaconInfo;
 @property (nonatomic, retain) WebserviceHelperClass *webserviceHelper;
+@property (nonatomic, retain) NSDate *startTime, *endTime;
+@property (nonatomic) NSTimeInterval timeSpent;
 @end
 
 @implementation BeaconViewController
@@ -69,11 +71,12 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     if (self.beaconRegion)
         return;
     
-    NSUUID *proximityUUID = [[NSUUID alloc] initWithUUIDString:kUUID];
-    self.beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:proximityUUID identifier:@"EstimoteSampleRegion"];
-    self.beaconRegion.notifyEntryStateOnDisplay = YES;
-    self.beaconRegion.notifyOnEntry=YES;
-    self.beaconRegion.notifyOnExit=YES;
+//    NSUUID *proximityUUID = [[NSUUID alloc] initWithUUIDString:kUUID];
+//    self.beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:proximityUUID identifier:@"EstimoteSampleRegion"];
+//    self.beaconRegion.notifyEntryStateOnDisplay = YES;
+//    self.beaconRegion.notifyOnEntry=YES;
+//    self.beaconRegion.notifyOnExit=YES;
+    self.beaconRegion = [BeaconRegion targetRegion];
 }
 
 - (void)didReceiveMemoryWarning
@@ -121,11 +124,13 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
                 NSString *distance = [NSString stringWithFormat:@", Distance:%f", self.selectedBeacon.accuracy];
                 labelText = [labelText stringByAppendingString:distance];
                 self.lblBeacon.text = labelText;
-                //[self sendDataForBeacon:self.selectedBeacon];
+                self.timeSpent = [self.startTime timeIntervalSinceDate:self.endTime];
+                NSLog(@"time spents : %f",self.timeSpent);
+                
+                [self sendDataForBeacon:self.selectedBeacon];
                 //[self localNotificationWithAlertBody:@"didRangeBeacons:"];
+                
                 UIApplicationState state = [[UIApplication sharedApplication] applicationState];
-//                AppDelegate *app = [[UIApplication sharedApplication]delegate];
-//                app.body = @"didEnterRegion";  //testing purpose for bg task
                 if(state==UIApplicationStateBackground||state==UIApplicationStateInactive){
                     if(state==UIApplicationStateBackground){
                         NSLog(@"didRangeBeacons is in background mode");
@@ -135,7 +140,7 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
                 }
 
                     
-                }
+            }
 
         
     }else{
@@ -189,6 +194,7 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     [self localNotificationWithAlertBody:@"didEnterRegion"];
         UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"didEnterRegion" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [alert show];
+    self.startTime = [NSDate date]; //record time when user enters in the room
     [self.locationManager startRangingBeaconsInRegion:self.beaconRegion];
     
 }
@@ -200,6 +206,11 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     [self localNotificationWithAlertBody:@"didExitRegion"];
     UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"didExitRegion" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
     [alert show];
+    
+    self.endTime = [NSDate date]; //record time when user exits from the room
+    self.timeSpent = [self.endTime timeIntervalSinceDate:self.startTime];
+     NSLog(@"time spent when exit : %f",self.timeSpent);
+    [self sendDataForBeacon:self.selectedBeacon];
     // iPhone/iPad left beacon zone
     [manager stopRangingBeaconsInRegion:self.beaconRegion];
     
@@ -224,15 +235,16 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 
 
 #pragma mark - webservice methods
--(void)sendDataForBeacon:(ESTBeacon *)beacon{
+-(void)sendDataForBeacon:(CLBeacon *)beacon{
     
     NSMutableDictionary *dataDictionary =[NSMutableDictionary dictionary];
     [dataDictionary setObject:beacon.proximityUUID forKey:@"proximityUUID"];
     [dataDictionary setObject:beacon.major forKey:@"major"];
     [dataDictionary setObject:beacon.minor forKey:@"minor"];
-
+    NSNumber *timeSpend = [NSNumber numberWithDouble:self.timeSpent];
+    [dataDictionary setObject:timeSpend forKey:@"Timespent"];
     webserviceHelper.showLoadingView = NO;
-    [webserviceHelper callWebServiceForPOSTRequest:@"" withParameters:dataDictionary withServiceTag:0];
+    [webserviceHelper callWebServiceForPOSTRequest:@"http://192.168.0.14" withParameters:dataDictionary withServiceTag:0];
     //NSData *postData = [NSJSONSerialization dataWithJSONObject:dataDictionary options:0 error:&err];
     
     
