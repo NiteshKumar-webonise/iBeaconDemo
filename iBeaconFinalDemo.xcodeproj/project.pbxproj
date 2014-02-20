@@ -26,6 +26,9 @@
 		59097B3518AA339900CB39E1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59097B3418AA339900CB39E1 /* SystemConfiguration.framework */; };
 		59097B3B18AA357B00CB39E1 /* iToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 59097B3A18AA357B00CB39E1 /* iToast.m */; };
 		59B9F16618ACC026002F9E71 /* libEstimoteSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B9F16518ACC026002F9E71 /* libEstimoteSDK.a */; };
+		59C6965418B620150023974E /* ChangeUUIDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C6965218B620150023974E /* ChangeUUIDViewController.m */; };
+		59C6965518B620150023974E /* ChangeUUIDViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 59C6965318B620150023974E /* ChangeUUIDViewController.xib */; };
+		59C6965818B63A7D0023974E /* EstimoteBeaconRegion.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C6965718B63A7D0023974E /* EstimoteBeaconRegion.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +71,11 @@
 		59097B3918AA357B00CB39E1 /* iToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iToast.h; sourceTree = "<group>"; };
 		59097B3A18AA357B00CB39E1 /* iToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iToast.m; sourceTree = "<group>"; };
 		59B9F16518ACC026002F9E71 /* libEstimoteSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEstimoteSDK.a; path = EstimoteSDK/libEstimoteSDK.a; sourceTree = "<group>"; };
+		59C6965118B620150023974E /* ChangeUUIDViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeUUIDViewController.h; sourceTree = "<group>"; };
+		59C6965218B620150023974E /* ChangeUUIDViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeUUIDViewController.m; sourceTree = "<group>"; };
+		59C6965318B620150023974E /* ChangeUUIDViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangeUUIDViewController.xib; sourceTree = "<group>"; };
+		59C6965618B63A7D0023974E /* EstimoteBeaconRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EstimoteBeaconRegion.h; sourceTree = "<group>"; };
+		59C6965718B63A7D0023974E /* EstimoteBeaconRegion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EstimoteBeaconRegion.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +150,11 @@
 				59097B0518AA31C100CB39E1 /* Main.storyboard */,
 				59097B0818AA31C100CB39E1 /* BeaconViewController.h */,
 				59097B0918AA31C100CB39E1 /* BeaconViewController.m */,
+				59C6965118B620150023974E /* ChangeUUIDViewController.h */,
+				59C6965218B620150023974E /* ChangeUUIDViewController.m */,
+				59C6965318B620150023974E /* ChangeUUIDViewController.xib */,
+				59C6965618B63A7D0023974E /* EstimoteBeaconRegion.h */,
+				59C6965718B63A7D0023974E /* EstimoteBeaconRegion.m */,
 				59097B0B18AA31C100CB39E1 /* Images.xcassets */,
 				59097AFA18AA31C100CB39E1 /* Supporting Files */,
 			);
@@ -289,6 +302,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				59097B0C18AA31C100CB39E1 /* Images.xcassets in Resources */,
+				59C6965518B620150023974E /* ChangeUUIDViewController.xib in Resources */,
 				59097AFE18AA31C100CB39E1 /* InfoPlist.strings in Resources */,
 				59097B0718AA31C100CB39E1 /* Main.storyboard in Resources */,
 			);
@@ -309,6 +323,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				59C6965418B620150023974E /* ChangeUUIDViewController.m in Sources */,
+				59C6965818B63A7D0023974E /* EstimoteBeaconRegion.m in Sources */,
 				59097B0A18AA31C100CB39E1 /* BeaconViewController.m in Sources */,
 				59097B0418AA31C100CB39E1 /* AppDelegate.m in Sources */,
 				59097B0018AA31C100CB39E1 /* main.m in Sources */,

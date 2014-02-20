@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <ESTBeaconManager.h>
-@interface BeaconViewController : UIViewController<ESTBeaconManagerDelegate,CBPeripheralManagerDelegate,
+@interface BeaconViewController : UIViewController<ESTBeaconManagerDelegate,CLLocationManagerDelegate,CBPeripheralManagerDelegate,
 UITableViewDataSource, UITableViewDelegate >
 
 
-
+@property (nonatomic, strong) CLLocationManager* locationManager;//for checking authorization
 @property (nonatomic, strong) ESTBeaconManager* beaconManager;
 @property (nonatomic, strong) ESTBeacon* selectedBeacon;
 @property (nonatomic, strong) ESTBeaconRegion* beaconRegion;
@@ -20,8 +20,10 @@ UITableViewDataSource, UITableViewDelegate >
 @property (nonatomic, strong) NSArray *detectedBeacons;
 @property (nonatomic, assign) BOOL notificationShown;
 @property (nonatomic, retain) IBOutlet UILabel *lblBeacon;
-@property (nonatomic, retain)  IBOutlet UIButton *btnRefreshMonitoring;
+@property (nonatomic, retain) IBOutlet UIButton *btnRefreshMonitoring;
+@property (nonatomic, retain) IBOutlet UIButton *btnChangeUUID;
 @property (nonatomic, weak) IBOutlet UITableView *beaconTableView;
 
 -(IBAction)refreshMonitoring:(id)sender;
+-(IBAction)changeUUID:(id)sender;
 @end

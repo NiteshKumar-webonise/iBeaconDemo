@@ -7,7 +7,7 @@
 //
 
 #import "BeaconViewController.h"
-
+#import "ChangeUUIDViewController.h"
 
 #define ESTIMOTE_PROXIMITY_UUID [[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"]
 
@@ -18,12 +18,22 @@ static CGPoint const kActivityIndicatorPosition = (CGPoint){205, 3};
 static int const kCellHeight = 52;
 
 @implementation BeaconViewController
-@synthesize lblBeacon,beaconRegion, btnRefreshMonitoring;
+@synthesize lblBeacon,beaconRegion, btnRefreshMonitoring,locationManager;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    [self.navigationController.navigationBar setHidden:YES];
+    // initialize location manager
+    if (!self.locationManager) { //initializing for authorizition
+        self.locationManager = [[CLLocationManager alloc] init];
+        self.locationManager.delegate = self;
+    }
     [self startMonitor];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:NO];
+    
 }
 
 - (void)startMonitor{
@@ -75,7 +85,7 @@ static int const kCellHeight = 52;
     //maintain table height
     int tableContentHeight = kCellHeight*[self.detectedBeacons count];
     self.beaconTableView.contentSize = CGSizeMake(320, tableContentHeight);
-    
+    //[self.beaconTableView reloadData];
 }
 
 -(void)beaconManager:(ESTBeaconManager *)manager
@@ -93,6 +103,7 @@ static int const kCellHeight = 52;
         [self.beaconManager stopRangingBeaconsInRegion:region];
     }
 }
+
 
 -(void)beaconManager:(ESTBeaconManager *)manager
       didEnterRegion:(ESTBeaconRegion *)region
@@ -113,6 +124,31 @@ static int const kCellHeight = 52;
     [self.beaconManager stopMonitoringForRegion:region];
     
 }
+
+-(void)beaconManager:(ESTBeaconManager *)manager rangingBeaconsDidFailForRegion:(ESTBeaconRegion *)region withError:(NSError *)error{
+    [self localNotificationWithAlertBody:[NSString stringWithFormat:@"Beacon ranging failed with error: %@", error]];
+}
+
+-(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+    
+    // current location usage is required to use this demo app
+    if (status == kCLAuthorizationStatusDenied || status == kCLAuthorizationStatusRestricted) {
+        [[[UIAlertView alloc] initWithTitle:@"Current Location Required"
+                                    message:@"Please re-enable Core Location From Setting to run this Demo.The app will now exit."
+                                   delegate:self
+                          cancelButtonTitle:nil
+                          otherButtonTitles:@"OK", nil] show];
+    }
+}
+
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    // exit application if user declined Current Location permissions
+    [alertView dismissWithClickedButtonIndex:buttonIndex animated:NO];
+    exit(0);
+}
+
 
 #pragma mark -DidRange Action methods
 
@@ -177,6 +213,8 @@ static int const kCellHeight = 52;
         beaconName = @"Icy Marshmallow";
     }else if ([beacon.major unsignedShortValue]==12830 && [beacon.minor unsignedShortValue]== 49469){
         beaconName = @"Blueberry Pie";
+    }else{
+        beaconName = @"Unknown";
     }
     return beaconName;
 }
@@ -332,6 +370,11 @@ static int const kCellHeight = 52;
 //    [self.beaconManager stopRangingBeaconsInRegion:self.beaconRegion];
 //}
 
+-(IBAction)changeUUID:(id)sender{
+    ChangeUUIDViewController *changeUUIDViewController = [[ChangeUUIDViewController alloc]initWithNibName:@"ChangeUUIDViewController" bundle:Nil];
+    [self.navigationController pushViewController:changeUUIDViewController animated:YES];
+}
+
 #pragma mark - Table View methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -358,8 +401,7 @@ static int const kCellHeight = 52;
     UITableViewHeaderFooterView *headerView =
     [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:kBeaconsHeaderViewIdentifier];
     headerView.frame= CGRectMake(0, 0, tableView.bounds.size.width, 28);
-    headerView.backgroundColor = [UIColor purpleColor];
-    
+    headerView.contentView.backgroundColor =[UIColor colorWithRed:135/255.0 green:206/255.0 blue:250/255.0 alpha:1];    
     // Adds an activity indicator view to the section header
     UIActivityIndicatorView *indicatorView =
     [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -411,6 +453,8 @@ static int const kCellHeight = 52;
     NSString *format = @"%@, %@ • %@ • %.3f • %li";
     return [NSString stringWithFormat:format, beacon.major, beacon.minor, proximity, beacon.distance.doubleValue, beacon.rssi];
 }
+
+
 
 - (void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral {}
 
