@@ -76,6 +76,9 @@ UITableViewDataSource, UITableViewDelegate>
     // Dispose of any resources that can be recreated.
 }
 
+
+#pragma mark - ESTBeaconManager delegates
+
 -(void)beaconManager:(ESTBeaconManager *)manager
      didRangeBeacons:(NSArray *)beacons
             inRegion:(ESTBeaconRegion *)region
@@ -85,101 +88,43 @@ UITableViewDataSource, UITableViewDelegate>
     
 }
 
--(void)detectedBeaconUpdateAtRunTimeforBeacons:(NSArray*)beacons{
-    NSArray *filteredBeacons = [self filteredBeacons:beacons];
-    
-    if (filteredBeacons.count == 0) {
-        NSLog(@"No beacons found nearby.");
-    } else {
-        NSLog(@"Found %lu %@.", (unsigned long)[filteredBeacons count],
-              [filteredBeacons count] > 1 ? @"beacons" : @"beacon");
-        
-    }
-    
-    NSIndexSet *insertedSections = 0;
-    NSIndexSet *deletedSections = 0;
-    NSArray *deletedRows = [self indexPathsOfRemovedBeacons:filteredBeacons];
-    NSArray *insertedRows = [self indexPathsOfInsertedBeacons:filteredBeacons];
-    NSArray *reloadedRows = nil;
-    if (!deletedRows && !insertedRows)
-        reloadedRows = [self indexPathsForBeacons:filteredBeacons];
-    
-    self.detectedBeacons = filteredBeacons;
-    
-    [self.beaconTableView beginUpdates];
-    if (insertedSections)
-        [self.beaconTableView insertSections:insertedSections withRowAnimation:UITableViewRowAnimationFade];
-    if (deletedSections)
-        [self.beaconTableView deleteSections:deletedSections withRowAnimation:UITableViewRowAnimationFade];
-    if (insertedRows)
-        [self.beaconTableView insertRowsAtIndexPaths:insertedRows withRowAnimation:UITableViewRowAnimationFade];
-    if (deletedRows)
-        [self.beaconTableView deleteRowsAtIndexPaths:deletedRows withRowAnimation:UITableViewRowAnimationFade];
-    if (reloadedRows)
-        [self.beaconTableView reloadRowsAtIndexPaths:reloadedRows withRowAnimation:UITableViewRowAnimationNone];
-    [self.beaconTableView endUpdates];
-}
-
-- (NSArray *)indexPathsOfRemovedBeacons:(NSArray *)beacons
+-(void)beaconManager:(ESTBeaconManager *)manager
+   didDetermineState:(CLRegionState)state
+           forRegion:(ESTBeaconRegion *)region
 {
-    NSMutableArray *indexPaths = nil;
-    
-    NSUInteger row = 0;
-    for (CLBeacon *existingBeacon in self.detectedBeacons) {
-        BOOL stillExists = NO;
-        for (CLBeacon *beacon in beacons) {
-            if ((existingBeacon.major.integerValue == beacon.major.integerValue) &&
-                (existingBeacon.minor.integerValue == beacon.minor.integerValue)) {
-                stillExists = YES;
-                break;
-            }
-        }
-        if (!stillExists) {
-            if (!indexPaths)
-                indexPaths = [NSMutableArray new];
-            [indexPaths addObject:[NSIndexPath indexPathForRow:row inSection:0]];
-        }
-        row++;
+    if(state == CLRegionStateInside)
+    {
+        [self localNotificationWithAlertBody:@"didDetermineState: inside"];
+        [self.beaconManager startRangingBeaconsInRegion:region];
     }
-    
-    return indexPaths;
+    else
+    {
+        [self localNotificationWithAlertBody:@"didDetermineState: outside"];
+        [self.beaconManager stopRangingBeaconsInRegion:region];
+    }
 }
 
-- (NSArray *)indexPathsOfInsertedBeacons:(NSArray *)beacons
+-(void)beaconManager:(ESTBeaconManager *)manager
+      didEnterRegion:(ESTBeaconRegion *)region
 {
-    NSMutableArray *indexPaths = nil;
+    // present local notification
+    [self localNotificationWithAlertBody:@"didEnterRegion"];
+    // iPhone/iPad entered beacon zone
+    [self.beaconManager startRangingBeaconsInRegion:region];
     
-    NSUInteger row = 0;
-    for (CLBeacon *beacon in beacons) {
-        BOOL isNewBeacon = YES;
-        for (CLBeacon *existingBeacon in self.detectedBeacons) {
-            if ((existingBeacon.major.integerValue == beacon.major.integerValue) &&
-                (existingBeacon.minor.integerValue == beacon.minor.integerValue)) {
-                isNewBeacon = NO;
-                break;
-            }
-        }
-        if (isNewBeacon) {
-            if (!indexPaths)
-                indexPaths = [NSMutableArray new];
-            [indexPaths addObject:[NSIndexPath indexPathForRow:row inSection:0]];
-        }
-        row++;
-    }
-    
-    return indexPaths;
 }
 
-- (NSArray *)indexPathsForBeacons:(NSArray *)beacons
+-(void)beaconManager:(ESTBeaconManager *)manager
+       didExitRegion:(ESTBeaconRegion *)region
 {
-    NSMutableArray *indexPaths = [NSMutableArray new];
-    for (NSUInteger row = 0; row < beacons.count; row++) {
-        [indexPaths addObject:[NSIndexPath indexPathForRow:row inSection:0]];
-    }
+    // present local notification
+    [self localNotificationWithAlertBody:@"didExitRegion"];
+    // iPhone/iPad left beacon zone
+    [self.beaconManager stopMonitoringForRegion:region];
     
-    return indexPaths;
 }
 
+#pragma mark -DidRange Action methods
 
 -(void)statusLabelForBeacons:(NSArray*)beacons{
     if([beacons count] > 0)
@@ -267,42 +212,101 @@ UITableViewDataSource, UITableViewDelegate>
     return [mutableBeacons copy];
 }
 
--(void)beaconManager:(ESTBeaconManager *)manager
-   didDetermineState:(CLRegionState)state
-           forRegion:(ESTBeaconRegion *)region
-{
-    if(state == CLRegionStateInside)
-    {
-        [self localNotificationWithAlertBody:@"didDetermineState: inside"];
-        [self.beaconManager startRangingBeaconsInRegion:region];
-    }
-    else
-    {
-        [self localNotificationWithAlertBody:@"didDetermineState: outside"];
-         [self.beaconManager stopRangingBeaconsInRegion:region];
-    }
-}
 
--(void)beaconManager:(ESTBeaconManager *)manager
-      didEnterRegion:(ESTBeaconRegion *)region
-{
-    // present local notification
-    [self localNotificationWithAlertBody:@"didEnterRegion"];
-    // iPhone/iPad entered beacon zone
-    [self.beaconManager startRangingBeaconsInRegion:region];
+-(void)detectedBeaconUpdateAtRunTimeforBeacons:(NSArray*)beacons{
+    NSArray *filteredBeacons = [self filteredBeacons:beacons];
     
-}
-
--(void)beaconManager:(ESTBeaconManager *)manager
-       didExitRegion:(ESTBeaconRegion *)region
-{
-    // present local notification
-    [self localNotificationWithAlertBody:@"didExitRegion"];
-    // iPhone/iPad left beacon zone
-    [self.beaconManager stopMonitoringForRegion:region];
+    if (filteredBeacons.count == 0) {
+        NSLog(@"No beacons found nearby.");
+    } else {
+        NSLog(@"Found %lu %@.", (unsigned long)[filteredBeacons count],
+              [filteredBeacons count] > 1 ? @"beacons" : @"beacon");
+        
+    }
     
+    NSArray *deletedRows = [self indexPathsOfRemovedBeacons:filteredBeacons];
+    NSArray *insertedRows = [self indexPathsOfInsertedBeacons:filteredBeacons];
+    NSArray *reloadedRows = nil;
+    if (!deletedRows && !insertedRows)
+        reloadedRows = [self indexPathsForBeacons:filteredBeacons];
+    
+    self.detectedBeacons = filteredBeacons;
+    
+    [self.beaconTableView beginUpdates];
+    if (insertedRows)
+        [self.beaconTableView insertRowsAtIndexPaths:insertedRows withRowAnimation:UITableViewRowAnimationFade];
+    if (deletedRows)
+        [self.beaconTableView deleteRowsAtIndexPaths:deletedRows withRowAnimation:UITableViewRowAnimationFade];
+    if (reloadedRows)
+        [self.beaconTableView reloadRowsAtIndexPaths:reloadedRows withRowAnimation:UITableViewRowAnimationNone];
+    [self.beaconTableView endUpdates];
 }
 
+#pragma mark - Calculate indexPath To update
+
+- (NSArray *)indexPathsOfRemovedBeacons:(NSArray *)beacons
+{
+    NSMutableArray *indexPaths = nil;
+    
+    NSUInteger row = 0;
+    for (CLBeacon *existingBeacon in self.detectedBeacons) {
+        BOOL stillExists = NO;
+        for (CLBeacon *beacon in beacons) {
+            if ((existingBeacon.major.integerValue == beacon.major.integerValue) &&
+                (existingBeacon.minor.integerValue == beacon.minor.integerValue)) {
+                stillExists = YES;
+                break;
+            }
+        }
+        if (!stillExists) {
+            if (!indexPaths)
+                indexPaths = [NSMutableArray new];
+            [indexPaths addObject:[NSIndexPath indexPathForRow:row inSection:0]];
+        }
+        row++;
+    }
+    
+    return indexPaths;
+}
+
+- (NSArray *)indexPathsOfInsertedBeacons:(NSArray *)beacons
+{
+    NSMutableArray *indexPaths = nil;
+    
+    NSUInteger row = 0;
+    for (CLBeacon *beacon in beacons) {
+        BOOL isNewBeacon = YES;
+        for (CLBeacon *existingBeacon in self.detectedBeacons) {
+            if ((existingBeacon.major.integerValue == beacon.major.integerValue) &&
+                (existingBeacon.minor.integerValue == beacon.minor.integerValue)) {
+                isNewBeacon = NO;
+                break;
+            }
+        }
+        if (isNewBeacon) {
+            if (!indexPaths)
+                indexPaths = [NSMutableArray new];
+            [indexPaths addObject:[NSIndexPath indexPathForRow:row inSection:0]];
+        }
+        row++;
+    }
+    
+    return indexPaths;
+}
+
+- (NSArray *)indexPathsForBeacons:(NSArray *)beacons
+{
+    NSMutableArray *indexPaths = [NSMutableArray new];
+    for (NSUInteger row = 0; row < beacons.count; row++) {
+        [indexPaths addObject:[NSIndexPath indexPathForRow:row inSection:0]];
+    }
+    
+    return indexPaths;
+}
+
+
+
+#pragma mark - LocalNotification
 
 -(void)localNotificationWithAlertBody:(NSString*)body{
     UIApplicationState state = [[UIApplication sharedApplication] applicationState];
@@ -317,17 +321,28 @@ UITableViewDataSource, UITableViewDelegate>
         NSLog(@"in notification badge number is %ld",(long)notification.applicationIconBadgeNumber);
     }else{
         NSLog(@"in foreground : notification fired");
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:body delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [alert show];
+//        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:body delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+//        [alert show];
     }
 }
+
+#pragma mark - Button actions
 
 -(IBAction)refreshMonitoring:(id)sender{
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     [self.beaconManager startMonitoringForRegion:self.beaconRegion];
 }
 
-#pragma mark - table methods
+//-(IBAction)startMonitoring:(id)sender{
+//    [self.beaconManager startMonitoringForRegion:self.beaconRegion];
+//}
+//
+//-(IBAction)pauseMonitoring:(id)sender{
+//    [self.beaconManager stopMonitoringForRegion:self.beaconRegion];
+//    [self.beaconManager stopRangingBeaconsInRegion:self.beaconRegion];
+//}
+
+#pragma mark - Table View methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
@@ -352,6 +367,8 @@ UITableViewDataSource, UITableViewDelegate>
 {
     UITableViewHeaderFooterView *headerView =
     [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:kBeaconsHeaderViewIdentifier];
+    headerView.frame= CGRectMake(0, 0, tableView.bounds.size.width, 28);
+    headerView.backgroundColor = [UIColor purpleColor];
     
     // Adds an activity indicator view to the section header
     UIActivityIndicatorView *indicatorView =
@@ -375,7 +392,7 @@ UITableViewDataSource, UITableViewDelegate>
     if (!cell)
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                       reuseIdentifier:kBeaconCellIdentifier];
-    
+    cell.backgroundColor = [UIColor cyanColor];
     cell.textLabel.text = beacon.proximityUUID.UUIDString;
     cell.detailTextLabel.text = [self detailsStringForBeacon:beacon];
     cell.detailTextLabel.textColor = [UIColor grayColor];

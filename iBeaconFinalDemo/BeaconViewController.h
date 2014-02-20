@@ -13,5 +13,6 @@
 @property (nonatomic, retain)  IBOutlet UIButton *btnRefreshMonitoring;
 
 -(IBAction)refreshMonitoring:(id)sender;
+
 @property (nonatomic, weak) IBOutlet UITableView *beaconTableView;
 @end
