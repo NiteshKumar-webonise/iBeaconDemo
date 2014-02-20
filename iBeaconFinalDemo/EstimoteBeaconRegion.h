@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <ESTBeaconManager.h>
 
-@interface EstimoteBeaconRegion : NSObject
-
+@interface EstimoteBeaconRegion : ESTBeaconRegion
++ (instancetype)targetRegion;
 @end

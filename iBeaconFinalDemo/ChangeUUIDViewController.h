@@ -7,9 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface ChangeUUIDViewController : UIViewController
+#import <ESTBeaconManager.h>
+@interface ChangeUUIDViewController : UIViewController<ESTBeaconManagerDelegate>
 @property (nonatomic,retain) IBOutlet UIButton *btnCancel;
+@property (nonatomic, strong) ESTBeaconManager* beaconManager;
+@property (nonatomic, strong) ESTBeacon* selectedBeacon;
+@property (nonatomic, strong) ESTBeaconRegion* beaconRegion;
+
 -(IBAction)cancel:(id)sender;
 -(IBAction)updateNewUUID:(id)sender;
 @end

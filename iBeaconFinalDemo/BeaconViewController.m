@@ -8,6 +8,7 @@
 
 #import "BeaconViewController.h"
 #import "ChangeUUIDViewController.h"
+#import "EstimoteBeaconRegion.h"
 
 #define ESTIMOTE_PROXIMITY_UUID [[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"]
 
@@ -58,7 +59,7 @@ static int const kCellHeight = 52;
     
     if (self.beaconRegion)
         return;
-    
+    //self.beaconRegion = [[EstimoteBeaconRegion alloc]init];
     NSUUID *proximityUUID =  ESTIMOTE_PROXIMITY_UUID;
     self.beaconRegion = [[ESTBeaconRegion alloc] initWithProximityUUID:proximityUUID identifier:@"EstimoteSampleRegion"];
     self.beaconRegion.notifyEntryStateOnDisplay = YES;
@@ -348,7 +349,7 @@ static int const kCellHeight = 52;
         [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
         NSLog(@"in notification badge number is %ld",(long)notification.applicationIconBadgeNumber);
     }else{
-        NSLog(@"in foreground : notification fired");
+        NSLog(@"in foreground : %@",body);
 //        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:body delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 //        [alert show];
     }
