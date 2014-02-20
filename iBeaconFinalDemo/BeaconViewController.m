@@ -7,7 +7,7 @@
 //
 
 #import "BeaconViewController.h"
-#import <ESTBeaconManager.h>
+
 
 #define ESTIMOTE_PROXIMITY_UUID [[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"]
 
@@ -15,20 +15,7 @@ static NSString * const kBeaconCellIdentifier = @"BeaconCell";
 static NSString * const kBeaconsHeaderViewIdentifier = @"BeaconsHeader";
 static NSString * const kBeaconSectionTitle = @"Looking for beacons...";
 static CGPoint const kActivityIndicatorPosition = (CGPoint){205, 3};
-
-
-@interface BeaconViewController () <ESTBeaconManagerDelegate,CBPeripheralManagerDelegate,
-UITableViewDataSource, UITableViewDelegate>
-
-
-
-@property (nonatomic, strong) ESTBeaconManager* beaconManager;
-@property (nonatomic, strong) ESTBeacon* selectedBeacon;
-@property (nonatomic, strong) ESTBeaconRegion* beaconRegion;
-@property (nonatomic, strong) CBPeripheralManager *peripheralManager;
-@property (nonatomic, strong) NSArray *detectedBeacons;
-@property (nonatomic, assign) BOOL notificationShown;
-@end
+static int const kCellHeight = 52;
 
 @implementation BeaconViewController
 @synthesize lblBeacon,beaconRegion, btnRefreshMonitoring;
@@ -85,6 +72,9 @@ UITableViewDataSource, UITableViewDelegate>
 {
     [self statusLabelForBeacons:beacons];
     [self detectedBeaconUpdateAtRunTimeforBeacons:beacons];
+    //maintain table height
+    int tableContentHeight = kCellHeight*[self.detectedBeacons count];
+    self.beaconTableView.contentSize = CGSizeMake(320, tableContentHeight);
     
 }
 
@@ -360,7 +350,7 @@ UITableViewDataSource, UITableViewDelegate>
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 52;
+    return kCellHeight;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
