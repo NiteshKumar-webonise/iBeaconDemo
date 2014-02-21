@@ -7,6 +7,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChangeUUIDViewController">
             <connections>
                 <outlet property="btnCancel" destination="uiF-Sj-jQ9" id="e5W-Rn-1Rg"/>
+                <outlet property="txtFeild" destination="JXS-mK-tpe" id="MFI-bO-Zd7"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>

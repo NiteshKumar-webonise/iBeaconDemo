@@ -71,8 +71,9 @@ static iToastSettings *sharedSettings = nil;
 	UIImage *image = [theSettings.images valueForKey:[NSString stringWithFormat:@"%i", type]];
 	
 	UIFont *font =  [UIFont fontWithName:Font_Ubuntu_Medium size:12];
-	CGSize textSize = [text sizeWithFont:font constrainedToSize:CGSizeMake(280, 60)];
-	
+	CGSize textSize =[text boundingRectWithSize:CGSizeMake(280, 60) options:NSStringDrawingTruncatesLastVisibleLine attributes:nil context:nil].size; //[text sizeWithFont:font constrainedToSize:CGSizeMake(280, 60)];
+  
+
 	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, textSize.width + kComponentPadding, textSize.height + kComponentPadding)];
 	label.backgroundColor = [UIColor clearColor];
 	label.textColor = [UIColor whiteColor];
@@ -88,7 +89,7 @@ static iToastSettings *sharedSettings = nil;
         
         switch ([theSettings imageLocation]) {
             case iToastImageLocationLeft:
-                [label setTextAlignment:UITextAlignmentLeft];
+                [label setTextAlignment:NSTextAlignmentLeft];
                 label.center = CGPointMake(image.size.width + kComponentPadding * 2 
                                            + (v.frame.size.width - image.size.width - kComponentPadding * 2) / 2, 
                                            v.frame.size.height / 2);

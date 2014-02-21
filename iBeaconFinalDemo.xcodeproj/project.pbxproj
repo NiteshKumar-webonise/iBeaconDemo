@@ -25,6 +25,7 @@
 		59097B3318AA338C00CB39E1 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59097B3218AA338C00CB39E1 /* CoreLocation.framework */; };
 		59097B3518AA339900CB39E1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59097B3418AA339900CB39E1 /* SystemConfiguration.framework */; };
 		59097B3B18AA357B00CB39E1 /* iToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 59097B3A18AA357B00CB39E1 /* iToast.m */; };
+		59AB88BF18B76E0D00F86424 /* UIDevice+Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 59AB88BE18B76E0D00F86424 /* UIDevice+Hardware.m */; };
 		59B9F16618ACC026002F9E71 /* libEstimoteSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B9F16518ACC026002F9E71 /* libEstimoteSDK.a */; };
 		59C6965418B620150023974E /* ChangeUUIDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C6965218B620150023974E /* ChangeUUIDViewController.m */; };
 		59C6965518B620150023974E /* ChangeUUIDViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 59C6965318B620150023974E /* ChangeUUIDViewController.xib */; };
@@ -70,6 +71,8 @@
 		59097B3418AA339900CB39E1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		59097B3918AA357B00CB39E1 /* iToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iToast.h; sourceTree = "<group>"; };
 		59097B3A18AA357B00CB39E1 /* iToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iToast.m; sourceTree = "<group>"; };
+		59AB88BD18B76E0D00F86424 /* UIDevice+Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Hardware.h"; sourceTree = "<group>"; };
+		59AB88BE18B76E0D00F86424 /* UIDevice+Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Hardware.m"; sourceTree = "<group>"; };
 		59B9F16518ACC026002F9E71 /* libEstimoteSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEstimoteSDK.a; path = EstimoteSDK/libEstimoteSDK.a; sourceTree = "<group>"; };
 		59C6965118B620150023974E /* ChangeUUIDViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeUUIDViewController.h; sourceTree = "<group>"; };
 		59C6965218B620150023974E /* ChangeUUIDViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeUUIDViewController.m; sourceTree = "<group>"; };
@@ -109,6 +112,7 @@
 		59097AE718AA31C000CB39E1 = {
 			isa = PBXGroup;
 			children = (
+				59AB88BC18B76DFA00F86424 /* UIDeviceHardware */,
 				59097B2818AA330800CB39E1 /* EstimoteSDK */,
 				59097AF918AA31C100CB39E1 /* iBeaconFinalDemo */,
 				59097B1818AA31C100CB39E1 /* iBeaconFinalDemoTests */,
@@ -218,6 +222,15 @@
 			name = iToast;
 			sourceTree = "<group>";
 		};
+		59AB88BC18B76DFA00F86424 /* UIDeviceHardware */ = {
+			isa = PBXGroup;
+			children = (
+				59AB88BD18B76E0D00F86424 /* UIDevice+Hardware.h */,
+				59AB88BE18B76E0D00F86424 /* UIDevice+Hardware.m */,
+			);
+			name = UIDeviceHardware;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -323,6 +336,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				59AB88BF18B76E0D00F86424 /* UIDevice+Hardware.m in Sources */,
 				59C6965418B620150023974E /* ChangeUUIDViewController.m in Sources */,
 				59C6965818B63A7D0023974E /* EstimoteBeaconRegion.m in Sources */,
 				59097B0A18AA31C100CB39E1 /* BeaconViewController.m in Sources */,
@@ -469,7 +483,7 @@
 					/Users/adminroom/Desktop/experiments/iBeaconFinalDemo/EstimoteSDK,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "4667F44B-9F2E-495F-B263-8B54A77817BD";
+				PROVISIONING_PROFILE = "45DF8D95-C85D-4F84-BDBC-1F362A3F5A12";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -493,7 +507,7 @@
 					/Users/adminroom/Desktop/experiments/iBeaconFinalDemo/EstimoteSDK,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "4667F44B-9F2E-495F-B263-8B54A77817BD";
+				PROVISIONING_PROFILE = "45DF8D95-C85D-4F84-BDBC-1F362A3F5A12";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -9,6 +9,7 @@
 #import "BeaconViewController.h"
 #import "ChangeUUIDViewController.h"
 #import "EstimoteBeaconRegion.h"
+#import "UIDevice+Hardware.h"
 
 #define ESTIMOTE_PROXIMITY_UUID [[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"]
 
@@ -19,10 +20,15 @@ static CGPoint const kActivityIndicatorPosition = (CGPoint){205, 3};
 static int const kCellHeight = 52;
 
 @implementation BeaconViewController
-@synthesize lblBeacon,beaconRegion, btnRefreshMonitoring,locationManager;
+@synthesize lblBeacon,beaconRegion, btnRefreshMonitoring,locationManager, scrollViewCustom;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    UIDevice *DeviceInfo = [[UIDevice alloc]init];
+    NSLog(@"device info :%@",[DeviceInfo hardwareString]) ;
+    //if([DeviceInfo hardware]==6){
+        scrollViewCustom.contentSize = CGSizeMake(320,590);
+    //}
     [self.navigationController.navigationBar setHidden:YES];
     // initialize location manager
     if (!self.locationManager) { //initializing for authorizition

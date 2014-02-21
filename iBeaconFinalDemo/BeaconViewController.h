@@ -23,6 +23,7 @@ UITableViewDataSource, UITableViewDelegate >
 @property (nonatomic, retain) IBOutlet UIButton *btnRefreshMonitoring;
 @property (nonatomic, retain) IBOutlet UIButton *btnChangeUUID;
 @property (nonatomic, weak) IBOutlet UITableView *beaconTableView;
+@property (nonatomic, retain) IBOutlet UIScrollView *scrollViewCustom;
 
 -(IBAction)refreshMonitoring:(id)sender;
 -(IBAction)changeUUID:(id)sender;

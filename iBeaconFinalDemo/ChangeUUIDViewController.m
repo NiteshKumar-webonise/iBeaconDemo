@@ -7,12 +7,14 @@
 //
 
 #import "ChangeUUIDViewController.h"
+#import "iToast.h"
 
 @interface ChangeUUIDViewController ()
 
 @end
 
 @implementation ChangeUUIDViewController
+@synthesize txtFeild;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -27,7 +29,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [self startMonitor];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -78,7 +80,10 @@
 }
 
 -(IBAction)updateNewUUID:(id)sender{
-    
+    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"WARNING" message:@"Are you sure ? You want to change UUID" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:@"Cancel", nil];
+    [alertView show];
+    alertView.tag = 8;
+   
 }
 
 -(void)beaconManager:(ESTBeaconManager *)manager
@@ -130,6 +135,24 @@
 {
     [self.beaconManager stopMonitoringForRegion:region];
     
+}
+
+#pragma mark -Alert delegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if(alertView.tag==8 && buttonIndex==0 ){
+        //[self startMonitor]; // this method calls--> startMonitoring-->didEnetrRegion-->startRangingBeaconsInRegion-->didRangeBeacons
+        NSLog(@"you are at right place");
+        //if([txtFeild.text length])
+           //[self showToastWithText:txtFeild.text];
+        
+    }
+}
+
+-(void)showToastWithText:(NSString*)text{
+    iToastSettings *theSettings = [iToastSettings getSharedSettings];
+    theSettings.duration = 8000;
+    [[iToast makeText:NSLocalizedString(@"Check-in on your device", @"")] show];
 }
 
 @end
