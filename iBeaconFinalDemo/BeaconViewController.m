@@ -26,9 +26,9 @@ static int const kCellHeight = 52;
     [super viewDidLoad];
     UIDevice *DeviceInfo = [[UIDevice alloc]init];
     NSLog(@"device info :%@",[DeviceInfo hardwareString]) ;
-    //if([DeviceInfo hardware]==6){
+    if([DeviceInfo hardware]==6){
         scrollViewCustom.contentSize = CGSizeMake(320,590);
-    //}
+    }
     [self.navigationController.navigationBar setHidden:YES];
     // initialize location manager
     if (!self.locationManager) { //initializing for authorizition
