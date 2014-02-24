@@ -12,4 +12,6 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) NSString *body;
+@property (strong, nonatomic) FBSession *session;
+@property (strong, nonatomic) NSString *login_type;
 @end

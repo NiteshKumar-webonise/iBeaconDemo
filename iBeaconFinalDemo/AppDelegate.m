@@ -7,9 +7,12 @@
 //
 
 #import "AppDelegate.h"
+#define FACEBOOK_LOGIN @"FacebookLogin"
+#define GOOGLE_LOGIN @"GoogleLogin"
+#define TWITTER_LOGIN @"TwitterLogin"
 
 @implementation AppDelegate
-@synthesize body;
+@synthesize body,login_type;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -20,7 +23,8 @@
 //    notification.soundName = UILocalNotificationDefaultSoundName;
 //    notification.applicationIconBadgeNumber=1;
 //    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
-    body= @"default";
+    login_type = NO_LOGIN_TYPE;  //initialising login type null if not logged in at all
+    body = @"default";
     return YES;
 }
 							
@@ -35,6 +39,26 @@
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     //[self localNotificationWithAlertBody:body];
+}
+
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation{
+    BOOL returnValue=FALSE;
+    if([self.login_type isEqualToString:GOOGLE_LOGIN]){
+        returnValue= [GPPURLHandler handleURL:url
+                            sourceApplication:sourceApplication
+                                   annotation:annotation];
+        self.isCallBackAuthenticate=YES;
+        
+    }else if ([self.login_type isEqualToString:FACEBOOK_LOGIN]){
+        returnValue=[FBAppCall handleOpenURL:url
+                           sourceApplication:sourceApplication
+                                 withSession:self.session];
+    }
+    return returnValue;
 }
 
 -(void)localNotificationWithAlertBody:(NSString*)msg{
@@ -68,6 +92,8 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application{
     //application.applicationIconBadgeNumber=0;
+    [FBAppEvents activateApp];
+    [FBAppCall handleDidBecomeActiveWithSession:self.session];
 }
 
 

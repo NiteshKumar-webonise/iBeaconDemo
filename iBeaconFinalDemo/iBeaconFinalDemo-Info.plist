@@ -40,5 +40,21 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>FacebookAppID</key>
+	<string>359596777513837</string>
+	<key>FacebookDisplayName</key>
+	<string>iBeaconFinalDemo</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.webonise.ibeacon</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb245898665574128</string>
+				<string>com.webonise.ibeacon</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

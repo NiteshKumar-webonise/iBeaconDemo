@@ -12,6 +12,7 @@
 
 #import "BeaconRegion.h"
 #import "UIDevice+Hardware.h"
+#import "LoginViewController.h"
 
 #define ESTIMOTE_PROXIMITY_UUID [[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"]
 static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
@@ -26,10 +27,13 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 @property (nonatomic, retain) WebserviceHelperClass *webserviceHelper;
 @property (nonatomic, retain) NSDate *startTime, *endTime;
 @property (nonatomic) NSTimeInterval timeSpent;
+@property (nonatomic) BOOL isSentToserver;
 @end
 
 @implementation BeaconViewController
-@synthesize lblBeacon, webserviceHelper;
+@synthesize lblBeacon, webserviceHelper,isSentToserver;
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -48,10 +52,29 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     //region.notifyEntryStateOnDisplay = YES;
 
     
-    [self initializeRegionMonitoring];
-    webserviceHelper = [[WebserviceHelperClass alloc] init];
-    webserviceHelper.delegate = self;
+   
     
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    AppDelegate *appDelegate=[[UIApplication sharedApplication]delegate];
+    if(!([appDelegate.login_type isEqualToString:FACEBOOK_LOGIN])){
+        LoginViewController *loginViewController=[[LoginViewController alloc]initWithNibName:@"LoginViewController" bundle:nil];
+        [self presentLogin:loginViewController];
+    }else{
+        [self initializeRegionMonitoring];
+        webserviceHelper = [[WebserviceHelperClass alloc] init];
+        webserviceHelper.delegate = self;
+    }
+}
+
+-(void)presentLogin:(UIViewController*)viewController{
+    [self presentViewController:viewController animated:NO completion:nil];
 }
 
 - (void)initializeRegionMonitoring {
@@ -87,6 +110,17 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     // Dispose of any resources that can be recreated.
 }
 
+-(IBAction)logout:(id)sender{
+     AppDelegate *appDelegate=[[UIApplication sharedApplication]delegate];
+     LoginViewController *loginViewController=[[LoginViewController alloc]initWithNibName:@"LoginViewController" bundle:nil];
+    if ([appDelegate.login_type isEqualToString:FACEBOOK_LOGIN]){
+        if(appDelegate.session.isOpen){
+            [appDelegate.session closeAndClearTokenInformation];
+        }
+        [self presentLogin:loginViewController];
+    }
+}
+
 #pragma mark - delegate for startRangingBeaconsInRegion
 -(void)locationManager:(CLLocationManager *)manager
        didRangeBeacons:(NSArray *)beacons
@@ -113,8 +147,11 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
                 self.lblBeacon.text = labelText;
                 self.timeSpent = [self.startTime timeIntervalSinceDate:self.endTime];
                 NSLog(@"time spents : %f",self.timeSpent);
+                if(self.timeSpent>20 && isSentToserver==NO){
+                    [self sendDataForBeacon:self.selectedBeacon];
+                    isSentToserver=YES;//it should be set in responce .. got from server
+                }
                 
-                [self sendDataForBeacon:self.selectedBeacon];
                 //[self localNotificationWithAlertBody:@"didRangeBeacons:"];
                 
                 UIApplicationState state = [[UIApplication sharedApplication] applicationState];
@@ -125,10 +162,8 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
                         NSLog(@"didRangeBeacons is in Inactive mode");
                     }
                 }
-
                     
             }
-
         
     }else{
         self.lblBeacon.text = @"currently there is no beacons nearby";
@@ -199,6 +234,7 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 -(void)locationManager:(CLLocationManager *)manager
         didEnterRegion:(CLRegion *)region
 {
+    isSentToserver=NO;
     // present local notification
     [self localNotificationWithAlertBody:@"didEnterRegion"];
         UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"didEnterRegion" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -212,13 +248,13 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
          didExitRegion:(CLRegion *)region
 {
     // present local notification
-    [self localNotificationWithAlertBody:@"didExitRegion"];
-    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"didExitRegion" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [self localNotificationWithAlertBody:@"Thank you for attending conference! :)"];
+    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"Thank you for attending conference! :)" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
     [alert show];
     
     self.endTime = [NSDate date]; //record time when user exits from the room
     self.timeSpent = [self.endTime timeIntervalSinceDate:self.startTime];
-     NSLog(@"time spent when exit : %f",self.timeSpent);
+     //NSLog(@"time spent when exit : %f",self.timeSpent);
     [self sendDataForBeacon:self.selectedBeacon];
     // iPhone/iPad left beacon zone
     [manager stopRangingBeaconsInRegion:self.beaconRegion];

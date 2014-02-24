@@ -14,4 +14,5 @@
 @property (nonatomic, retain) IBOutlet UIButton *btnMonitor;
 
 -(IBAction)startMonitoring:(id)sender;
+-(IBAction)logout:(id)sender;
 @end

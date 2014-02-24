@@ -12,5 +12,10 @@
 
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
+    #import <GoogleOpenSource/GoogleOpenSource.h>  //add these two classes for using google + authentication.
+    #import <GooglePlus/GooglePlus.h>
+
     #import <Foundation/Foundation.h>
+    #import <FacebookSDK/FacebookSDK.h>
+    #import "Constants.h"
 #endif
