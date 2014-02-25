@@ -19,5 +19,5 @@
 #define GOOGLE_LOGIN @"GoogleLogin"
 #define TWITTER_LOGIN @"TwitterLogin"
 #define NO_LOGIN_TYPE @""
-#define CLIENT_ID @"214285032514-fl6hjovapvfvvkbuc0vo74gk49clkp0k.apps.googleusercontent.com"
+#define CLIENT_ID @"747238680158-efidr7r4a4achbqmtumjiq40o6m2ok0m.apps.googleusercontent.com"
 #endif

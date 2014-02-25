@@ -33,9 +33,6 @@
 		59B6914518BB40E10081BC00 /* FBLogin_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 59B6914418BB40E10081BC00 /* FBLogin_background.png */; };
 		59B6914718BB40E90081BC00 /* FBLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 59B6914618BB40E90081BC00 /* FBLogo.png */; };
 		59B6914918BB53E10081BC00 /* google-plus.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 59B6914818BB53E10081BC00 /* google-plus.1.png */; };
-		59B6914B18BB56E60081BC00 /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B6914A18BB56E60081BC00 /* GoogleOpenSource.framework */; };
-		59B6914D18BB56F60081BC00 /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B6914C18BB56F60081BC00 /* GooglePlus.framework */; };
-		59B6914F18BB570A0081BC00 /* GooglePlus.bundle in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B6914E18BB570A0081BC00 /* GooglePlus.bundle */; };
 		59B6915418BB5D430081BC00 /* PerformFBRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 59B6915218BB5D430081BC00 /* PerformFBRequest.m */; };
 		59B6915718BB682C0081BC00 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B6915618BB682C0081BC00 /* Security.framework */; };
 		59B6915918BB683B0081BC00 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B6915818BB683B0081BC00 /* MediaPlayer.framework */; };
@@ -54,6 +51,10 @@
 		59BB923F18B37AFC0044B8E7 /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BB923418B37AFC0044B8E7 /* AFURLConnectionOperation.m */; };
 		59BB924018B37AFC0044B8E7 /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BB923618B37AFC0044B8E7 /* AFXMLRequestOperation.m */; };
 		59BB924118B37AFC0044B8E7 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BB923818B37AFC0044B8E7 /* UIImageView+AFNetworking.m */; };
+		59F0EA2018BCAA9E00BA43DA /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59F0EA1F18BCAA9E00BA43DA /* AddressBook.framework */; };
+		59F0EA2118BCB01D00BA43DA /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B6914A18BB56E60081BC00 /* GoogleOpenSource.framework */; };
+		59F0EA2218BCB02B00BA43DA /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B6914C18BB56F60081BC00 /* GooglePlus.framework */; };
+		59F0EA2318BCB03600BA43DA /* GooglePlus.bundle in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B6914E18BB570A0081BC00 /* GooglePlus.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -142,6 +143,7 @@
 		59BB923618B37AFC0044B8E7 /* AFXMLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AFXMLRequestOperation.m; path = AFNetwork/AFXMLRequestOperation.m; sourceTree = SOURCE_ROOT; };
 		59BB923718B37AFC0044B8E7 /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImageView+AFNetworking.h"; path = "AFNetwork/UIImageView+AFNetworking.h"; sourceTree = SOURCE_ROOT; };
 		59BB923818B37AFC0044B8E7 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+AFNetworking.m"; path = "AFNetwork/UIImageView+AFNetworking.m"; sourceTree = SOURCE_ROOT; };
+		59F0EA1F18BCAA9E00BA43DA /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +151,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				59F0EA2318BCB03600BA43DA /* GooglePlus.bundle in Frameworks */,
+				59F0EA2218BCB02B00BA43DA /* GooglePlus.framework in Frameworks */,
+				59F0EA2118BCB01D00BA43DA /* GoogleOpenSource.framework in Frameworks */,
+				59F0EA2018BCAA9E00BA43DA /* AddressBook.framework in Frameworks */,
 				59B6915F18BB68840081BC00 /* AssetsLibrary.framework in Frameworks */,
 				59097B3318AA338C00CB39E1 /* CoreLocation.framework in Frameworks */,
 				59B6915D18BB68660081BC00 /* CoreMotion.framework in Frameworks */,
@@ -156,9 +162,6 @@
 				59B6915B18BB68460081BC00 /* CoreText.framework in Frameworks */,
 				59B6915918BB683B0081BC00 /* MediaPlayer.framework in Frameworks */,
 				59B6915718BB682C0081BC00 /* Security.framework in Frameworks */,
-				59B6914F18BB570A0081BC00 /* GooglePlus.bundle in Frameworks */,
-				59B6914D18BB56F60081BC00 /* GooglePlus.framework in Frameworks */,
-				59B6914B18BB56E60081BC00 /* GoogleOpenSource.framework in Frameworks */,
 				59B6913D18BB2F450081BC00 /* FacebookSDK.framework in Frameworks */,
 				59B9F16618ACC026002F9E71 /* libEstimoteSDK.a in Frameworks */,
 				59097B3518AA339900CB39E1 /* SystemConfiguration.framework in Frameworks */,
@@ -204,6 +207,7 @@
 		59097AF218AA31C100CB39E1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				59F0EA1F18BCAA9E00BA43DA /* AddressBook.framework */,
 				59B6915E18BB68840081BC00 /* AssetsLibrary.framework */,
 				59B6915C18BB68660081BC00 /* CoreMotion.framework */,
 				59B6915A18BB68460081BC00 /* CoreText.framework */,

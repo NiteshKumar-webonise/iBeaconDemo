@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginViewController">
             <connections>
+                <outlet property="btnGooglSignIn" destination="kVy-cq-6Ye" id="vXB-LQ-yup"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -29,7 +30,7 @@
                     <rect key="frame" x="25" y="111" width="46" height="54"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kVy-cq-6Ye">
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kVy-cq-6Ye" customClass="GPPSignInButton">
                     <rect key="frame" x="25" y="243" width="270" height="54"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="1" green="0.078431375324726105" blue="0.0" alpha="1" colorSpace="deviceRGB"/>

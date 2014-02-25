@@ -7,9 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MBProgressHUD.h"
 
 @interface LoginViewController : UIViewController <GPPSignInDelegate>
 
-@property (nonatomic, retain) IBOutlet UIButton *btnGooglSignIn;
+@property (nonatomic, retain) IBOutlet GPPSignInButton *btnGooglSignIn;
+@property (nonatomic,retain) MBProgressHUD *mbProgressHUD;
+@property (retain, nonatomic) NSString *authStatus;
+
 -(IBAction)facebookLoginAction:(id)sender;
 @end

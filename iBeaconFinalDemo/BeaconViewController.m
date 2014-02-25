@@ -39,27 +39,9 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     [super viewDidLoad];
     UIDevice *deviceInfo = [[UIDevice alloc]init];
     NSLog(@"HardwareDescription :%@ hardwareString %@  hardware: %d",[deviceInfo hardwareDescription],[deviceInfo hardwareString],[deviceInfo hardware]);
+    //perform fb request is set
     self.performFBRequest = [[PerformFBRequest alloc]init];
     self.performFBRequest.delegate = self;
-//    create sample region with major value defined for one perticular beacon
-//    ESTBeaconRegion* region = [[ESTBeaconRegion alloc] initWithProximityUUID:ESTIMOTE_PROXIMITY_UUID
-//                                                                       major:36452 minor:36010
-//                                                                  identifier: @"EstimoteSampleRegion"];
-    
-    
-//  create sample region for all perticular beacons
-   // ESTBeaconRegion* region = [[ESTBeaconRegion alloc] initWithProximityUUID:ESTIMOTE_PROXIMITY_UUID
-    //                                                              identifier: @"EstimoteSampleRegion"];
-    
-    //region.notifyEntryStateOnDisplay = YES;
-
-    
-    //AppDelegate *appDelegate = [[UIApplication sharedApplication]delegate];
-    
-}
-
-- (void)viewWillAppear:(BOOL)animated{
-    
     
 }
 
@@ -71,7 +53,7 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     }
     
     
-    if(!([appDelegate.login_type isEqualToString:FACEBOOK_LOGIN])){
+    if(!([appDelegate.login_type isEqualToString:FACEBOOK_LOGIN]||[appDelegate.login_type isEqualToString:GOOGLE_LOGIN])){
         LoginViewController *loginViewController=[[LoginViewController alloc]initWithNibName:@"LoginViewController" bundle:nil];
         [self presentLogin:loginViewController];
     }else{
