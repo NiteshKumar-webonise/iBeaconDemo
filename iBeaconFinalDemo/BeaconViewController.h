@@ -9,7 +9,10 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "WebserviceHelperClass.h"
-@interface BeaconViewController : UIViewController <CLLocationManagerDelegate, WebserviceDelegate>
+#import "PerformFBRequest.h"
+
+@interface BeaconViewController : UIViewController <CLLocationManagerDelegate, WebserviceDelegate, PerformFBRequestResponce>
+@property (nonatomic, retain) PerformFBRequest *performFBRequest;
 @property (nonatomic, retain) IBOutlet UILabel *lblBeacon;
 @property (nonatomic, retain) IBOutlet UIButton *btnMonitor;
 

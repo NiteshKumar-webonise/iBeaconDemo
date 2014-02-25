@@ -36,6 +36,12 @@
 		59B6914B18BB56E60081BC00 /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B6914A18BB56E60081BC00 /* GoogleOpenSource.framework */; };
 		59B6914D18BB56F60081BC00 /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B6914C18BB56F60081BC00 /* GooglePlus.framework */; };
 		59B6914F18BB570A0081BC00 /* GooglePlus.bundle in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B6914E18BB570A0081BC00 /* GooglePlus.bundle */; };
+		59B6915418BB5D430081BC00 /* PerformFBRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 59B6915218BB5D430081BC00 /* PerformFBRequest.m */; };
+		59B6915718BB682C0081BC00 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B6915618BB682C0081BC00 /* Security.framework */; };
+		59B6915918BB683B0081BC00 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B6915818BB683B0081BC00 /* MediaPlayer.framework */; };
+		59B6915B18BB68460081BC00 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B6915A18BB68460081BC00 /* CoreText.framework */; };
+		59B6915D18BB68660081BC00 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B6915C18BB68660081BC00 /* CoreMotion.framework */; };
+		59B6915F18BB68840081BC00 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B6915E18BB68840081BC00 /* AssetsLibrary.framework */; };
 		59B9F16618ACC026002F9E71 /* libEstimoteSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B9F16518ACC026002F9E71 /* libEstimoteSDK.a */; };
 		59BB91B118B375680044B8E7 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BB91B018B375680044B8E7 /* MBProgressHUD.m */; };
 		59BB91B518B376A00044B8E7 /* WebserviceHelperClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BB91B418B376A00044B8E7 /* WebserviceHelperClass.m */; };
@@ -104,6 +110,14 @@
 		59B6914A18BB56E60081BC00 /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleOpenSource.framework; path = GooglePlus/GoogleOpenSource.framework; sourceTree = "<group>"; };
 		59B6914C18BB56F60081BC00 /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GooglePlus.framework; path = GooglePlus/GooglePlus.framework; sourceTree = "<group>"; };
 		59B6914E18BB570A0081BC00 /* GooglePlus.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GooglePlus.bundle; path = GooglePlus/GooglePlus.bundle; sourceTree = "<group>"; };
+		59B6915118BB5D430081BC00 /* PerformFBRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerformFBRequest.h; sourceTree = "<group>"; };
+		59B6915218BB5D430081BC00 /* PerformFBRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformFBRequest.m; sourceTree = "<group>"; };
+		59B6915318BB5D430081BC00 /* PerformFBRequestResponce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerformFBRequestResponce.h; sourceTree = "<group>"; };
+		59B6915618BB682C0081BC00 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		59B6915818BB683B0081BC00 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		59B6915A18BB68460081BC00 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		59B6915C18BB68660081BC00 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		59B6915E18BB68840081BC00 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		59B9F16518ACC026002F9E71 /* libEstimoteSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEstimoteSDK.a; path = EstimoteSDK/libEstimoteSDK.a; sourceTree = "<group>"; };
 		59BB91AF18B375680044B8E7 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		59BB91B018B375680044B8E7 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
@@ -135,15 +149,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				59B6915F18BB68840081BC00 /* AssetsLibrary.framework in Frameworks */,
+				59097B3318AA338C00CB39E1 /* CoreLocation.framework in Frameworks */,
+				59B6915D18BB68660081BC00 /* CoreMotion.framework in Frameworks */,
+				59097AF618AA31C100CB39E1 /* CoreGraphics.framework in Frameworks */,
+				59B6915B18BB68460081BC00 /* CoreText.framework in Frameworks */,
+				59B6915918BB683B0081BC00 /* MediaPlayer.framework in Frameworks */,
+				59B6915718BB682C0081BC00 /* Security.framework in Frameworks */,
 				59B6914F18BB570A0081BC00 /* GooglePlus.bundle in Frameworks */,
 				59B6914D18BB56F60081BC00 /* GooglePlus.framework in Frameworks */,
 				59B6914B18BB56E60081BC00 /* GoogleOpenSource.framework in Frameworks */,
 				59B6913D18BB2F450081BC00 /* FacebookSDK.framework in Frameworks */,
 				59B9F16618ACC026002F9E71 /* libEstimoteSDK.a in Frameworks */,
 				59097B3518AA339900CB39E1 /* SystemConfiguration.framework in Frameworks */,
-				59097B3318AA338C00CB39E1 /* CoreLocation.framework in Frameworks */,
 				59097B3118AA338000CB39E1 /* CoreBluetooth.framework in Frameworks */,
-				59097AF618AA31C100CB39E1 /* CoreGraphics.framework in Frameworks */,
 				59097AF818AA31C100CB39E1 /* UIKit.framework in Frameworks */,
 				59097AF418AA31C100CB39E1 /* Foundation.framework in Frameworks */,
 			);
@@ -185,6 +204,11 @@
 		59097AF218AA31C100CB39E1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				59B6915E18BB68840081BC00 /* AssetsLibrary.framework */,
+				59B6915C18BB68660081BC00 /* CoreMotion.framework */,
+				59B6915A18BB68460081BC00 /* CoreText.framework */,
+				59B6915818BB683B0081BC00 /* MediaPlayer.framework */,
+				59B6915618BB682C0081BC00 /* Security.framework */,
 				59B6914E18BB570A0081BC00 /* GooglePlus.bundle */,
 				59B6914C18BB56F60081BC00 /* GooglePlus.framework */,
 				59B6914A18BB56E60081BC00 /* GoogleOpenSource.framework */,
@@ -204,18 +228,9 @@
 		59097AF918AA31C100CB39E1 /* iBeaconFinalDemo */ = {
 			isa = PBXGroup;
 			children = (
-				59097B3818AA356400CB39E1 /* iToast */,
-				59097B0218AA31C100CB39E1 /* AppDelegate.h */,
-				59097B0318AA31C100CB39E1 /* AppDelegate.m */,
-				59097B0518AA31C100CB39E1 /* Main.storyboard */,
-				59097B0818AA31C100CB39E1 /* BeaconViewController.h */,
-				59097B0918AA31C100CB39E1 /* BeaconViewController.m */,
-				59AACF7218AE1EC8009D6475 /* BeaconRegion.h */,
-				59AACF7318AE1EC8009D6475 /* BeaconRegion.m */,
-				59B6913F18BB407F0081BC00 /* LoginViewController.h */,
-				59B6914018BB407F0081BC00 /* LoginViewController.m */,
-				59B6914118BB407F0081BC00 /* LoginViewController.xib */,
-				59097B0B18AA31C100CB39E1 /* Images.xcassets */,
+				59F0EA1918BC7E0A00BA43DA /* AppDelegate */,
+				59B6915018BB5D130081BC00 /* Login */,
+				59F0EA1A18BC7E3B00BA43DA /* iBeacon */,
 				59097AFA18AA31C100CB39E1 /* Supporting Files */,
 			);
 			path = iBeaconFinalDemo;
@@ -224,6 +239,7 @@
 		59097AFA18AA31C100CB39E1 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				59097B0B18AA31C100CB39E1 /* Images.xcassets */,
 				59B6914818BB53E10081BC00 /* google-plus.1.png */,
 				59B6914418BB40E10081BC00 /* FBLogin_background.png */,
 				59B6914618BB40E90081BC00 /* FBLogo.png */,
@@ -280,6 +296,7 @@
 				59097B3A18AA357B00CB39E1 /* iToast.m */,
 			);
 			name = iToast;
+			path = iBeaconFinalDemo;
 			sourceTree = "<group>";
 		};
 		59AD2D0118B4B4F4003E80EC /* DeviceHardware */ = {
@@ -294,13 +311,28 @@
 		59B6913518BB2B6B0081BC00 /* LibraryWork */ = {
 			isa = PBXGroup;
 			children = (
+				59F0EA1818BC6C4D00BA43DA /* DatabaseHelper */,
 				59AD2D0118B4B4F4003E80EC /* DeviceHardware */,
 				59BB91B218B375940044B8E7 /* WebserviceHelper */,
 				59BB91AE18B375500044B8E7 /* ActivityIndicator */,
 				59BB918F18B374790044B8E7 /* AFNetworking */,
+				59097B3818AA356400CB39E1 /* iToast */,
 				59097B2818AA330800CB39E1 /* EstimoteSDK */,
 			);
 			name = LibraryWork;
+			sourceTree = "<group>";
+		};
+		59B6915018BB5D130081BC00 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				59B6915118BB5D430081BC00 /* PerformFBRequest.h */,
+				59B6915218BB5D430081BC00 /* PerformFBRequest.m */,
+				59B6915318BB5D430081BC00 /* PerformFBRequestResponce.h */,
+				59B6913F18BB407F0081BC00 /* LoginViewController.h */,
+				59B6914018BB407F0081BC00 /* LoginViewController.m */,
+				59B6914118BB407F0081BC00 /* LoginViewController.xib */,
+			);
+			name = Login;
 			sourceTree = "<group>";
 		};
 		59BB918F18B374790044B8E7 /* AFNetworking */ = {
@@ -345,6 +377,34 @@
 				59BB91B418B376A00044B8E7 /* WebserviceHelperClass.m */,
 			);
 			name = WebserviceHelper;
+			sourceTree = "<group>";
+		};
+		59F0EA1818BC6C4D00BA43DA /* DatabaseHelper */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = DatabaseHelper;
+			sourceTree = "<group>";
+		};
+		59F0EA1918BC7E0A00BA43DA /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				59097B0218AA31C100CB39E1 /* AppDelegate.h */,
+				59097B0318AA31C100CB39E1 /* AppDelegate.m */,
+				59097B0518AA31C100CB39E1 /* Main.storyboard */,
+			);
+			name = AppDelegate;
+			sourceTree = "<group>";
+		};
+		59F0EA1A18BC7E3B00BA43DA /* iBeacon */ = {
+			isa = PBXGroup;
+			children = (
+				59097B0818AA31C100CB39E1 /* BeaconViewController.h */,
+				59097B0918AA31C100CB39E1 /* BeaconViewController.m */,
+				59AACF7218AE1EC8009D6475 /* BeaconRegion.h */,
+				59AACF7318AE1EC8009D6475 /* BeaconRegion.m */,
+			);
+			name = iBeacon;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -462,6 +522,7 @@
 				59BB923D18B37AFC0044B8E7 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				59BB924118B37AFC0044B8E7 /* UIImageView+AFNetworking.m in Sources */,
 				59097B0018AA31C100CB39E1 /* main.m in Sources */,
+				59B6915418BB5D430081BC00 /* PerformFBRequest.m in Sources */,
 				59B6914218BB407F0081BC00 /* LoginViewController.m in Sources */,
 				59097B3B18AA357B00CB39E1 /* iToast.m in Sources */,
 				59BB923918B37AFC0044B8E7 /* AFHTTPClient.m in Sources */,

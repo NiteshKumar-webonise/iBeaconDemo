@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LoginViewController : UIViewController
+@interface LoginViewController : UIViewController <GPPSignInDelegate>
+
+@property (nonatomic, retain) IBOutlet UIButton *btnGooglSignIn;
 -(IBAction)facebookLoginAction:(id)sender;
 @end

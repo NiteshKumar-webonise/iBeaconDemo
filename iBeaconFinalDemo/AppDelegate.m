@@ -12,7 +12,7 @@
 #define TWITTER_LOGIN @"TwitterLogin"
 
 @implementation AppDelegate
-@synthesize body,login_type;
+@synthesize body,login_type,isCallBackAuthenticate;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -92,14 +92,25 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application{
     //application.applicationIconBadgeNumber=0;
-    [FBAppEvents activateApp];
-    [FBAppCall handleDidBecomeActiveWithSession:self.session];
+    [[NSNotificationCenter defaultCenter]postNotificationName:kHideLoadingNotification object:self];
+    if(self.isCallBackAuthenticate){
+        [[NSNotificationCenter defaultCenter]postNotificationName:kShowLoadingNotification object:self];
+    }
+    
+    if([self.login_type isEqualToString:FACEBOOK_LOGIN]){
+      [FBAppEvents activateApp];
+      [FBAppCall handleDidBecomeActiveWithSession:self.session];
+    }
 }
 
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    if(self.session.isOpen){
+        [FBSession.activeSession close];
+    }
+    
 }
 
 @end

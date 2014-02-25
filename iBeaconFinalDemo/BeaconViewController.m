@@ -31,7 +31,7 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 @end
 
 @implementation BeaconViewController
-@synthesize lblBeacon, webserviceHelper,isSentToserver;
+@synthesize lblBeacon, webserviceHelper,isSentToserver,performFBRequest;
 
 
 - (void)viewDidLoad
@@ -39,6 +39,8 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     [super viewDidLoad];
     UIDevice *deviceInfo = [[UIDevice alloc]init];
     NSLog(@"HardwareDescription :%@ hardwareString %@  hardware: %d",[deviceInfo hardwareDescription],[deviceInfo hardwareString],[deviceInfo hardware]);
+    self.performFBRequest = [[PerformFBRequest alloc]init];
+    self.performFBRequest.delegate = self;
 //    create sample region with major value defined for one perticular beacon
 //    ESTBeaconRegion* region = [[ESTBeaconRegion alloc] initWithProximityUUID:ESTIMOTE_PROXIMITY_UUID
 //                                                                       major:36452 minor:36010
@@ -52,7 +54,7 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     //region.notifyEntryStateOnDisplay = YES;
 
     
-   
+    //AppDelegate *appDelegate = [[UIApplication sharedApplication]delegate];
     
 }
 
@@ -63,6 +65,12 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 
 - (void)viewDidAppear:(BOOL)animated{
     AppDelegate *appDelegate=[[UIApplication sharedApplication]delegate];
+    if (appDelegate.session.isOpen) {
+        [self.performFBRequest showLoadingWithLabel:@"Loading..." withView:self.view];
+        [self.performFBRequest sendRequestswithGraphPath:@"me?fields=id,name,first_name,last_name,email,picture.width(120).height(59),username"];
+    }
+    
+    
     if(!([appDelegate.login_type isEqualToString:FACEBOOK_LOGIN])){
         LoginViewController *loginViewController=[[LoginViewController alloc]initWithNibName:@"LoginViewController" bundle:nil];
         [self presentLogin:loginViewController];
@@ -73,6 +81,14 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     }
 }
 
+#pragma mark - performFBRequest delegate
+-(void)thisIsmyResult:(id)result {
+    //NSLog(@"this is case 1--->%@",result);
+    NSLog(@"result is :%@",result);
+    [self.performFBRequest.loadProgress hide:YES];
+}
+
+#pragma mark
 -(void)presentLogin:(UIViewController*)viewController{
     [self presentViewController:viewController animated:NO completion:nil];
 }

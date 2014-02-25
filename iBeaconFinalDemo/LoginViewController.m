@@ -27,7 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    [self googleLoginSettings];
 }
 
 - (void)didReceiveMemoryWarning
@@ -37,11 +37,30 @@
 }
 
 
+-(void)googleLoginSettings{
+    //[self reportAuthStatus];
+    GPPSignIn *signIn = [GPPSignIn sharedInstance];
+    //self.signInButton.style=kGPPSignInButtonStyleWide;
+    [self.btnGooglSignIn addTarget:self action:@selector(setLoginType) forControlEvents:UIControlEventTouchUpInside];
+    signIn.shouldFetchGooglePlusUser=YES;
+    signIn.shouldFetchGoogleUserEmail = YES;
+    signIn.clientID=CLIENT_ID;
+    signIn.scopes=[NSArray arrayWithObjects:kGTLAuthScopePlusLogin, nil];
+    signIn.delegate=self;
+    [signIn trySilentAuthentication];
+}
+
+-(void)setLoginType{
+    AppDelegate *appDelegate= [[UIApplication sharedApplication] delegate];
+    appDelegate.login_type=GOOGLE_LOGIN;
+    
+}
+
 #pragma mark -Facebook signIn delegate
 -(IBAction)facebookLoginAction:(id)sender{
     AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
     if(!appDelegate.session.isOpen){
-        appDelegate.session = [[FBSession alloc] init];
+        appDelegate.session = [[FBSession alloc] initWithPermissions:@[@"basic_info",@"email"]];
         appDelegate.login_type=FACEBOOK_LOGIN;
         [appDelegate.session openWithBehavior:FBSessionLoginBehaviorForcingWebView completionHandler:^(FBSession *session,FBSessionState status,NSError *error) {
             
@@ -109,6 +128,9 @@
     // get the app delegate, so that we can reference the session property
     AppDelegate *appDelegate = [[UIApplication sharedApplication]delegate];
     if (appDelegate.session.isOpen) {
+        //[self.performFBRequest showLoadingWithLabel:@"Loading..." withView:self.view];
+        //[self.performFBRequest sendRequestswithGraphPath:@"me?fields=id,name,first_name,last_name,email,picture.width(120).height(59),username"];
+        
         [self dismisLoginController];
     } else {
         //log out
@@ -119,5 +141,6 @@
 -(void)dismisLoginController{
     [self dismissViewControllerAnimated:NO completion:nil];
 }
+
 
 @end
