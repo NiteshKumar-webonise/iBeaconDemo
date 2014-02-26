@@ -48,7 +48,7 @@
     signIn.clientID=CLIENT_ID;
     signIn.scopes=[NSArray arrayWithObjects:kGTLAuthScopePlusLogin, nil];
     signIn.delegate=self;
-    [signIn trySilentAuthentication];
+    //[signIn trySilentAuthentication];
 }
 
 -(void)setLoginType{
@@ -63,7 +63,8 @@
     if(!appDelegate.session.isOpen){
         appDelegate.session = [[FBSession alloc] initWithPermissions:@[@"basic_info",@"email"]];
         appDelegate.login_type=FACEBOOK_LOGIN;
-        [appDelegate.session openWithBehavior:FBSessionLoginBehaviorForcingWebView completionHandler:^(FBSession *session,FBSessionState status,NSError *error) {
+        [appDelegate.session openWithBehavior:FBSessionLoginBehaviorWithNoFallbackToWebView //FBSessionLoginBehaviorForcingWebView
+                            completionHandler:^(FBSession *session,FBSessionState status,NSError *error) {
             
             if(error){
                 
@@ -157,7 +158,8 @@
         [self.mbProgressHUD hide:YES];
         AppDelegate *appDelegate= [[UIApplication sharedApplication] delegate];
         appDelegate.isCallBackAuthenticate=NO;
-        [self dismisLoginController];
+        //[self dismisLoginController];
+        [self reportAuthStatus];
     }
     
 }
