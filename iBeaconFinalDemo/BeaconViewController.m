@@ -13,6 +13,8 @@
 #import "BeaconRegion.h"
 #import "UIDevice+Hardware.h"
 #import "LoginViewController.h"
+#import "UserData.h"
+
 
 #define ESTIMOTE_PROXIMITY_UUID [[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"]
 static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
@@ -66,8 +68,20 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 #pragma mark - performFBRequest delegate
 -(void)thisIsmyResult:(id)result {
     //NSLog(@"this is case 1--->%@",result);
-    NSLog(@"result is :%@",result);
+   // NSLog(@"result is :%@",result);
     [self.performFBRequest.loadProgress hide:YES];
+
+    NSDictionary *userInfo = result;
+    NSLog(@"username: %@ and email : %@",[userInfo valueForKey:@"name"],[userInfo valueForKey:@"email"]);
+
+    ModelContext *modelContext = [ModelContext sharedSingletonObject];
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"UserData" inManagedObjectContext:modelContext.managedObjectContext];
+
+    UserData *userData;// = [[UserData alloc]init];
+    userData = [[UserData alloc]initWithEntity:entityDescription insertIntoManagedObjectContext:modelContext.managedObjectContext];
+    userData.name = [userInfo valueForKey:@"name"];
+    userData.email = [userInfo valueForKey:@"email"];
+    [modelContext insertIntoEntity:@"UserData" entityObject:userData]; //database insertion
 }
 
 #pragma mark

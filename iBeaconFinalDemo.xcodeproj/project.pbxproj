@@ -51,6 +51,9 @@
 		59BB923F18B37AFC0044B8E7 /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BB923418B37AFC0044B8E7 /* AFURLConnectionOperation.m */; };
 		59BB924018B37AFC0044B8E7 /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BB923618B37AFC0044B8E7 /* AFXMLRequestOperation.m */; };
 		59BB924118B37AFC0044B8E7 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BB923818B37AFC0044B8E7 /* UIImageView+AFNetworking.m */; };
+		59C0619718BDF8EE00A0B2C9 /* ModelContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C0619618BDF8EE00A0B2C9 /* ModelContext.m */; };
+		59C0619A18BDF92C00A0B2C9 /* UserDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 59C0619818BDF92C00A0B2C9 /* UserDataModel.xcdatamodeld */; };
+		59C0619D18BDFB3100A0B2C9 /* UserData.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C0619C18BDFB3100A0B2C9 /* UserData.m */; };
 		59F0EA2018BCAA9E00BA43DA /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59F0EA1F18BCAA9E00BA43DA /* AddressBook.framework */; };
 		59F0EA2118BCB01D00BA43DA /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B6914A18BB56E60081BC00 /* GoogleOpenSource.framework */; };
 		59F0EA2218BCB02B00BA43DA /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B6914C18BB56F60081BC00 /* GooglePlus.framework */; };
@@ -143,6 +146,11 @@
 		59BB923618B37AFC0044B8E7 /* AFXMLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AFXMLRequestOperation.m; path = AFNetwork/AFXMLRequestOperation.m; sourceTree = SOURCE_ROOT; };
 		59BB923718B37AFC0044B8E7 /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImageView+AFNetworking.h"; path = "AFNetwork/UIImageView+AFNetworking.h"; sourceTree = SOURCE_ROOT; };
 		59BB923818B37AFC0044B8E7 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+AFNetworking.m"; path = "AFNetwork/UIImageView+AFNetworking.m"; sourceTree = SOURCE_ROOT; };
+		59C0619518BDF8EE00A0B2C9 /* ModelContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelContext.h; sourceTree = "<group>"; };
+		59C0619618BDF8EE00A0B2C9 /* ModelContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelContext.m; sourceTree = "<group>"; };
+		59C0619918BDF92C00A0B2C9 /* UserDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserDataModel.xcdatamodel; sourceTree = "<group>"; };
+		59C0619B18BDFB3100A0B2C9 /* UserData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserData.h; sourceTree = "<group>"; };
+		59C0619C18BDFB3100A0B2C9 /* UserData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserData.m; sourceTree = "<group>"; };
 		59F0EA1F18BCAA9E00BA43DA /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -232,6 +240,7 @@
 		59097AF918AA31C100CB39E1 /* iBeaconFinalDemo */ = {
 			isa = PBXGroup;
 			children = (
+				59C0619E18BDFB4100A0B2C9 /* Model */,
 				59F0EA1918BC7E0A00BA43DA /* AppDelegate */,
 				59B6915018BB5D130081BC00 /* Login */,
 				59F0EA1A18BC7E3B00BA43DA /* iBeacon */,
@@ -252,6 +261,7 @@
 				59097AFF18AA31C100CB39E1 /* main.m */,
 				59097B0118AA31C100CB39E1 /* iBeaconFinalDemo-Prefix.pch */,
 				59B6913E18BB3F130081BC00 /* Constants.h */,
+				59C0619818BDF92C00A0B2C9 /* UserDataModel.xcdatamodeld */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -315,7 +325,7 @@
 		59B6913518BB2B6B0081BC00 /* LibraryWork */ = {
 			isa = PBXGroup;
 			children = (
-				59F0EA1818BC6C4D00BA43DA /* DatabaseHelper */,
+				59C0619418BDF74500A0B2C9 /* DataBaseHelper */,
 				59AD2D0118B4B4F4003E80EC /* DeviceHardware */,
 				59BB91B218B375940044B8E7 /* WebserviceHelper */,
 				59BB91AE18B375500044B8E7 /* ActivityIndicator */,
@@ -383,11 +393,23 @@
 			name = WebserviceHelper;
 			sourceTree = "<group>";
 		};
-		59F0EA1818BC6C4D00BA43DA /* DatabaseHelper */ = {
+		59C0619418BDF74500A0B2C9 /* DataBaseHelper */ = {
 			isa = PBXGroup;
 			children = (
+				59C0619518BDF8EE00A0B2C9 /* ModelContext.h */,
+				59C0619618BDF8EE00A0B2C9 /* ModelContext.m */,
 			);
-			name = DatabaseHelper;
+			name = DataBaseHelper;
+			path = iBeaconFinalDemo;
+			sourceTree = "<group>";
+		};
+		59C0619E18BDFB4100A0B2C9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				59C0619B18BDFB3100A0B2C9 /* UserData.h */,
+				59C0619C18BDFB3100A0B2C9 /* UserData.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		59F0EA1918BC7E0A00BA43DA /* AppDelegate */ = {
@@ -522,8 +544,10 @@
 				59AACF7418AE1EC8009D6475 /* BeaconRegion.m in Sources */,
 				59097B0418AA31C100CB39E1 /* AppDelegate.m in Sources */,
 				59AD2D0418B4B51A003E80EC /* UIDevice+Hardware.m in Sources */,
+				59C0619D18BDFB3100A0B2C9 /* UserData.m in Sources */,
 				59BB923B18B37AFC0044B8E7 /* AFImageRequestOperation.m in Sources */,
 				59BB923D18B37AFC0044B8E7 /* AFNetworkActivityIndicatorManager.m in Sources */,
+				59C0619A18BDF92C00A0B2C9 /* UserDataModel.xcdatamodeld in Sources */,
 				59BB924118B37AFC0044B8E7 /* UIImageView+AFNetworking.m in Sources */,
 				59097B0018AA31C100CB39E1 /* main.m in Sources */,
 				59B6915418BB5D430081BC00 /* PerformFBRequest.m in Sources */,
@@ -531,6 +555,7 @@
 				59097B3B18AA357B00CB39E1 /* iToast.m in Sources */,
 				59BB923918B37AFC0044B8E7 /* AFHTTPClient.m in Sources */,
 				59BB923E18B37AFC0044B8E7 /* AFPropertyListRequestOperation.m in Sources */,
+				59C0619718BDF8EE00A0B2C9 /* ModelContext.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -787,6 +812,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		59C0619818BDF92C00A0B2C9 /* UserDataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				59C0619918BDF92C00A0B2C9 /* UserDataModel.xcdatamodel */,
+			);
+			currentVersion = 59C0619918BDF92C00A0B2C9 /* UserDataModel.xcdatamodel */;
+			path = UserDataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 59097AE818AA31C000CB39E1 /* Project object */;
 }

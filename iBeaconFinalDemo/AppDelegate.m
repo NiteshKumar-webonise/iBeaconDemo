@@ -23,6 +23,8 @@
 //    notification.soundName = UILocalNotificationDefaultSoundName;
 //    notification.applicationIconBadgeNumber=1;
 //    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+    ModelContext *modelContext=[ModelContext sharedSingletonObject];
+    modelContext.resourceURL=@"UserDataModel";
     login_type = NO_LOGIN_TYPE;  //initialising login type null if not logged in at all
     body = @"default";
     return YES;
@@ -60,6 +62,7 @@
     }
     return returnValue;
 }
+
 
 -(void)localNotificationWithAlertBody:(NSString*)msg{
     UIApplicationState state = [[UIApplication sharedApplication] applicationState];

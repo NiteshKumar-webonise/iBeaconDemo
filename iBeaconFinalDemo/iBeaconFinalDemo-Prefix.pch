@@ -18,4 +18,5 @@
     #import <Foundation/Foundation.h>
     #import <FacebookSDK/FacebookSDK.h>
     #import "Constants.h"
+    #import "ModelContext.h"
 #endif
