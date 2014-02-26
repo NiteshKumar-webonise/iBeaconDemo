@@ -167,10 +167,7 @@ static ModelContext  *modolContextInstance=nil;
 
 //insert into table
 -(void)insertIntoEntity:(NSString *)entityName entityObject:(id)object{
-   
-    NSLog(@"%@",entityName);
     NSManagedObject *data  = [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:self.managedObjectContext];
-    NSLog(@"insertNewObjectForEntityForName");
 
     NSDictionary *dict;
     
