@@ -148,7 +148,7 @@ static ModelContext  *modolContextInstance=nil;
             id testObj=[obj valueForKey:key];
             NSMutableDictionary *testDict=[NSMutableDictionary dictionary];
             unsigned testCount;
-            objc_property_t *testProperties=class_copyPropertyList([testObj class], &testCount);
+            objc_property_t *testProperties __attribute__((unused))=class_copyPropertyList([testObj class], &testCount);
             if(testCount>1){
                 testDict=[[self dictionaryWithPropertiesOfObject:testObj] mutableCopy];
                 NSLog(@"%@",testDict);
