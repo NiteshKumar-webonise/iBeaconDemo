@@ -48,6 +48,7 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 }
 
 - (void)viewDidAppear:(BOOL)animated{
+    [self signInSettings];
     AppDelegate *appDelegate=[[UIApplication sharedApplication]delegate];
     if (appDelegate.session.isOpen) {
         [self.performFBRequest showLoadingWithLabel:@"Loading..." withView:self.view];
@@ -63,6 +64,16 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
         webserviceHelper = [[WebserviceHelperClass alloc] init];
         webserviceHelper.delegate = self;
     }
+}
+
+-(void)signInSettings{
+    GPPSignIn *signIn = [GPPSignIn sharedInstance];
+    signIn.shouldFetchGooglePlusUser=YES;
+    signIn.shouldFetchGoogleUserEmail = YES;
+    signIn.clientID=CLIENT_ID;
+    signIn.scopes=[NSArray arrayWithObjects:kGTLAuthScopePlusLogin, nil];
+    signIn.delegate=self;
+    
 }
 
 #pragma mark - performFBRequest delegate
@@ -125,12 +136,52 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 -(IBAction)logout:(id)sender{
      AppDelegate *appDelegate=[[UIApplication sharedApplication]delegate];
      LoginViewController *loginViewController=[[LoginViewController alloc]initWithNibName:@"LoginViewController" bundle:nil];
-    if ([appDelegate.login_type isEqualToString:FACEBOOK_LOGIN]){
+    if([appDelegate.login_type isEqualToString:GOOGLE_LOGIN]){
+        [self googleSignOut];
+        
+    }else if ([appDelegate.login_type isEqualToString:FACEBOOK_LOGIN]){
         if(appDelegate.session.isOpen){
             [appDelegate.session closeAndClearTokenInformation];
         }
         [self presentLogin:loginViewController];
     }
+}
+
+#pragma mark -Google signOut
+- (void)googleSignOut{
+    [self showLoadingWithLabel:@"Log Out.." withView:self.view];
+    [[GPPSignIn sharedInstance] disconnect]; //[[GPPSignIn sharedInstance] signOut];
+}
+
+- (void)showLoadingWithLabel:(NSString *)loadingMsg withView:(UIView *)view{
+    self.mbProgressHUD = [MBProgressHUD showHUDAddedTo:view animated:NO];
+    self.mbProgressHUD.labelText = loadingMsg;
+}
+
+
+#pragma mark -Disconnect from Google+
+
+- (void)didDisconnectWithError:(NSError *)error{
+    if(error){
+        NSLog(@"Got an error here %@",error);
+    }else{
+        [self.mbProgressHUD hide:YES];
+        LoginViewController *loginViewController=[[LoginViewController alloc]initWithNibName:@"LoginViewController" bundle:nil];
+        [self presentLogin:loginViewController];
+    }
+}
+
+
+#pragma mark -signIn delegate
+- (void)finishedWithAuth: (GTMOAuth2Authentication *)auth
+                   error: (NSError *) error
+{
+    if(error){
+        //NSLog(@"Received error %@",error);
+    }else{
+        //NSLog(@"logged in auth object %@",auth);
+    }
+    
 }
 
 #pragma mark - delegate for startRangingBeaconsInRegion

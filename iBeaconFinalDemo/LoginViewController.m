@@ -8,6 +8,7 @@
 
 #import "LoginViewController.h"
 #import "AppDelegate.h"
+#import "UserData.h"
 
 @interface LoginViewController ()
 
@@ -29,6 +30,10 @@
 {
     [super viewDidLoad];
     [self googleLoginSettings];
+    //self.performFBRequest = [[PerformFBRequest alloc]init];
+    //self.performFBRequest.delegate = self;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideLoadingProgress:) name:kHideLoadingNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showLoadingProgress:) name:kShowLoadingNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -54,6 +59,19 @@
 -(void)setLoginType{
     AppDelegate *appDelegate= [[UIApplication sharedApplication] delegate];
     appDelegate.login_type=GOOGLE_LOGIN;
+    
+}
+
+
+#pragma mark -Post Notification methods
+-(void)hideLoadingProgress:(NSNotification *)notification{
+    [self.mbProgressHUD hide:YES];
+}
+
+-(void)showLoadingProgress:(NSNotification *)notification{
+    [self.mbProgressHUD hide:NO];
+    [self showLoadingWithLabel:@"Login in.." withView:self.view];
+    [self setLoginType];   // show loading view only when got call back after google authentication
     
 }
 
@@ -130,6 +148,8 @@
     // get the app delegate, so that we can reference the session property
     AppDelegate *appDelegate = [[UIApplication sharedApplication]delegate];
     if (appDelegate.session.isOpen) {
+        //[self.performFBRequest showLoadingWithLabel:@"Loading..." withView:self.view];
+        //[self.performFBRequest sendRequestswithGraphPath:@"me?fields=id,name,first_name,last_name,email,picture.width(120).height(59),username"];
         [self dismisLoginController];
     } else {
         //log out
@@ -146,6 +166,25 @@
     self.mbProgressHUD.labelText = loadingMsg;
 }
 
+//#pragma mark - performFBRequest delegate
+//-(void)thisIsmyResult:(id)result {
+//    //NSLog(@"this is case 1--->%@",result);
+//    // NSLog(@"result is :%@",result);
+//    [self.performFBRequest.loadProgress hide:YES];
+//    
+//    NSDictionary *userInfo = result;
+//    NSLog(@"username: %@ and email : %@",[userInfo valueForKey:@"name"],[userInfo valueForKey:@"email"]);
+//    
+//    ModelContext *modelContext = [ModelContext sharedSingletonObject];
+//    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"UserData" inManagedObjectContext:modelContext.managedObjectContext];
+//    
+//    UserData *userData;// = [[UserData alloc]init];
+//    userData = [[UserData alloc]initWithEntity:entityDescription insertIntoManagedObjectContext:modelContext.managedObjectContext];
+//    userData.name = [userInfo valueForKey:@"name"];
+//    userData.email = [userInfo valueForKey:@"email"];
+//    [modelContext insertIntoEntity:@"UserData" entityObject:userData]; //database insertion
+//}
+
 
 #pragma mark -Google signIn delegate
 - (void)finishedWithAuth: (GTMOAuth2Authentication *)auth
@@ -158,7 +197,7 @@
         [self.mbProgressHUD hide:YES];
         AppDelegate *appDelegate= [[UIApplication sharedApplication] delegate];
         appDelegate.isCallBackAuthenticate=NO;
-        //[self dismisLoginController];
+        [self dismisLoginController];
         [self reportAuthStatus];
     }
     
@@ -204,6 +243,9 @@
     userName= person.displayName;
     NSLog(@"User name is :%@",userName);
     
+    //save user in database
+    [self saveGoogleUserToDatabase:userName andEmail:emailAddress];
+    
     // Load avatar image asynchronously, in background
     dispatch_queue_t backgroundQueue =
     dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -225,5 +267,15 @@
     });
 }
 
+-(void)saveGoogleUserToDatabase:(NSString*)user andEmail:(NSString*)email{
+    ModelContext *modelContext = [ModelContext sharedSingletonObject];
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"UserData" inManagedObjectContext:modelContext.managedObjectContext];
+    
+    UserData *userData;// = [[UserData alloc]init];
+    userData = [[UserData alloc]initWithEntity:entityDescription insertIntoManagedObjectContext:modelContext.managedObjectContext];
+    userData.name = user;
+    userData.email = email;
+    [modelContext insertIntoEntity:@"UserData" entityObject:userData]; //database insertion
+}
 
 @end
