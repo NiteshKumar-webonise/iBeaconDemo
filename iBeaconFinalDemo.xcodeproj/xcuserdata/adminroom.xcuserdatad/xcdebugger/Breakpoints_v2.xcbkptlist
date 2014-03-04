@@ -10,59 +10,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "iBeaconFinalDemo/BeaconViewController.m"
-            timestampString = "415197700.243294"
+            timestampString = "415199518.296178"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "355"
-            endingLineNumber = "355"
+            startingLineNumber = "356"
+            endingLineNumber = "356"
             landmarkName = "-sendDataForBeacon:"
             landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "iBeaconFinalDemo/ModelContext.m"
-            timestampString = "415113366.430381"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "183"
-            endingLineNumber = "183"
-            landmarkName = "-insertIntoEntity:entityObject:"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[ModelContext insertIntoEntity:entityObject:]"
-                  moduleName = "iBeaconFinalDemo"
-                  urlString = "file://localhost/Users/adminroom/Desktop/experiments/iBeaconFinalDemo/iBeaconFinalDemo/ModelContext.m"
-                  timestampString = "415198829.674488"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "184"
-                  endingLineNumber = "184"
-                  offsetFromSymbolStart = "945">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[ModelContext insertIntoEntity:entityObject:]"
-                  moduleName = "iBeaconFinalDemo"
-                  urlString = "file://localhost/Users/adminroom/Desktop/experiments/iBeaconFinalDemo/iBeaconFinalDemo/ModelContext.m"
-                  timestampString = "415198829.674867"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "184"
-                  endingLineNumber = "184"
-                  offsetFromSymbolStart = "1144">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -94,22 +48,6 @@
             startingLineNumber = "79"
             endingLineNumber = "79"
             landmarkName = "-facebookLoginAction:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "iBeaconFinalDemo/ModelContext.m"
-            timestampString = "415191236.752297"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "169"
-            endingLineNumber = "169"
-            landmarkName = "-insertIntoEntity:entityObject:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -152,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "iBeaconFinalDemo/BeaconViewController.m"
-            timestampString = "415196262.171766"
+            timestampString = "415199518.296178"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "136"
-            endingLineNumber = "136"
+            startingLineNumber = "137"
+            endingLineNumber = "137"
             landmarkName = "-logout:"
             landmarkType = "5">
          </BreakpointContent>
@@ -168,11 +106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "iBeaconFinalDemo/BeaconViewController.m"
-            timestampString = "415196654.81941"
+            timestampString = "415199518.296178"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "152"
-            endingLineNumber = "152"
+            startingLineNumber = "153"
+            endingLineNumber = "153"
             landmarkName = "-googleSignOut"
             landmarkType = "5">
          </BreakpointContent>
@@ -184,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "iBeaconFinalDemo/BeaconViewController.m"
-            timestampString = "415196657.404676"
+            timestampString = "415199518.296178"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "156"
-            endingLineNumber = "156"
+            startingLineNumber = "157"
+            endingLineNumber = "157"
             landmarkName = "-showLoadingWithLabel:withView:"
             landmarkType = "5">
          </BreakpointContent>
@@ -200,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "iBeaconFinalDemo/BeaconViewController.m"
-            timestampString = "415197700.243294"
+            timestampString = "415199518.296178"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "164"
-            endingLineNumber = "164"
+            startingLineNumber = "165"
+            endingLineNumber = "165"
             landmarkName = "-didDisconnectWithError:"
             landmarkType = "5">
          </BreakpointContent>

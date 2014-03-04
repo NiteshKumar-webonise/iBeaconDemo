@@ -93,6 +93,7 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     userData.name = [userInfo valueForKey:@"name"];
     userData.email = [userInfo valueForKey:@"email"];
     [modelContext insertIntoEntity:@"UserData" entityObject:userData]; //database insertion
+    NSLog(@"all data: %@",[modelContext fetchAllRecordsFromEntity:@"UserData"]);
 }
 
 #pragma mark
