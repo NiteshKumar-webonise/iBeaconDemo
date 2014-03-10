@@ -25,6 +25,7 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) CLBeacon* selectedBeacon;
 @property (nonatomic, strong) CLBeacon* firstBeacon;
+@property (nonatomic, strong) CLBeacon* previosBeacon;
 @property (nonatomic, assign) BOOL notificationShown;
 @property (nonatomic, strong) NSDictionary *userBeaconInfo;
 @property (nonatomic, retain) WebserviceHelperClass *webserviceHelper;
@@ -239,13 +240,23 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
                     
             }
         //show static content to user as user comes respective beacon
-        if(isEnteredInRegion){
+       
+        int firstBeaconInteger = [self.firstBeacon.major intValue];
+        int preViousBeaconInteger = [self.previosBeacon.major intValue];
+        BOOL checkBeacon = FALSE;
+        if (firstBeaconInteger != preViousBeaconInteger) {
+            checkBeacon = TRUE;
+        }
+        
+        if(isEnteredInRegion && checkBeacon){
             NSLog(@"I'm vibrating");
+            
             [self.locationManager stopRangingBeaconsInRegion:self.beaconRegion];
             AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
             UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:[self tellBeaconNamefor:self.firstBeacon] message:@"click ok to see my responsive page!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel", nil];
             [alertView show];
             alertView.tag = 13;
+            self.previosBeacon = self.firstBeacon;
             //break;
             //[self actionTakenOnDetectedBeacon:[beacons objectAtIndex:0]];
         }
@@ -461,11 +472,11 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     if(alertView.tag==13 && buttonIndex == 0){
         if(self.firstBeacon){
             [self actionTakenOnDetectedBeacon:self.firstBeacon];
-            self.firstBeacon = nil;
+            //self.firstBeacon = nil;
         }
     }
     [self.locationManager startRangingBeaconsInRegion:self.beaconRegion];
-    
+    //[self initializeRegionMonitoring];
 }
 
 #pragma mark - Webservice delegate method

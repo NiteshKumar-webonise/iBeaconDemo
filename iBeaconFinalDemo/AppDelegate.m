@@ -23,6 +23,7 @@
 //    notification.soundName = UILocalNotificationDefaultSoundName;
 //    notification.applicationIconBadgeNumber=1;
 //    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+    application.applicationIconBadgeNumber = 0;
     if(isAppEnteredInRegion){
         [application openURL:[NSURL URLWithString:@""]];
     }
