@@ -16,7 +16,7 @@
 @property (nonatomic, retain) IBOutlet UILabel *lblBeacon;
 @property (nonatomic, retain) IBOutlet UIButton *btnMonitor;
 @property (nonatomic,retain) MBProgressHUD *mbProgressHUD;
-
+@property BOOL isEnteredInRegion;
 -(IBAction)startMonitoring:(id)sender;
 -(IBAction)logout:(id)sender;
 @end

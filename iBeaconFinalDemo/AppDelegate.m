@@ -12,7 +12,7 @@
 #define TWITTER_LOGIN @"TwitterLogin"
 
 @implementation AppDelegate
-@synthesize body,login_type,isCallBackAuthenticate;
+@synthesize body,login_type,isCallBackAuthenticate,isAppEnteredInRegion;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -23,6 +23,9 @@
 //    notification.soundName = UILocalNotificationDefaultSoundName;
 //    notification.applicationIconBadgeNumber=1;
 //    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+    if(isAppEnteredInRegion){
+        [application openURL:[NSURL URLWithString:@""]];
+    }
     ModelContext *modelContext=[ModelContext sharedSingletonObject];
     modelContext.resourceURL=@"UserDataModel";
     login_type = NO_LOGIN_TYPE;  //initialising login type null if not logged in at all

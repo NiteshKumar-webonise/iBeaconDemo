@@ -15,5 +15,6 @@
 @property (strong, nonatomic) NSString *body;
 @property (strong, nonatomic) FBSession *session;
 @property (strong, nonatomic) NSString *login_type;
+@property BOOL isAppEnteredInRegion;
 @property BOOL isCallBackAuthenticate;
 @end
