@@ -43,12 +43,20 @@
                                     <action selector="logout:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="NPf-Oo-K67"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Enter and Exit Status" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="294" translatesAutoresizingMaskIntoConstraints="NO" id="Uce-Xy-sAY">
+                                <rect key="frame" x="13" y="65" width="294" height="63"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="btnMonitor" destination="EBR-KW-qJT" id="EqS-l3-TiI"/>
                         <outlet property="lblBeacon" destination="Vd7-td-JRj" id="Yqq-PR-mLL"/>
+                        <outlet property="lblEnterAndExitStatus" destination="Uce-Xy-sAY" id="qIp-VQ-Hrh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>

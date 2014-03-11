@@ -36,7 +36,7 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 @end
 
 @implementation BeaconViewController
-@synthesize lblBeacon, webserviceHelper,isSentToserver,performFBRequest,isEnteredInRegion,firstBeacon;
+@synthesize lblBeacon, webserviceHelper,isSentToserver,performFBRequest,isEnteredInRegion,firstBeacon,lblEnterAndExitStatus;
 
 
 - (void)viewDidLoad
@@ -206,41 +206,26 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
             self.firstBeacon = [beacons objectAtIndex:0];
             NSString* labelText;
             NSString *proximity;
-            for (CLBeacon * cBeacon in beacons)
+
+            for(int i=0; i< [beacons count];i++)
             {
-                self.selectedBeacon = cBeacon;
-                labelText = [NSString stringWithFormat:@"UUID: %@, Major: %i, Minor: %i\nRegion: ",
-                                           [self.selectedBeacon.proximityUUID UUIDString],
-                                           [self.selectedBeacon.major unsignedShortValue],
-                                           [self.selectedBeacon.minor unsignedShortValue]];
-                
-                proximity= [self returnProximityRangefor:self.selectedBeacon.proximity]; //recieve proximty range in string
-                labelText = [[labelText stringByAppendingString:proximity] stringByAppendingString:@", "];
-                labelText = [labelText stringByAppendingString: [self tellBeaconNamefor:self.selectedBeacon]];
-                NSString *distance = [NSString stringWithFormat:@", Distance:%f", self.selectedBeacon.accuracy];
-                labelText = [labelText stringByAppendingString:distance];
-                self.lblBeacon.text = labelText;
-                self.timeSpent = [self.startTime timeIntervalSinceDate:self.endTime];
-                NSLog(@"time spents : %f",self.timeSpent);
-                if(self.timeSpent>20 && isSentToserver==NO){
-                    //[self sendDataForBeacon:self.selectedBeacon];
-                    isSentToserver=YES;//it should be set in responce .. got from server
-                }
-                
-                
-                UIApplicationState state = [[UIApplication sharedApplication] applicationState];
-                if(state==UIApplicationStateBackground||state==UIApplicationStateInactive){
-                    [self localNotificationWithAlertBody:@"There is beacon near by you!"];
-                    if(state==UIApplicationStateBackground){
-                        NSLog(@"didRangeBeacons is in background mode");
-                    }else if(state==UIApplicationStateInactive){
-                        NSLog(@"didRangeBeacons is in Inactive mode");
-                    }
-                }
+                if(i==0){
+                    self.selectedBeacon = [beacons objectAtIndex:0];
+                    labelText = [NSString stringWithFormat:@"UUID: %@, Major: %i, Minor: %i\nRegion: ",
+                                 [self.selectedBeacon.proximityUUID UUIDString],
+                                 [self.selectedBeacon.major unsignedShortValue],
+                                 [self.selectedBeacon.minor unsignedShortValue]];
                     
+                    proximity= [self returnProximityRangefor:self.selectedBeacon.proximity]; //recieve proximty range in string
+                    labelText = [[labelText stringByAppendingString:proximity] stringByAppendingString:@", "];
+                    labelText = [labelText stringByAppendingString: [self tellBeaconNamefor:self.selectedBeacon]];
+                    NSString *distance = [NSString stringWithFormat:@", Distance:%f", self.selectedBeacon.accuracy];
+                    labelText = [labelText stringByAppendingString:distance];
+                    self.lblBeacon.text = labelText;
+                }
+                break;
             }
         //show static content to user as user comes respective beacon
-       
         int firstBeaconInteger = [self.firstBeacon.major intValue];
         int preViousBeaconInteger = [self.previosBeacon.major intValue];
         BOOL checkBeacon = FALSE;
@@ -248,11 +233,15 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
             checkBeacon = TRUE;
         }
         
-        if(isEnteredInRegion && checkBeacon){
+        if(isEnteredInRegion && checkBeacon){  // checking if new detected beacon is previos one, if yes ignore it.
+            [self rangeNotificationWithBeaconName:[self tellBeaconNamefor:self.selectedBeacon]];
             NSLog(@"I'm vibrating");
             
             [self.locationManager stopRangingBeaconsInRegion:self.beaconRegion];
-            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+            
+            //AudioServicesPlaySystemSound(kSystemSoundID_Vibrate); //for vibrating
+            AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+            
             UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:[self tellBeaconNamefor:self.firstBeacon] message:@"click ok to see my responsive page!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel", nil];
             [alertView show];
             alertView.tag = 13;
@@ -263,12 +252,12 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 
     }else{
         self.lblBeacon.text = @"currently there is no beacons nearby";
+        [self localNotificationWithAlertBody:@"currently there is no beacons nearby"];
         isEnteredInRegion = YES;
         UIApplicationState state = [[UIApplication sharedApplication] applicationState];
         if(state==UIApplicationStateBackground||state==UIApplicationStateInactive){
             if(state==UIApplicationStateBackground){
                 NSLog(@"didRangeBeacons is in background mode");
-                [self localNotificationWithAlertBody:@"currently there is no beacons nearby"];
             }else if(state==UIApplicationStateInactive){
                 NSLog(@"didRangeBeacons is in Inactive mode");
             }
@@ -276,6 +265,19 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     }
 }
 
+
+-(void)rangeNotificationWithBeaconName:(NSString*)beaconName{
+    [self localNotificationWithAlertBody:[NSString stringWithFormat:@"There is %@ beacon near by you!",beaconName]];    
+    UIApplicationState state = [[UIApplication sharedApplication] applicationState];
+    if(state==UIApplicationStateBackground||state==UIApplicationStateInactive){
+        
+        if(state==UIApplicationStateBackground){
+            NSLog(@"didRangeBeacons is in background mode");
+        }else if(state==UIApplicationStateInactive){
+            NSLog(@"didRangeBeacons is in Inactive mode");
+        }
+    }
+}
 
 -(NSString*)returnProximityRangefor:(NSInteger)proximityValue{
     NSString *proximity;
@@ -312,15 +314,16 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 }
 
 -(void)actionTakenOnDetectedBeacon:(CLBeacon*)beacon{
-    if([beacon.major unsignedShortValue]==36452 && [beacon.minor unsignedShortValue]== 36010 && beacon.proximity!=CLProximityUnknown && isEnteredInRegion ){
+    //&& isEnteredInRegion
+    if([beacon.major unsignedShortValue]==36452 && [beacon.minor unsignedShortValue]== 36010 && beacon.proximity!=CLProximityUnknown){
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://smart.weboapps.com/tags/100610"]];
-    }else if ([beacon.major unsignedShortValue]==36015 && [beacon.minor unsignedShortValue]== 56457 && beacon.proximity!=CLProximityUnknown && isEnteredInRegion){
+    }else if ([beacon.major unsignedShortValue]==36015 && [beacon.minor unsignedShortValue]== 56457 && beacon.proximity!=CLProximityUnknown){
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://smart.weboapps.com/tags/100611"]];
-    }else if ([beacon.major unsignedShortValue]==12830 && [beacon.minor unsignedShortValue]== 49469 && beacon.proximity!=CLProximityUnknown && isEnteredInRegion){
+    }else if ([beacon.major unsignedShortValue]==12830 && [beacon.minor unsignedShortValue]== 49469 && beacon.proximity!=CLProximityUnknown){
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://smart.weboapps.com/tags/100608"]];
     }
     //[self.locationManager startRangingBeaconsInRegion:self.beaconRegion];
-    isEnteredInRegion = NO;
+    //isEnteredInRegion = NO;
 }
 
 
@@ -332,12 +335,12 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     if(state == CLRegionStateInside)
     {
         NSLog(@"in didDetermineState: CLRegionStateInside");
-        [self localNotificationWithAlertBody:@"didDetermineState:inside"];
+        //[self localNotificationWithAlertBody:@"didDetermineState:inside"];
         [self.locationManager startRangingBeaconsInRegion:self.beaconRegion];
     }
     else
     {   NSLog(@"in didDetermineState: CLRegionStateOutside or CLRegionStateUnknown");
-        [self localNotificationWithAlertBody:@"didDetermineState:outside"];
+        //[self localNotificationWithAlertBody:@"didDetermineState:outside"];
     }
 }
 
@@ -348,8 +351,11 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     // present local notification
     [self localNotificationWithAlertBody:@"You have entered the iBeacon area"];
     
-    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"You have entered the iBeacon area" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-    [alert show];
+//    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"You have entered the iBeacon area" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+//    [alert show];
+    
+    lblEnterAndExitStatus.text = @"You have entered the iBeacon area";
+    
     isEnteredInRegion = YES;
     self.startTime = [NSDate date]; //record time when user enters in the room
     [self.locationManager startRangingBeaconsInRegion:self.beaconRegion];
@@ -361,13 +367,16 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 {
     // present local notification
     [self localNotificationWithAlertBody:@"You have exited the iBeacon area"];
-    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"You have exited the iBeacon area" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-    [alert show];
+//    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"You have exited the iBeacon area" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+//    [alert show];
+    
+    lblEnterAndExitStatus.text = @"You have exited the iBeacon area";
+    
     isEnteredInRegion = NO;
     self.endTime = [NSDate date]; //record time when user exits from the room
     self.timeSpent = [self.endTime timeIntervalSinceDate:self.startTime];
      //NSLog(@"time spent when exit : %f",self.timeSpent);
-    [self sendDataForBeacon:self.selectedBeacon];
+    //[self sendDataForBeacon:self.selectedBeacon];  // send data to server when user exits region
     // iPhone/iPad left beacon zone
     [manager stopRangingBeaconsInRegion:self.beaconRegion];
     
@@ -425,7 +434,7 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
         
         UILocalNotification *notification = [[UILocalNotification alloc] init];
         notification.alertBody = body;
-        notification.alertAction = @"Show me the item";
+        notification.alertAction = @"Swipe me to see detail!";
         notification.soundName = UILocalNotificationDefaultSoundName;
         notification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber] + 1;
         [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
@@ -433,6 +442,13 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     }else{
 //        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:body delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 //        [alert show];
+        UILocalNotification *notification = [[UILocalNotification alloc] init];
+        notification.alertBody = body;
+        notification.alertAction = @"Swipe me to see detail!";
+        notification.soundName = UILocalNotificationDefaultSoundName;
+        //notification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber] + 1;
+        [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+        NSLog(@"in notification badge number is %ld",(long)notification.applicationIconBadgeNumber);
         NSLog(@"app is in forground mode");
     }
 }
@@ -472,8 +488,10 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
     if(alertView.tag==13 && buttonIndex == 0){
         if(self.firstBeacon){
             [self actionTakenOnDetectedBeacon:self.firstBeacon];
-            //self.firstBeacon = nil;
+          self.previosBeacon = nil;
         }
+    }else if (alertView.tag==13 && buttonIndex == 1){
+          self.previosBeacon = nil;
     }
     [self.locationManager startRangingBeaconsInRegion:self.beaconRegion];
     //[self initializeRegionMonitoring];
@@ -488,6 +506,33 @@ static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 -(void)apiCallError:(NSError *)error andServiceTag:(int)tag {
   
 }
+
+
+/*for (CLBeacon * cBeacon in beacons)
+ {
+ for(int i=0; i< [beacons count];i++)
+ 
+ self.selectedBeacon = cBeacon;
+ labelText = [NSString stringWithFormat:@"UUID: %@, Major: %i, Minor: %i\nRegion: ",
+ [self.selectedBeacon.proximityUUID UUIDString],
+ [self.selectedBeacon.major unsignedShortValue],
+ [self.selectedBeacon.minor unsignedShortValue]];
+ 
+ proximity= [self returnProximityRangefor:self.selectedBeacon.proximity]; //recieve proximty range in string
+ labelText = [[labelText stringByAppendingString:proximity] stringByAppendingString:@", "];
+ labelText = [labelText stringByAppendingString: [self tellBeaconNamefor:self.selectedBeacon]];
+ NSString *distance = [NSString stringWithFormat:@", Distance:%f", self.selectedBeacon.accuracy];
+ labelText = [labelText stringByAppendingString:distance];
+ self.lblBeacon.text = labelText;
+ self.timeSpent = [self.startTime timeIntervalSinceDate:self.endTime];
+ NSLog(@"time spents : %f",self.timeSpent);
+ if(self.timeSpent>20 && isSentToserver==NO){
+ //[self sendDataForBeacon:self.selectedBeacon];
+ isSentToserver=YES;//it should be set in responce .. got from server
+ }
+ 
+ }*/
+
 
 
 @end

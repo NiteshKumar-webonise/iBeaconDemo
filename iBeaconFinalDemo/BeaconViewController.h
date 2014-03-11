@@ -14,6 +14,7 @@
 @interface BeaconViewController : UIViewController <CLLocationManagerDelegate, WebserviceDelegate, PerformFBRequestResponce,GPPSignInDelegate>
 @property (nonatomic, retain) PerformFBRequest *performFBRequest;
 @property (nonatomic, retain) IBOutlet UILabel *lblBeacon;
+@property (nonatomic, retain) IBOutlet UILabel *lblEnterAndExitStatus;
 @property (nonatomic, retain) IBOutlet UIButton *btnMonitor;
 @property (nonatomic,retain) MBProgressHUD *mbProgressHUD;
 @property BOOL isEnteredInRegion;
