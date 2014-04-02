@@ -24,7 +24,10 @@ UITableViewDataSource, UITableViewDelegate >
 @property (nonatomic, retain) IBOutlet UIButton *btnChangeUUID;
 @property (nonatomic, weak) IBOutlet UITableView *beaconTableView;
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollViewCustom;
-
+@property (nonatomic, strong) ESTBeacon* firstBeacon;
+@property (nonatomic, strong) ESTBeacon* previosBeacon;
+@property (nonatomic, retain) IBOutlet UILabel *lblEnterAndExitStatus;
+@property BOOL isEnteredInRegion;
 -(IBAction)refreshMonitoring:(id)sender;
 -(IBAction)changeUUID:(id)sender;
 @end

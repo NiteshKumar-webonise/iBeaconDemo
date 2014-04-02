@@ -20,14 +20,16 @@ static CGPoint const kActivityIndicatorPosition = (CGPoint){205, 3};
 static int const kCellHeight = 52;
 
 @implementation BeaconViewController
-@synthesize lblBeacon,beaconRegion, btnRefreshMonitoring,locationManager, scrollViewCustom;
+@synthesize lblBeacon,beaconRegion, btnRefreshMonitoring,locationManager, scrollViewCustom ,firstBeacon, previosBeacon, lblEnterAndExitStatus, isEnteredInRegion;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     UIDevice *DeviceInfo = [[UIDevice alloc]init];
     NSLog(@"device info :%@",[DeviceInfo hardwareString]) ;
-    if([DeviceInfo hardware]==6){
+    if(([DeviceInfo hardware]>=4 && [DeviceInfo hardware]<=6)||([DeviceInfo hardware]>=23 && [DeviceInfo hardware]<=35)){
         scrollViewCustom.contentSize = CGSizeMake(320,590);
+    }else if ([DeviceInfo hardware]>=7 && [DeviceInfo hardware]<=11){
+        scrollViewCustom.contentSize = CGSizeMake(320,568);
     }
     [self.navigationController.navigationBar setHidden:YES];
     // initialize location manager
@@ -35,12 +37,14 @@ static int const kCellHeight = 52;
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.delegate = self;
     }
-    [self startMonitor];
+    isEnteredInRegion = YES;
+    //[self startMonitor];
 }
 
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:NO];
-    
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:NO];
+    [self startMonitor];
 }
 
 - (void)startMonitor{
@@ -101,13 +105,13 @@ static int const kCellHeight = 52;
 {
     if(state == CLRegionStateInside)
     {
-        [self localNotificationWithAlertBody:@"didDetermineState: inside"];
+        NSLog(@"in didDetermineState: CLRegionStateInside");
         [self.beaconManager startRangingBeaconsInRegion:region];
     }
     else
     {
-        [self localNotificationWithAlertBody:@"didDetermineState: outside"];
-        [self.beaconManager stopRangingBeaconsInRegion:region];
+        NSLog(@"in didDetermineState: CLRegionStateOutside or CLRegionStateUnknown");
+        //[self.beaconManager stopRangingBeaconsInRegion:region];
     }
 }
 
@@ -116,7 +120,8 @@ static int const kCellHeight = 52;
       didEnterRegion:(ESTBeaconRegion *)region
 {
     // present local notification
-    [self localNotificationWithAlertBody:@"didEnterRegion"];
+    [self localNotificationWithAlertBody:@"You have entered the iBeacon area"];
+    isEnteredInRegion = YES;
     // iPhone/iPad entered beacon zone
     [self.beaconManager startRangingBeaconsInRegion:region];
     
@@ -126,9 +131,11 @@ static int const kCellHeight = 52;
        didExitRegion:(ESTBeaconRegion *)region
 {
     // present local notification
-    [self localNotificationWithAlertBody:@"didExitRegion"];
+    [self localNotificationWithAlertBody:@"You have exited the iBeacon area"];
+    self.previosBeacon=nil;
+    isEnteredInRegion = NO;
     // iPhone/iPad left beacon zone
-    [self.beaconManager stopMonitoringForRegion:region];
+    [self.beaconManager stopRangingBeaconsInRegion:region];
     
 }
 
@@ -162,11 +169,9 @@ static int const kCellHeight = 52;
 -(void)statusLabelForBeacons:(NSArray*)beacons{
     if([beacons count] > 0)
     {
-        
         NSString* labelText;
-        for (ESTBeacon* cBeacon in beacons)
-        {
-            self.selectedBeacon = cBeacon;
+        self.selectedBeacon = [beacons objectAtIndex:0];
+        self.lblEnterAndExitStatus.text =[NSString stringWithFormat:@"%@ Beacon is near by you", [self tellBeaconNamefor:self.selectedBeacon]];
             labelText = [NSString stringWithFormat:@"UUID: %@, Major: %i, Minor: %i\nRegion: ",
                          [self.selectedBeacon.proximityUUID UUIDString],
                          [self.selectedBeacon.major unsignedShortValue],
@@ -198,17 +203,37 @@ static int const kCellHeight = 52;
             labelText = [labelText stringByAppendingString:[NSString stringWithFormat:@", Distance:%@",self.selectedBeacon.distance]];
             self.lblBeacon.text = labelText;
             
+        int currentBeaconInteger = [self.selectedBeacon.major intValue];
+        int preViousBeaconInteger = [self.previosBeacon.major intValue];
+        BOOL checkBeacon = FALSE;
+        if (currentBeaconInteger != preViousBeaconInteger) {
+            checkBeacon = TRUE;
         }
-        UIApplicationState state = [[UIApplication sharedApplication] applicationState];
-        if(state==UIApplicationStateBackground||state==UIApplicationStateInactive){
-            NSLog(@"in background : in didRangeBeacons");
-        }else{
-            NSLog(@"in foreground : in didRangeBeacons");
+         //[self rangeNotificationWithBeaconName:[self tellBeaconNamefor:self.selectedBeacon]];
+        if(isEnteredInRegion && checkBeacon){  // checking if new detected beacon is previos one, if yes ignore it.
+           [self rangeNotificationWithBeaconName:[self tellBeaconNamefor:self.selectedBeacon]];
         }
         
+        self.previosBeacon = self.selectedBeacon; //this is handling race condition for notification
         
     }else{
-        [self localNotificationWithAlertBody:@"currently there is no beacon"];
+        self.lblEnterAndExitStatus.text = @"Please wait ..! Status is going to change";
+        self.lblBeacon.text = @"currently there is no beacons nearby";
+        isEnteredInRegion = YES;
+        //[self localNotificationWithAlertBody:@"currently there is no beacon"];
+    }
+}
+
+-(void)rangeNotificationWithBeaconName:(NSString*)beaconName{
+    [self localNotificationWithAlertBody:[NSString stringWithFormat:@"There is %@ beacon near by you!",beaconName]];
+    UIApplicationState state = [[UIApplication sharedApplication] applicationState];
+    if(state==UIApplicationStateBackground||state==UIApplicationStateInactive){
+        
+        if(state==UIApplicationStateBackground){
+            NSLog(@"didRangeBeacons is in background mode");
+        }else if(state==UIApplicationStateInactive){
+            NSLog(@"didRangeBeacons is in Inactive mode");
+        }
     }
 }
 

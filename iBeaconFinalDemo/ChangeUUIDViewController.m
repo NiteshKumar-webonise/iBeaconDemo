@@ -101,7 +101,6 @@
                     NSLog(@"written new UUID and  %@", value);
                 }
                 
-                
             }];
         }
     }
@@ -118,7 +117,7 @@
     }
     else
     {
-        [self.beaconManager stopRangingBeaconsInRegion:region];
+        //[self.beaconManager stopRangingBeaconsInRegion:region];
     }
 }
 
