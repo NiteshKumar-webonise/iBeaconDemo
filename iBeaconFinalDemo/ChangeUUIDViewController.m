@@ -1,13 +1,13 @@
-//
+
 //  ChangeUUIDViewController.m
 //  iBeaconFinalDemo
-//
-//  Created by Webonise on 20/02/14.
-//  Copyright (c) 2014 Webonise. All rights reserved.
-//
+
+
+
 
 #import "ChangeUUIDViewController.h"
 #import "iToast.h"
+#import "BeaconViewController.h"
 
 @interface ChangeUUIDViewController ()
 
@@ -142,6 +142,13 @@
     if(alertView.tag==8 && buttonIndex==0 ){
         //[self startMonitor]; // this method calls--> startMonitoring-->didEnetrRegion-->startRangingBeaconsInRegion-->didRangeBeacons
         NSLog(@"you are at right place");
+        for(UIViewController *viewController in [self.navigationController viewControllers]){
+            if(viewController isMemberOfClass:[BeaconViewController class]){
+                BeaconViewController *beaconViewController = viewController;
+            }
+        }
+    
+        
         //if([txtFeild.text length])
            //[self showToastWithText:txtFeild.text];
         

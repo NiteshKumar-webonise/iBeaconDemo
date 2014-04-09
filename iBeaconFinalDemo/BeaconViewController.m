@@ -1,10 +1,7 @@
 //
 //  ViewController.m
 //  iBeaconFinalDemo
-//
-//  Created by Webonise on 11/02/14.
-//  Copyright (c) 2014 Webonise. All rights reserved.
-//
+
 
 #import "BeaconViewController.h"
 #import "ChangeUUIDViewController.h"
@@ -403,6 +400,10 @@ static int const kCellHeight = 52;
 //}
 
 -(IBAction)changeUUID:(id)sender{
+    
+    //[self.beaconManager stopMonitoringForRegion:self.beaconRegion];
+    //[self.beaconManager stopRangingBeaconsInRegion:self.beaconRegion];
+    self.beaconRegion = nil;
     ChangeUUIDViewController *changeUUIDViewController = [[ChangeUUIDViewController alloc]initWithNibName:@"ChangeUUIDViewController" bundle:Nil];
     [self.navigationController pushViewController:changeUUIDViewController animated:YES];
 }

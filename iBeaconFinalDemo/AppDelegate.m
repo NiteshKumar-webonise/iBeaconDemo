@@ -1,10 +1,7 @@
 //
 //  AppDelegate.m
 //  iBeaconFinalDemo
-//
-//  Created by Webonise on 11/02/14.
-//  Copyright (c) 2014 Webonise. All rights reserved.
-//
+
 
 #import "AppDelegate.h"
 
