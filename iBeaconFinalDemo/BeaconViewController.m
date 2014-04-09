@@ -17,7 +17,7 @@ static CGPoint const kActivityIndicatorPosition = (CGPoint){205, 3};
 static int const kCellHeight = 52;
 
 @implementation BeaconViewController
-@synthesize lblBeacon,beaconRegion, btnRefreshMonitoring,locationManager, scrollViewCustom ,firstBeacon, previosBeacon, lblEnterAndExitStatus, isEnteredInRegion;
+@synthesize lblBeacon,beaconRegion, btnRefreshMonitoring,locationManager, scrollViewCustom ,firstBeacon, previosBeacon, lblEnterAndExitStatus, isEnteredInRegion,isUUIDgoingToChange;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -88,6 +88,13 @@ static int const kCellHeight = 52;
      didRangeBeacons:(NSArray *)beacons
             inRegion:(ESTBeaconRegion *)region
 {
+    if(isUUIDgoingToChange){
+        if([self isValidBeacon:[beacons objectAtIndex:0]]){
+            NSLog(@"you have got right beacon to change!");
+        }
+        NSLog(@"uuid is going to change!");
+        isUUIDgoingToChange=NO;
+    }
     [self statusLabelForBeacons:beacons];
     [self detectedBeaconUpdateAtRunTimeforBeacons:beacons];
     //maintain table height
@@ -406,6 +413,16 @@ static int const kCellHeight = 52;
     self.beaconRegion = nil;
     ChangeUUIDViewController *changeUUIDViewController = [[ChangeUUIDViewController alloc]initWithNibName:@"ChangeUUIDViewController" bundle:Nil];
     [self.navigationController pushViewController:changeUUIDViewController animated:YES];
+}
+
+-(BOOL)isValidBeacon:(ESTBeacon*)beacon{
+    BOOL flag = NO;
+    int major = [beacon.major intValue];
+    int minor = [beacon.minor intValue];
+    if([beacon.proximityUUID isEqual:[[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"]] && (major == 12830) && (minor == 49469)){
+        flag = YES;
+    }
+    return flag;
 }
 
 #pragma mark - Table View methods

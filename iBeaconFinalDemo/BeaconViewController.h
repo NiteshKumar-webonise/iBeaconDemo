@@ -25,6 +25,7 @@ UITableViewDataSource, UITableViewDelegate >
 @property (nonatomic, strong) ESTBeacon* previosBeacon;
 @property (nonatomic, retain) IBOutlet UILabel *lblEnterAndExitStatus;
 @property BOOL isEnteredInRegion;
+@property BOOL isUUIDgoingToChange;
 -(IBAction)refreshMonitoring:(id)sender;
 -(IBAction)changeUUID:(id)sender;
 @end

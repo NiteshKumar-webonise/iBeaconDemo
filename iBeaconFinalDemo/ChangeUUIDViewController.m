@@ -143,9 +143,11 @@
         //[self startMonitor]; // this method calls--> startMonitoring-->didEnetrRegion-->startRangingBeaconsInRegion-->didRangeBeacons
         NSLog(@"you are at right place");
         for(UIViewController *viewController in [self.navigationController viewControllers]){
-            if(viewController isMemberOfClass:[BeaconViewController class]){
-                BeaconViewController *beaconViewController = viewController;
+            if([viewController isMemberOfClass:[BeaconViewController class]]){
+                BeaconViewController *beaconViewController = (BeaconViewController*)viewController;
+                beaconViewController.isUUIDgoingToChange = YES;
             }
+            
         }
     
         
