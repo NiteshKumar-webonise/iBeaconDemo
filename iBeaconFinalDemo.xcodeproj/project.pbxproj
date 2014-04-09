@@ -25,6 +25,8 @@
 		59097B3318AA338C00CB39E1 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59097B3218AA338C00CB39E1 /* CoreLocation.framework */; };
 		59097B3518AA339900CB39E1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59097B3418AA339900CB39E1 /* SystemConfiguration.framework */; };
 		59097B3B18AA357B00CB39E1 /* iToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 59097B3A18AA357B00CB39E1 /* iToast.m */; };
+		591A2C6518F58CD500241CC7 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 591A2C6418F58CD500241CC7 /* Default@2x.png */; };
+		591A2C6718F58D0A00241CC7 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 591A2C6618F58D0A00241CC7 /* Default-568h@2x.png */; };
 		59AB88BF18B76E0D00F86424 /* UIDevice+Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 59AB88BE18B76E0D00F86424 /* UIDevice+Hardware.m */; };
 		59B9F16618ACC026002F9E71 /* libEstimoteSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B9F16518ACC026002F9E71 /* libEstimoteSDK.a */; };
 		59C6965418B620150023974E /* ChangeUUIDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C6965218B620150023974E /* ChangeUUIDViewController.m */; };
@@ -71,6 +73,8 @@
 		59097B3418AA339900CB39E1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		59097B3918AA357B00CB39E1 /* iToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iToast.h; sourceTree = "<group>"; };
 		59097B3A18AA357B00CB39E1 /* iToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iToast.m; sourceTree = "<group>"; };
+		591A2C6418F58CD500241CC7 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		591A2C6618F58D0A00241CC7 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		59AB88BD18B76E0D00F86424 /* UIDevice+Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Hardware.h"; sourceTree = "<group>"; };
 		59AB88BE18B76E0D00F86424 /* UIDevice+Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Hardware.m"; sourceTree = "<group>"; };
 		59B9F16518ACC026002F9E71 /* libEstimoteSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEstimoteSDK.a; path = EstimoteSDK/libEstimoteSDK.a; sourceTree = "<group>"; };
@@ -168,6 +172,8 @@
 		59097AFA18AA31C100CB39E1 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				591A2C6418F58CD500241CC7 /* Default@2x.png */,
+				591A2C6618F58D0A00241CC7 /* Default-568h@2x.png */,
 				59097AFB18AA31C100CB39E1 /* iBeaconFinalDemo-Info.plist */,
 				59097AFC18AA31C100CB39E1 /* InfoPlist.strings */,
 				59097AFF18AA31C100CB39E1 /* main.m */,
@@ -316,8 +322,10 @@
 			files = (
 				59097B0C18AA31C100CB39E1 /* Images.xcassets in Resources */,
 				59C6965518B620150023974E /* ChangeUUIDViewController.xib in Resources */,
+				591A2C6518F58CD500241CC7 /* Default@2x.png in Resources */,
 				59097AFE18AA31C100CB39E1 /* InfoPlist.strings in Resources */,
 				59097B0718AA31C100CB39E1 /* Main.storyboard in Resources */,
+				591A2C6718F58D0A00241CC7 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
