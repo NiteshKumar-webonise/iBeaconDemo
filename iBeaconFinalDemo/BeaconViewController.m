@@ -224,7 +224,7 @@ static int const kCellHeight = 52;
         self.lblEnterAndExitStatus.text = @"Please wait ..! Status is going to change";
         self.lblBeacon.text = @"currently there is no beacons nearby";
         isEnteredInRegion = YES;
-        //[self localNotificationWithAlertBody:@"currently there is no beacon"];
+        [self localNotificationWithAlertBody:@"currently there is no beacon"];
     }
 }
 
@@ -410,9 +410,9 @@ static int const kCellHeight = 52;
     
     //[self.beaconManager stopMonitoringForRegion:self.beaconRegion];
     //[self.beaconManager stopRangingBeaconsInRegion:self.beaconRegion];
-    self.beaconRegion = nil;
-    ChangeUUIDViewController *changeUUIDViewController = [[ChangeUUIDViewController alloc]initWithNibName:@"ChangeUUIDViewController" bundle:Nil];
-    [self.navigationController pushViewController:changeUUIDViewController animated:YES];
+    //self.beaconRegion = nil;
+    //ChangeUUIDViewController *changeUUIDViewController = [[ChangeUUIDViewController alloc]initWithNibName:@"ChangeUUIDViewController" bundle:Nil];
+    //[self.navigationController pushViewController:changeUUIDViewController animated:YES];
 }
 
 -(BOOL)isValidBeacon:(ESTBeacon*)beacon{
