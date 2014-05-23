@@ -224,7 +224,7 @@ static int const kCellHeight = 52;
         self.lblEnterAndExitStatus.text = @"Please wait ..! Status is going to change";
         self.lblBeacon.text = @"currently there is no beacons nearby";
         isEnteredInRegion = YES;
-        [self localNotificationWithAlertBody:@"currently there is no beacon"];
+        //[self localNotificationWithAlertBody:@"currently there is no beacon"];
     }
 }
 
@@ -394,7 +394,8 @@ static int const kCellHeight = 52;
 
 -(IBAction)refreshMonitoring:(id)sender{
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-    [self.beaconManager startMonitoringForRegion:self.beaconRegion];
+    [self startMonitor];
+    //[self.beaconManager startMonitoringForRegion:self.beaconRegion];
 }
 
 //-(IBAction)startMonitoring:(id)sender{
