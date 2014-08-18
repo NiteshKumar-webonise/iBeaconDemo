@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		52BA01421999018D0059571F /* libEstimoteSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B9F16518ACC026002F9E71 /* libEstimoteSDK.a */; };
 		59097AF418AA31C100CB39E1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59097AF318AA31C100CB39E1 /* Foundation.framework */; };
 		59097AF618AA31C100CB39E1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59097AF518AA31C100CB39E1 /* CoreGraphics.framework */; };
 		59097AF818AA31C100CB39E1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59097AF718AA31C100CB39E1 /* UIKit.framework */; };
@@ -27,7 +28,6 @@
 		59097B3B18AA357B00CB39E1 /* iToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 59097B3A18AA357B00CB39E1 /* iToast.m */; };
 		591A2C6518F58CD500241CC7 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 591A2C6418F58CD500241CC7 /* Default@2x.png */; };
 		59AB88BF18B76E0D00F86424 /* UIDevice+Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 59AB88BE18B76E0D00F86424 /* UIDevice+Hardware.m */; };
-		59B9F16618ACC026002F9E71 /* libEstimoteSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B9F16518ACC026002F9E71 /* libEstimoteSDK.a */; };
 		59C6965418B620150023974E /* ChangeUUIDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C6965218B620150023974E /* ChangeUUIDViewController.m */; };
 		59C6965518B620150023974E /* ChangeUUIDViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 59C6965318B620150023974E /* ChangeUUIDViewController.xib */; };
 		59C6965818B63A7D0023974E /* EstimoteBeaconRegion.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C6965718B63A7D0023974E /* EstimoteBeaconRegion.m */; };
@@ -92,7 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				59B9F16618ACC026002F9E71 /* libEstimoteSDK.a in Frameworks */,
+				52BA01421999018D0059571F /* libEstimoteSDK.a in Frameworks */,
 				59097B3518AA339900CB39E1 /* SystemConfiguration.framework in Frameworks */,
 				59097B3318AA338C00CB39E1 /* CoreLocation.framework in Frameworks */,
 				59097B3118AA338000CB39E1 /* CoreBluetooth.framework in Frameworks */,
@@ -496,6 +496,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/adminroom/Desktop/experiments/iBeaconFinalDemo/EstimoteSDK,
+					"$(PROJECT_DIR)/EstimoteSDK",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "7681D5A9-644D-4834-8E42-1C7B32F3A881";
@@ -521,6 +522,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/adminroom/Desktop/experiments/iBeaconFinalDemo/EstimoteSDK,
+					"$(PROJECT_DIR)/EstimoteSDK",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "7681D5A9-644D-4834-8E42-1C7B32F3A881";

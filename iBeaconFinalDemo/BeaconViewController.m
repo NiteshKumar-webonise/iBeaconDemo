@@ -98,7 +98,7 @@ static int const kCellHeight = 52;
     [self statusLabelForBeacons:beacons];
     [self detectedBeaconUpdateAtRunTimeforBeacons:beacons];
     //maintain table height
-    int tableContentHeight = kCellHeight*[self.detectedBeacons count];
+    int tableContentHeight = kCellHeight *[self.detectedBeacons count];
     self.beaconTableView.contentSize = CGSizeMake(320, tableContentHeight);
     //[self.beaconTableView reloadData];
 }
@@ -174,7 +174,7 @@ static int const kCellHeight = 52;
     if([beacons count] > 0)
     {
         NSString* labelText;
-        self.selectedBeacon = [beacons objectAtIndex:0];
+        self.selectedBeacon =  beacons[0];// [beacons objectAtIndex:0];
         self.lblEnterAndExitStatus.text =[NSString stringWithFormat:@"%@ Beacon is near by you", [self tellBeaconNamefor:self.selectedBeacon]];
             labelText = [NSString stringWithFormat:@"UUID: %@, Major: %i, Minor: %i\nRegion: ",
                          [self.selectedBeacon.proximityUUID UUIDString],
