@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="tKE-eh-BV0">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="tKE-eh-BV0">
     <dependencies>
         <deployment version="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -68,13 +68,14 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="GKf-hq-lca">
-                                        <rect key="frame" x="196" y="509" width="104" height="15"/>
+                                        <rect key="frame" x="196" y="501" width="104" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Change UUID">
+                                        <state key="normal" title="Servieces">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
                                             <action selector="changeUUID:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Y0k-7M-Mbj"/>
+                                            <segue destination="g4j-pu-53I" kind="push" id="kmH-qm-4Xz"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="yPM-sN-MgX">
@@ -108,19 +109,86 @@
             </objects>
             <point key="canvasLocation" x="503" y="-274"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="FEJ-TG-qrN">
+        <!--Service View Controller-->
+        <scene sceneID="IqA-1J-sT0">
             <objects>
-                <viewController id="uMR-va-1e6" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="xr4-Lz-2ic">
+                <tableViewController id="g4j-pu-53I" customClass="ServiceViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="zX9-ri-pN6">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="faJ-Pf-Txj">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="faJ-Pf-Txj" id="27E-VF-SOq">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="g4j-pu-53I" id="pcN-QZ-sYh"/>
+                            <outlet property="delegate" destination="g4j-pu-53I" id="p3K-sT-BLW"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="PSi-vw-UHU"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LnC-PB-vpA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="883" y="-274"/>
+        </scene>
+        <!--Cloud AuthVC-->
+        <scene sceneID="xnQ-1h-0zB">
+            <objects>
+                <viewController storyboardIdentifier="cloudAuthVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JqT-vN-d2L" customClass="CloudAuthVC" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="LXf-ht-X0O">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="app_1onolvot6p" borderStyle="roundedRect" placeholder="App Id" minimumFontSize="17" id="lYL-hY-9Mh">
+                                <rect key="frame" x="20" y="109" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="5d3bb800cfda0fca76436278d916d3b3" borderStyle="roundedRect" placeholder="App Token" minimumFontSize="17" id="hXW-yU-N41">
+                                <rect key="frame" x="20" y="153" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="UgW-of-o2d">
+                                <rect key="frame" x="30" y="206" width="52" height="27"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Done">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="authenticate:" destination="JqT-vN-d2L" eventType="touchUpInside" id="wWr-lE-MuL"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="RJi-i7-BSb">
+                                <rect key="frame" x="224" y="203" width="64" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Dismiss">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="dismiss:" destination="JqT-vN-d2L" eventType="touchUpInside" id="elt-KH-xBC"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="txtAppId" destination="lYL-hY-9Mh" id="vsB-FZ-bbG"/>
+                        <outlet property="txtAppToken" destination="hXW-yU-N41" id="mOo-IC-6Y7"/>
+                    </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="j7H-el-cBi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Pir-fU-10b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="886" y="-274"/>
+            <point key="canvasLocation" x="1313" y="-274"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

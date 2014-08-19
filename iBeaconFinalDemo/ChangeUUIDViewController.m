@@ -94,14 +94,14 @@
     {
         for (ESTBeacon* cBeacon in beacons)
         {
-            [cBeacon writeBeaconProximityUUID:@"" withCompletion: ^(NSString *value, NSError *error){
-                if(error){
-                    NSLog(@"Got error while writing New UUID %@",error);
-                }else{
-                    NSLog(@"written new UUID and  %@", value);
-                }
-                
-            }];
+//            [cBeacon writeBeaconProximityUUID:@"" withCompletion: ^(NSString *value, NSError *error){
+//                if(error){
+//                    NSLog(@"Got error while writing New UUID %@",error);
+//                }else{
+//                    NSLog(@"written new UUID and  %@", value);
+//                }
+//                
+//            }];
         }
     }
     

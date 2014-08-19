@@ -28,7 +28,7 @@ static int const kCellHeight = 52;
     }else if ([DeviceInfo hardware]>=7 && [DeviceInfo hardware]<=11){
         scrollViewCustom.contentSize = CGSizeMake(320,568);
     }
-    [self.navigationController.navigationBar setHidden:YES];
+    
     // initialize location manager
     if (!self.locationManager) { //initializing for authorizition
         self.locationManager = [[CLLocationManager alloc] init];
@@ -38,6 +38,10 @@ static int const kCellHeight = 52;
     //[self startMonitor];
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+    [self.navigationController.navigationBar setHidden:YES];
+}
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:NO];
