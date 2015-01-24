@@ -29,12 +29,7 @@ static int const kCellHeight = 52;
         scrollViewCustom.contentSize = CGSizeMake(320,568);
     }
     
-    // initialize location manager
-    if (!self.locationManager) { //initializing for authorizition
-        self.locationManager = [[CLLocationManager alloc] init];
-        self.locationManager.delegate = self;
-    }
-    isEnteredInRegion = YES;
+
     //[self startMonitor];
 }
 
@@ -45,6 +40,12 @@ static int const kCellHeight = 52;
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:NO];
+    // initialize location manager
+    if (!self.locationManager) { //initializing for authorizition
+        self.locationManager = [[CLLocationManager alloc] init];
+        self.locationManager.delegate = self;
+    }
+    isEnteredInRegion = YES;
     [self startMonitor];
 }
 

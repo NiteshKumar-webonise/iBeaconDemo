@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0510"
+   LastUpgradeVersion = "0610"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -17,6 +17,20 @@
                BlueprintIdentifier = "59097AEF18AA31C100CB39E1"
                BuildableName = "iBeaconFinalDemo.app"
                BlueprintName = "iBeaconFinalDemo"
+               ReferencedContainer = "container:iBeaconFinalDemo.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "59097B1018AA31C100CB39E1"
+               BuildableName = "iBeaconFinalDemoTests.xctest"
+               BlueprintName = "iBeaconFinalDemoTests"
                ReferencedContainer = "container:iBeaconFinalDemo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

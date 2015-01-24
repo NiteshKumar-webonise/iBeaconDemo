@@ -53,7 +53,7 @@ bool internetStatus = false;
         NetworkStatus netStatus = [reachability currentReachabilityStatus];
         BOOL connectionRequired = [reachability connectionRequired];
         NSLog(@"connectionRequired %hhd",connectionRequired);
-        if(netStatus == NotReachable && connectionRequired == YES){
+        if(netStatus == NotReachable || connectionRequired == YES){
             internetStatus = false;
         }else if (netStatus == ReachableViaWWAN ){
             internetStatus = true;
@@ -84,7 +84,7 @@ bool internetStatus = false;
 - (IBAction)authenticate:(UIButton *)sender {
 	[self.hostReachability startNotifier];
     [self updateInterfaceWithReachability:self.hostReachability];
-    if (![self.hostReachability connectionRequired]) {
+    if (internetStatus) {
         NSLog(@"net is on");
        [ESTBeaconManager setupAppID:self.txtAppId.text andAppToken:self.txtAppToken.text];
        [CloudAuthVC setAuthenticationStatus:true];
